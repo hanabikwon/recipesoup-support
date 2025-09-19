@@ -1,0 +1,1870 @@
+{
+  "containers": [
+    {
+      "uuid": "52A456C5-767E-42D7-8268-65939D85DF67",
+      "identifier": "com.apple.ActivityMessagesApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/52A456C5-767E-42D7-8268-65939D85DF67"
+    },
+    {
+      "uuid": "D4DB1201-43DA-4855-8CD4-9512578D183D",
+      "identifier": "com.apple.MTLReplayer",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D4DB1201-43DA-4855-8CD4-9512578D183D"
+    },
+    {
+      "uuid": "36AA84B2-0CB0-4F4D-8399-62B2517E5BB5",
+      "identifier": "com.apple.CoreAuthUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/36AA84B2-0CB0-4F4D-8399-62B2517E5BB5"
+    },
+    {
+      "uuid": "07C1B50C-92E4-4885-AFBF-F34DD0FC8474",
+      "identifier": "com.apple.PassbookSecureUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/07C1B50C-92E4-4885-AFBF-F34DD0FC8474"
+    },
+    {
+      "uuid": "212C3222-DD8D-4C5E-9730-89FB818E8ABD",
+      "identifier": "com.apple.AuthKitUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/212C3222-DD8D-4C5E-9730-89FB818E8ABD"
+    },
+    {
+      "uuid": "E0DDA13D-F6DA-44F8-92A5-349DAB8C6EB2",
+      "identifier": "com.apple.AMSEngagementViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E0DDA13D-F6DA-44F8-92A5-349DAB8C6EB2"
+    },
+    {
+      "uuid": "8443B18C-BF80-4256-AE87-7C5CB0BB5EB4",
+      "identifier": "com.apple.webapp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/8443B18C-BF80-4256-AE87-7C5CB0BB5EB4"
+    },
+    {
+      "uuid": "592B8018-4C2E-43A1-A197-9B888EA498D7",
+      "identifier": "com.apple.SafariViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/592B8018-4C2E-43A1-A197-9B888EA498D7"
+    },
+    {
+      "uuid": "0DE9BF34-FEDF-4F48-92A1-35978C13E2C2",
+      "identifier": "com.apple.findmy.remoteuiservice",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0DE9BF34-FEDF-4F48-92A1-35978C13E2C2"
+    },
+    {
+      "uuid": "FB083489-800A-4BD2-9D0D-2FE5F954E46A",
+      "identifier": "com.apple.ProximityReaderUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FB083489-800A-4BD2-9D0D-2FE5F954E46A"
+    },
+    {
+      "uuid": "D1D6EDE8-647B-42D5-9F22-63DC23E4332E",
+      "identifier": "com.apple.CompanionViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D1D6EDE8-647B-42D5-9F22-63DC23E4332E"
+    },
+    {
+      "uuid": "ACF09422-1592-4256-8531-1DB530A10EDD",
+      "identifier": "com.apple.VSViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/ACF09422-1592-4256-8531-1DB530A10EDD"
+    },
+    {
+      "uuid": "5335E1E4-B20B-4206-9BF0-9EC4BEC38C6D",
+      "identifier": "com.apple.TVAccessViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/5335E1E4-B20B-4206-9BF0-9EC4BEC38C6D"
+    },
+    {
+      "uuid": "6A50F9E5-BB62-4E24-B77F-615D781F94AD",
+      "identifier": "com.apple.fullkeyboardaccess",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/6A50F9E5-BB62-4E24-B77F-615D781F94AD"
+    },
+    {
+      "uuid": "8FB04168-4D01-49F1-8768-542F167AA049",
+      "identifier": "com.apple.ctkui",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/8FB04168-4D01-49F1-8768-542F167AA049"
+    },
+    {
+      "uuid": "CCDDF146-4215-422C-956E-64B5184851B1",
+      "identifier": "com.apple.feedback.remote",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/CCDDF146-4215-422C-956E-64B5184851B1"
+    },
+    {
+      "uuid": "1CF9C0C5-87EA-4B1E-99D1-AEE3F273BFF2",
+      "identifier": "com.apple.PeopleMessageService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/1CF9C0C5-87EA-4B1E-99D1-AEE3F273BFF2"
+    },
+    {
+      "uuid": "B4744F6F-B6DE-4B5C-84A5-BDB6FE48F681",
+      "identifier": "com.apple.ProximityReaderSceneUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B4744F6F-B6DE-4B5C-84A5-BDB6FE48F681"
+    },
+    {
+      "uuid": "EE0FCD97-EA1E-4CE9-87CF-0331CEFF2A3F",
+      "identifier": "com.apple.PassbookUISceneService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EE0FCD97-EA1E-4CE9-87CF-0331CEFF2A3F"
+    },
+    {
+      "uuid": "B0E75209-CA35-43AD-B523-9A4FAFD86ABA",
+      "identifier": "com.apple.FinanceStub",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B0E75209-CA35-43AD-B523-9A4FAFD86ABA"
+    },
+    {
+      "uuid": "D88F1583-DB55-40CB-BE52-FEBD021A3AA2",
+      "identifier": "com.apple.Bridge",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D88F1583-DB55-40CB-BE52-FEBD021A3AA2"
+    },
+    {
+      "uuid": "E0BF682B-F757-4B1D-B588-CFB49E328EBB",
+      "identifier": "com.apple.UIKit.FontPickerUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E0BF682B-F757-4B1D-B588-CFB49E328EBB"
+    },
+    {
+      "uuid": "165AD8DD-1D6E-4583-B50E-3CE01E49C7C0",
+      "identifier": "com.apple.BacklinkIndicator",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/165AD8DD-1D6E-4583-B50E-3CE01E49C7C0"
+    },
+    {
+      "uuid": "D043ECCD-1901-413D-9487-C724ACA603A8",
+      "identifier": "com.apple.ShortcutsUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D043ECCD-1901-413D-9487-C724ACA603A8"
+    },
+    {
+      "uuid": "FB754B00-052B-4F1A-BEFA-1F45DC480FD0",
+      "identifier": "com.apple.SleepLockScreen",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FB754B00-052B-4F1A-BEFA-1F45DC480FD0"
+    },
+    {
+      "uuid": "B93E36C4-3D01-4BF3-BF46-DB518803742F",
+      "identifier": "com.apple.WebContentFilter.remoteUI.WebContentAnalysisUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B93E36C4-3D01-4BF3-BF46-DB518803742F"
+    },
+    {
+      "uuid": "D6DC031D-7C07-4770-B4E3-FDC674A33DE2",
+      "identifier": "com.apple.UIKit.ColorPickerUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D6DC031D-7C07-4770-B4E3-FDC674A33DE2"
+    },
+    {
+      "uuid": "5F4B1CAD-7353-4F88-A30F-CE685BA59A31",
+      "identifier": "com.apple.Jellyfish",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/5F4B1CAD-7353-4F88-A30F-CE685BA59A31"
+    },
+    {
+      "uuid": "C3748A31-CC98-4985-B368-C93C43C44238",
+      "identifier": "com.apple.ContactsUI.Carousel",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C3748A31-CC98-4985-B368-C93C43C44238"
+    },
+    {
+      "uuid": "127923EF-788D-4EA0-B2B5-7B3C71724C68",
+      "identifier": "com.apple.SharingUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/127923EF-788D-4EA0-B2B5-7B3C71724C68"
+    },
+    {
+      "uuid": "309ED159-2F7C-4267-8830-65D39C6848F5",
+      "identifier": "com.apple.InputUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/309ED159-2F7C-4267-8830-65D39C6848F5"
+    },
+    {
+      "uuid": "0F5E7556-DFBE-4D3C-AFE0-02C4D6A7857F",
+      "identifier": "com.apple.chrono.WidgetRenderer-CarPlay",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0F5E7556-DFBE-4D3C-AFE0-02C4D6A7857F"
+    },
+    {
+      "uuid": "9F0F221C-F32D-44E7-82B0-C31DDF8F3B01",
+      "identifier": "com.apple.datadetectors.DDActionsService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9F0F221C-F32D-44E7-82B0-C31DDF8F3B01"
+    },
+    {
+      "uuid": "C37BE815-3F92-453F-994F-766A9D90170E",
+      "identifier": "com.apple.RemoteiCloudQuotaUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C37BE815-3F92-453F-994F-766A9D90170E"
+    },
+    {
+      "uuid": "FB9D34C5-31FE-4744-88C3-605D0B899681",
+      "identifier": "com.apple.CarPlaySplashScreen",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FB9D34C5-31FE-4744-88C3-605D0B899681"
+    },
+    {
+      "uuid": "034BBE96-B9BF-479E-87F2-06A82889C203",
+      "identifier": "com.apple.Home.HomeControlService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/034BBE96-B9BF-479E-87F2-06A82889C203"
+    },
+    {
+      "uuid": "E1D88835-5386-4291-892A-6BE7AEC7FD95",
+      "identifier": "com.apple.GameOverlayUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E1D88835-5386-4291-892A-6BE7AEC7FD95"
+    },
+    {
+      "uuid": "58ED5A07-FBBF-40CE-A97C-37FFB9BA432E",
+      "identifier": "com.apple.DocumentsApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/58ED5A07-FBBF-40CE-A97C-37FFB9BA432E"
+    },
+    {
+      "uuid": "33068A51-3F2C-4F0D-B0AF-89A5FD1D4169",
+      "identifier": "com.apple.mobilecal",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/33068A51-3F2C-4F0D-B0AF-89A5FD1D4169"
+    },
+    {
+      "uuid": "6CD37FF7-90FF-4653-957D-0B4E4729E9C4",
+      "identifier": "com.apple.MediaRemoteUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/6CD37FF7-90FF-4653-957D-0B4E4729E9C4"
+    },
+    {
+      "uuid": "DC22268D-3D78-4204-8250-1999CFAE552E",
+      "identifier": "com.apple.WebSheet",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DC22268D-3D78-4204-8250-1999CFAE552E"
+    },
+    {
+      "uuid": "E8A9D34B-F5AB-4DE3-9CB5-F58E66965E44",
+      "identifier": "com.apple.CarPlaySetupApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E8A9D34B-F5AB-4DE3-9CB5-F58E66965E44"
+    },
+    {
+      "uuid": "51527A0B-1A2C-4585-8B16-E14BA023410B",
+      "identifier": "com.apple.AskPermissionUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/51527A0B-1A2C-4585-8B16-E14BA023410B"
+    },
+    {
+      "uuid": "D10E4BF0-4B1D-485F-AB9B-672DE2B1BFEF",
+      "identifier": "com.apple.HealthPrivacyService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D10E4BF0-4B1D-485F-AB9B-672DE2B1BFEF"
+    },
+    {
+      "uuid": "423ED528-9BE6-4321-BD68-D3CF430C5E8A",
+      "identifier": "com.apple.SystemPaperViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/423ED528-9BE6-4321-BD68-D3CF430C5E8A"
+    },
+    {
+      "uuid": "74A3B618-4AAA-4E88-B4B7-F48E2B22D959",
+      "identifier": "com.apple.MobileSMS",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/74A3B618-4AAA-4E88-B4B7-F48E2B22D959"
+    },
+    {
+      "uuid": "3135F95C-968A-4BF7-AFC5-2495B3FC246E",
+      "identifier": "com.apple.shortcuts",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/3135F95C-968A-4BF7-AFC5-2495B3FC246E"
+    },
+    {
+      "uuid": "D1178AB8-2CF5-4445-A15E-297AB64A9121",
+      "identifier": "com.recipesoup.app.recipesoup",
+      "category": "Recipesoup (Development)",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D1178AB8-2CF5-4445-A15E-297AB64A9121"
+    },
+    {
+      "uuid": "7E15D75F-E323-42A9-A781-55B3D3FD76FE",
+      "identifier": "com.apple.PassbookStub",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7E15D75F-E323-42A9-A781-55B3D3FD76FE"
+    },
+    {
+      "uuid": "686FD0B0-E8E7-4C92-BA6B-B7B9B2D7E818",
+      "identifier": "com.apple.ClockAngel",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/686FD0B0-E8E7-4C92-BA6B-B7B9B2D7E818"
+    },
+    {
+      "uuid": "29CF7A3E-EB8A-4A4F-ACD9-5F4EDA0326F1",
+      "identifier": "com.apple.ScreenTimeWidgetApplication",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/29CF7A3E-EB8A-4A4F-ACD9-5F4EDA0326F1"
+    },
+    {
+      "uuid": "57F4BB3C-E9F0-48F8-BA47-07138B1DAAA8",
+      "identifier": "com.apple.gamecenter.GameCenterUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/57F4BB3C-E9F0-48F8-BA47-07138B1DAAA8"
+    },
+    {
+      "uuid": "A0311522-289B-4B1B-8AE4-76C3B73BC071",
+      "identifier": "com.apple.AppDistributionLaunchAngel",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/A0311522-289B-4B1B-8AE4-76C3B73BC071"
+    },
+    {
+      "uuid": "AE705037-29B1-4489-AE11-8A4D099D42B8",
+      "identifier": "com.apple.CarPlayWallpaper",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AE705037-29B1-4489-AE11-8A4D099D42B8"
+    },
+    {
+      "uuid": "AC78017C-F97D-4A96-8C44-263CF24250B9",
+      "identifier": "com.apple.MobileReplayer",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AC78017C-F97D-4A96-8C44-263CF24250B9"
+    },
+    {
+      "uuid": "D0704199-0A50-4197-B3BD-266F36A9E3D2",
+      "identifier": "com.apple.AccountAuthenticationDialog",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D0704199-0A50-4197-B3BD-266F36A9E3D2"
+    },
+    {
+      "uuid": "F7E52A75-74E4-4497-874E-06083F456A15",
+      "identifier": "com.apple.AXUIViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F7E52A75-74E4-4497-874E-06083F456A15"
+    },
+    {
+      "uuid": "DE81BF98-67AA-42DA-8595-9BB62CAC1893",
+      "identifier": "com.apple.HearingApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DE81BF98-67AA-42DA-8595-9BB62CAC1893"
+    },
+    {
+      "uuid": "F2FB082B-3622-492C-AB7E-9B3BF3DF6750",
+      "identifier": "com.apple.PassbookUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F2FB082B-3622-492C-AB7E-9B3BF3DF6750"
+    },
+    {
+      "uuid": "A2AAD242-0B57-4BAB-9EA1-F5F95600D666",
+      "identifier": "com.apple.PosterBoard",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/A2AAD242-0B57-4BAB-9EA1-F5F95600D666"
+    },
+    {
+      "uuid": "17DACD1E-D74F-4C91-B4A5-312E29A7F00D",
+      "identifier": "com.apple.icq",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/17DACD1E-D74F-4C91-B4A5-312E29A7F00D"
+    },
+    {
+      "uuid": "F0291615-D53B-4B60-AB65-01DB9982DF3E",
+      "identifier": "com.apple.Fitness",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F0291615-D53B-4B60-AB65-01DB9982DF3E"
+    },
+    {
+      "uuid": "DD61AE59-6FC7-4B8A-96BF-1145B6781A20",
+      "identifier": "com.apple.systemactions",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DD61AE59-6FC7-4B8A-96BF-1145B6781A20"
+    },
+    {
+      "uuid": "9A4B305B-BCEA-4D70-BFE2-98E4B57D6BCB",
+      "identifier": "com.apple.PASViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9A4B305B-BCEA-4D70-BFE2-98E4B57D6BCB"
+    },
+    {
+      "uuid": "058483F0-007F-4DCE-82BA-0B87394E436A",
+      "identifier": "com.apple.AppSSOUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/058483F0-007F-4DCE-82BA-0B87394E436A"
+    },
+    {
+      "uuid": "D1FEDD30-2781-4D34-953C-2781335E8A76",
+      "identifier": "com.apple.SpringBoardEducation",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D1FEDD30-2781-4D34-953C-2781335E8A76"
+    },
+    {
+      "uuid": "0E4A0C5C-CF69-4961-B1C2-2A3B093A02BA",
+      "identifier": "com.apple.CTNotifyUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0E4A0C5C-CF69-4961-B1C2-2A3B093A02BA"
+    },
+    {
+      "uuid": "866AB120-5CE9-4CD6-BF4B-E28474F489F6",
+      "identifier": "com.apple.Maps",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/866AB120-5CE9-4CD6-BF4B-E28474F489F6"
+    },
+    {
+      "uuid": "29D18787-1BF9-4539-B958-BFA580817812",
+      "identifier": "com.apple.PeopleViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/29D18787-1BF9-4539-B958-BFA580817812"
+    },
+    {
+      "uuid": "69B2C7EF-C306-4D7F-A4E9-3A3A360512D0",
+      "identifier": "com.apple.iMessageAppsViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/69B2C7EF-C306-4D7F-A4E9-3A3A360512D0"
+    },
+    {
+      "uuid": "11DA2142-E871-428A-B4A2-6294692363A8",
+      "identifier": "com.apple.FinanceUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/11DA2142-E871-428A-B4A2-6294692363A8"
+    },
+    {
+      "uuid": "FC38B316-A97D-4C1A-9600-FDAD78C08E67",
+      "identifier": "com.apple.Health",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FC38B316-A97D-4C1A-9600-FDAD78C08E67"
+    },
+    {
+      "uuid": "2B6F6154-EAC3-4C73-8AAF-FD4816C98523",
+      "identifier": "com.apple.GameCenterRemoteAlert",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/2B6F6154-EAC3-4C73-8AAF-FD4816C98523"
+    },
+    {
+      "uuid": "FEA27C55-23E4-41CE-A65E-4456833E5D8F",
+      "identifier": "com.apple.ScreenshotServicesService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FEA27C55-23E4-41CE-A65E-4456833E5D8F"
+    },
+    {
+      "uuid": "2B3FFDAA-D19F-4FC1-8B85-54DDC947670B",
+      "identifier": "com.apple.ProductKitViewer",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/2B3FFDAA-D19F-4FC1-8B85-54DDC947670B"
+    },
+    {
+      "uuid": "42B014E7-5304-414C-AF33-50B94DE44C3B",
+      "identifier": "com.apple.Batteries",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/42B014E7-5304-414C-AF33-50B94DE44C3B"
+    },
+    {
+      "uuid": "B3004151-A214-46F2-8209-6D1833E26787",
+      "identifier": "com.apple.shortcuts.runtime",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B3004151-A214-46F2-8209-6D1833E26787"
+    },
+    {
+      "uuid": "833411E0-9085-4231-9D46-5866B9A23ED9",
+      "identifier": "com.apple.Passbook",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/833411E0-9085-4231-9D46-5866B9A23ED9"
+    },
+    {
+      "uuid": "DF79C5C6-FFDD-4D97-A8D5-989FC0DC72CE",
+      "identifier": "com.apple.RemotePassUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DF79C5C6-FFDD-4D97-A8D5-989FC0DC72CE"
+    },
+    {
+      "uuid": "51B489DC-6FB1-4B32-BFC4-D5AD26165713",
+      "identifier": "com.apple.FCAuthenticationUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/51B489DC-6FB1-4B32-BFC4-D5AD26165713"
+    },
+    {
+      "uuid": "92DC3B10-1C80-4194-8C27-08278F0448CC",
+      "identifier": "com.apple.chrono.WidgetRenderer-Default",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/92DC3B10-1C80-4194-8C27-08278F0448CC"
+    },
+    {
+      "uuid": "0C002ADF-2B16-4B9D-8EFC-E052E3415704",
+      "identifier": "com.apple.MediaRemoteUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0C002ADF-2B16-4B9D-8EFC-E052E3415704"
+    },
+    {
+      "uuid": "4596C608-9491-4CB9-93D3-887FE38448AF",
+      "identifier": "com.apple.Health.Sleep",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4596C608-9491-4CB9-93D3-887FE38448AF"
+    },
+    {
+      "uuid": "38C140C4-15A7-4205-827C-83AA356A9A72",
+      "identifier": "com.apple.ios.StoreKitUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/38C140C4-15A7-4205-827C-83AA356A9A72"
+    },
+    {
+      "uuid": "D6BC8C02-499D-4AD2-9C74-33D3D58B7067",
+      "identifier": "com.apple.TVSetupUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D6BC8C02-499D-4AD2-9C74-33D3D58B7067"
+    },
+    {
+      "uuid": "296FCD0A-C70C-4F3B-95AE-6335C97CE64E",
+      "identifier": "com.apple.CarPlaySettings",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/296FCD0A-C70C-4F3B-95AE-6335C97CE64E"
+    },
+    {
+      "uuid": "708D4E90-88A7-4E60-B300-48188FE61F30",
+      "identifier": "com.apple.SafetyMonitorApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/708D4E90-88A7-4E60-B300-48188FE61F30"
+    },
+    {
+      "uuid": "C4AC0F6C-B0C5-44A5-8EC5-0F33A6057714",
+      "identifier": "com.apple.SharingViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C4AC0F6C-B0C5-44A5-8EC5-0F33A6057714"
+    },
+    {
+      "uuid": "4EE1048D-1C82-4EAA-A495-8A9636AF69A2",
+      "identifier": "com.apple.ActivityProgress.ActivityProgressUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4EE1048D-1C82-4EAA-A495-8A9636AF69A2"
+    },
+    {
+      "uuid": "83CD7A6D-E700-4239-81B7-E8223F79CE4C",
+      "identifier": "com.apple.reminders",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/83CD7A6D-E700-4239-81B7-E8223F79CE4C"
+    },
+    {
+      "uuid": "12EFC666-879C-40F0-827B-230904D7C53A",
+      "identifier": "com.apple.TDGSharingViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/12EFC666-879C-40F0-827B-230904D7C53A"
+    },
+    {
+      "uuid": "D5B6BD13-DB13-467A-82A2-D7DA4886EDD4",
+      "identifier": "com.apple.AAUIViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D5B6BD13-DB13-467A-82A2-D7DA4886EDD4"
+    },
+    {
+      "uuid": "0C0953F1-3CFE-4503-807E-2EAD667072C4",
+      "identifier": "com.apple.MobileAddressBook",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0C0953F1-3CFE-4503-807E-2EAD667072C4"
+    },
+    {
+      "uuid": "BF068BE3-3B0B-45C1-B60C-16B634D2D7E0",
+      "identifier": "com.apple.Sharing.AirDropUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/BF068BE3-3B0B-45C1-B60C-16B634D2D7E0"
+    },
+    {
+      "uuid": "D9FE9F91-0145-434C-B0F3-9F01E3D6542A",
+      "identifier": "com.apple.Passwords",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D9FE9F91-0145-434C-B0F3-9F01E3D6542A"
+    },
+    {
+      "uuid": "95DC3F43-441E-4A50-A4B2-ECCBD317DC69",
+      "identifier": "com.apple.Stickers.UserGenerated",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/95DC3F43-441E-4A50-A4B2-ECCBD317DC69"
+    },
+    {
+      "uuid": "C8C00C1D-B59D-4190-89BE-1CDB7320683A",
+      "identifier": "com.apple.AppleIDSetupUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C8C00C1D-B59D-4190-89BE-1CDB7320683A"
+    },
+    {
+      "uuid": "0FEAEC7B-1F1F-43D6-A5B6-307994C4C794",
+      "identifier": "com.apple.PreviewShell",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0FEAEC7B-1F1F-43D6-A5B6-307994C4C794"
+    },
+    {
+      "uuid": "7A7538C4-B8E4-4027-BB01-E8C705EEDCE8",
+      "identifier": "com.apple.news",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7A7538C4-B8E4-4027-BB01-E8C705EEDCE8"
+    },
+    {
+      "uuid": "9B0EAD49-8F6D-42D8-B286-CBE16DB04B57",
+      "identifier": "com.apple.TVRemoteUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9B0EAD49-8F6D-42D8-B286-CBE16DB04B57"
+    },
+    {
+      "uuid": "AB4CC397-1381-4443-B807-22F70E8572EE",
+      "identifier": "com.apple.ClipViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AB4CC397-1381-4443-B807-22F70E8572EE"
+    },
+    {
+      "uuid": "7BFE2970-B4F9-4D2F-96EA-1E1893BC3BE8",
+      "identifier": "com.apple.BusinessChatViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7BFE2970-B4F9-4D2F-96EA-1E1893BC3BE8"
+    },
+    {
+      "uuid": "48F8A2EB-69F7-4FCB-9F2E-676D446D2036",
+      "identifier": "com.apple.CameraOverlayAngel",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/48F8A2EB-69F7-4FCB-9F2E-676D446D2036"
+    },
+    {
+      "uuid": "9CD061DC-31FE-48BF-B237-674954CA0708",
+      "identifier": "com.apple.AMSUIAuthenticationViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9CD061DC-31FE-48BF-B237-674954CA0708"
+    },
+    {
+      "uuid": "EF9D5682-B189-4E23-8768-A9A2617C3F12",
+      "identifier": "com.apple.AccessorySetupUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EF9D5682-B189-4E23-8768-A9A2617C3F12"
+    },
+    {
+      "uuid": "D7B91632-711E-4E3F-B1EF-14086FAE4526",
+      "identifier": "com.apple.icloud.apps.messages.business",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D7B91632-711E-4E3F-B1EF-14086FAE4526"
+    },
+    {
+      "uuid": "7567AA12-5F92-445F-B8BA-43EF260003EC",
+      "identifier": "com.apple.Photos.PhotosUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7567AA12-5F92-445F-B8BA-43EF260003EC"
+    },
+    {
+      "uuid": "BA084E09-512E-4969-8123-8FD95D22FDFD",
+      "identifier": "com.apple.siri.parsec.HashtagImagesApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/BA084E09-512E-4969-8123-8FD95D22FDFD"
+    },
+    {
+      "uuid": "F96A7B93-23BB-43DA-BC68-CAE7664BFCF3",
+      "identifier": "com.apple.ShazamEventsApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F96A7B93-23BB-43DA-BC68-CAE7664BFCF3"
+    },
+    {
+      "uuid": "18786DAF-3499-4E2E-BC7A-0908F95223BB",
+      "identifier": "com.apple.WorkoutRemoteViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/18786DAF-3499-4E2E-BC7A-0908F95223BB"
+    },
+    {
+      "uuid": "D7A5E377-403A-418E-A69E-31122F54BE0A",
+      "identifier": "com.apple.VoiceOverTouch",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D7A5E377-403A-418E-A69E-31122F54BE0A"
+    },
+    {
+      "uuid": "B6784F9D-13C2-4534-A73D-03DDCCC38855",
+      "identifier": "com.apple.Animoji.StickersApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B6784F9D-13C2-4534-A73D-03DDCCC38855"
+    },
+    {
+      "uuid": "9308A521-C895-434D-BB81-BFB4891D7741",
+      "identifier": "com.apple.FontInstallViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9308A521-C895-434D-BB81-BFB4891D7741"
+    },
+    {
+      "uuid": "EACF9817-F404-4015-841C-4D69119AAC48",
+      "identifier": "com.apple.ContactsUI.LimitedAccessPromptView",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EACF9817-F404-4015-841C-4D69119AAC48"
+    },
+    {
+      "uuid": "71752518-5FD8-4D67-B60D-65865C57E5D4",
+      "identifier": "com.apple.AdaptiveMusicApp",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/71752518-5FD8-4D67-B60D-65865C57E5D4"
+    },
+    {
+      "uuid": "AEBA453E-7371-413B-8BCA-5CF375AE769E",
+      "identifier": "com.apple.CredentialSharingService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AEBA453E-7371-413B-8BCA-5CF375AE769E"
+    },
+    {
+      "uuid": "E7464819-5D64-40D2-87C2-10FDC009B87F",
+      "identifier": "com.apple.LoginUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E7464819-5D64-40D2-87C2-10FDC009B87F"
+    },
+    {
+      "uuid": "EA3B8DF7-6670-4199-B73A-09B66D1C8C77",
+      "identifier": "com.apple.FaceTimeLinkTrampoline",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EA3B8DF7-6670-4199-B73A-09B66D1C8C77"
+    },
+    {
+      "uuid": "39767A82-CCC2-43D6-82A1-CC913C9D6776",
+      "identifier": "com.apple.mobilesafari",
+      "category": "Apple System",
+      "size_mb": 31,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/39767A82-CCC2-43D6-82A1-CC913C9D6776"
+    },
+    {
+      "uuid": "D6D72AC3-2DB5-4DFE-8704-D284140E99F1",
+      "identifier": "com.apple.SubcredentialUIService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D6D72AC3-2DB5-4DFE-8704-D284140E99F1"
+    },
+    {
+      "uuid": "D8A6BBE2-6BCE-4CDF-9E5D-60D0BB70BB75",
+      "identifier": "com.apple.AuthenticationServicesUI",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D8A6BBE2-6BCE-4CDF-9E5D-60D0BB70BB75"
+    },
+    {
+      "uuid": "3670A007-71EF-4100-8FA4-201AF8FFEB42",
+      "identifier": "com.apple.musicrecognition",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/3670A007-71EF-4100-8FA4-201AF8FFEB42"
+    },
+    {
+      "uuid": "EB1CB30A-1F4F-489C-A8D8-84F1A8FC5B23",
+      "identifier": "com.apple.EventViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EB1CB30A-1F4F-489C-A8D8-84F1A8FC5B23"
+    },
+    {
+      "uuid": "AD408B80-DE2B-4DAE-BAA4-1A4BBFBD8343",
+      "identifier": "com.apple.siri",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AD408B80-DE2B-4DAE-BAA4-1A4BBFBD8343"
+    },
+    {
+      "uuid": "4A3572FB-869C-4B87-85B2-53EE103C0533",
+      "identifier": "com.apple.GuestUserHandoverSetup",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4A3572FB-869C-4B87-85B2-53EE103C0533"
+    },
+    {
+      "uuid": "2BBAEC04-B302-41E5-B348-342D0504EBFB",
+      "identifier": "com.apple.HomeCaptiveViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/2BBAEC04-B302-41E5-B348-342D0504EBFB"
+    },
+    {
+      "uuid": "4FAD09B9-0D1E-48B9-87F8-90DC8D662602",
+      "identifier": "com.apple.CloudKit.ShareBear",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4FAD09B9-0D1E-48B9-87F8-90DC8D662602"
+    },
+    {
+      "uuid": "0BC37F22-B1EA-40C9-83DD-2066E99A9A29",
+      "identifier": "com.apple.AskToMessagesHost",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0BC37F22-B1EA-40C9-83DD-2066E99A9A29"
+    },
+    {
+      "uuid": "287DC8D3-B697-4382-A49B-C3462EC48D78",
+      "identifier": "com.apple.AppProtectionUIHost",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/287DC8D3-B697-4382-A49B-C3462EC48D78"
+    },
+    {
+      "uuid": "E3D831E3-30AF-4823-8513-EFB4AAAEEE3B",
+      "identifier": "com.apple.ScreenTimeUnlock",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E3D831E3-30AF-4823-8513-EFB4AAAEEE3B"
+    },
+    {
+      "uuid": "23DE4E90-03A5-41A1-BDB4-8406D53E2785",
+      "identifier": "com.apple.BarcodeScanner",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/23DE4E90-03A5-41A1-BDB4-8406D53E2785"
+    },
+    {
+      "uuid": "EFEB08A5-FBAF-4152-96DC-CC6E529BBE91",
+      "identifier": "com.apple.AXRemoteViewService",
+      "category": "Apple System",
+      "size_mb": 1,
+      "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EFEB08A5-FBAF-4152-96DC-CC6E529BBE91"
+    }
+  ],
+  "categories": {
+    "Apple System": {
+      "count": 131,
+      "total_size": 161,
+      "apps": [
+        {
+          "uuid": "52A456C5-767E-42D7-8268-65939D85DF67",
+          "identifier": "com.apple.ActivityMessagesApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/52A456C5-767E-42D7-8268-65939D85DF67"
+        },
+        {
+          "uuid": "D4DB1201-43DA-4855-8CD4-9512578D183D",
+          "identifier": "com.apple.MTLReplayer",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D4DB1201-43DA-4855-8CD4-9512578D183D"
+        },
+        {
+          "uuid": "36AA84B2-0CB0-4F4D-8399-62B2517E5BB5",
+          "identifier": "com.apple.CoreAuthUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/36AA84B2-0CB0-4F4D-8399-62B2517E5BB5"
+        },
+        {
+          "uuid": "07C1B50C-92E4-4885-AFBF-F34DD0FC8474",
+          "identifier": "com.apple.PassbookSecureUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/07C1B50C-92E4-4885-AFBF-F34DD0FC8474"
+        },
+        {
+          "uuid": "212C3222-DD8D-4C5E-9730-89FB818E8ABD",
+          "identifier": "com.apple.AuthKitUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/212C3222-DD8D-4C5E-9730-89FB818E8ABD"
+        },
+        {
+          "uuid": "E0DDA13D-F6DA-44F8-92A5-349DAB8C6EB2",
+          "identifier": "com.apple.AMSEngagementViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E0DDA13D-F6DA-44F8-92A5-349DAB8C6EB2"
+        },
+        {
+          "uuid": "8443B18C-BF80-4256-AE87-7C5CB0BB5EB4",
+          "identifier": "com.apple.webapp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/8443B18C-BF80-4256-AE87-7C5CB0BB5EB4"
+        },
+        {
+          "uuid": "592B8018-4C2E-43A1-A197-9B888EA498D7",
+          "identifier": "com.apple.SafariViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/592B8018-4C2E-43A1-A197-9B888EA498D7"
+        },
+        {
+          "uuid": "0DE9BF34-FEDF-4F48-92A1-35978C13E2C2",
+          "identifier": "com.apple.findmy.remoteuiservice",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0DE9BF34-FEDF-4F48-92A1-35978C13E2C2"
+        },
+        {
+          "uuid": "FB083489-800A-4BD2-9D0D-2FE5F954E46A",
+          "identifier": "com.apple.ProximityReaderUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FB083489-800A-4BD2-9D0D-2FE5F954E46A"
+        },
+        {
+          "uuid": "D1D6EDE8-647B-42D5-9F22-63DC23E4332E",
+          "identifier": "com.apple.CompanionViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D1D6EDE8-647B-42D5-9F22-63DC23E4332E"
+        },
+        {
+          "uuid": "ACF09422-1592-4256-8531-1DB530A10EDD",
+          "identifier": "com.apple.VSViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/ACF09422-1592-4256-8531-1DB530A10EDD"
+        },
+        {
+          "uuid": "5335E1E4-B20B-4206-9BF0-9EC4BEC38C6D",
+          "identifier": "com.apple.TVAccessViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/5335E1E4-B20B-4206-9BF0-9EC4BEC38C6D"
+        },
+        {
+          "uuid": "6A50F9E5-BB62-4E24-B77F-615D781F94AD",
+          "identifier": "com.apple.fullkeyboardaccess",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/6A50F9E5-BB62-4E24-B77F-615D781F94AD"
+        },
+        {
+          "uuid": "8FB04168-4D01-49F1-8768-542F167AA049",
+          "identifier": "com.apple.ctkui",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/8FB04168-4D01-49F1-8768-542F167AA049"
+        },
+        {
+          "uuid": "CCDDF146-4215-422C-956E-64B5184851B1",
+          "identifier": "com.apple.feedback.remote",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/CCDDF146-4215-422C-956E-64B5184851B1"
+        },
+        {
+          "uuid": "1CF9C0C5-87EA-4B1E-99D1-AEE3F273BFF2",
+          "identifier": "com.apple.PeopleMessageService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/1CF9C0C5-87EA-4B1E-99D1-AEE3F273BFF2"
+        },
+        {
+          "uuid": "B4744F6F-B6DE-4B5C-84A5-BDB6FE48F681",
+          "identifier": "com.apple.ProximityReaderSceneUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B4744F6F-B6DE-4B5C-84A5-BDB6FE48F681"
+        },
+        {
+          "uuid": "EE0FCD97-EA1E-4CE9-87CF-0331CEFF2A3F",
+          "identifier": "com.apple.PassbookUISceneService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EE0FCD97-EA1E-4CE9-87CF-0331CEFF2A3F"
+        },
+        {
+          "uuid": "B0E75209-CA35-43AD-B523-9A4FAFD86ABA",
+          "identifier": "com.apple.FinanceStub",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B0E75209-CA35-43AD-B523-9A4FAFD86ABA"
+        },
+        {
+          "uuid": "D88F1583-DB55-40CB-BE52-FEBD021A3AA2",
+          "identifier": "com.apple.Bridge",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D88F1583-DB55-40CB-BE52-FEBD021A3AA2"
+        },
+        {
+          "uuid": "E0BF682B-F757-4B1D-B588-CFB49E328EBB",
+          "identifier": "com.apple.UIKit.FontPickerUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E0BF682B-F757-4B1D-B588-CFB49E328EBB"
+        },
+        {
+          "uuid": "165AD8DD-1D6E-4583-B50E-3CE01E49C7C0",
+          "identifier": "com.apple.BacklinkIndicator",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/165AD8DD-1D6E-4583-B50E-3CE01E49C7C0"
+        },
+        {
+          "uuid": "D043ECCD-1901-413D-9487-C724ACA603A8",
+          "identifier": "com.apple.ShortcutsUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D043ECCD-1901-413D-9487-C724ACA603A8"
+        },
+        {
+          "uuid": "FB754B00-052B-4F1A-BEFA-1F45DC480FD0",
+          "identifier": "com.apple.SleepLockScreen",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FB754B00-052B-4F1A-BEFA-1F45DC480FD0"
+        },
+        {
+          "uuid": "B93E36C4-3D01-4BF3-BF46-DB518803742F",
+          "identifier": "com.apple.WebContentFilter.remoteUI.WebContentAnalysisUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B93E36C4-3D01-4BF3-BF46-DB518803742F"
+        },
+        {
+          "uuid": "D6DC031D-7C07-4770-B4E3-FDC674A33DE2",
+          "identifier": "com.apple.UIKit.ColorPickerUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D6DC031D-7C07-4770-B4E3-FDC674A33DE2"
+        },
+        {
+          "uuid": "5F4B1CAD-7353-4F88-A30F-CE685BA59A31",
+          "identifier": "com.apple.Jellyfish",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/5F4B1CAD-7353-4F88-A30F-CE685BA59A31"
+        },
+        {
+          "uuid": "C3748A31-CC98-4985-B368-C93C43C44238",
+          "identifier": "com.apple.ContactsUI.Carousel",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C3748A31-CC98-4985-B368-C93C43C44238"
+        },
+        {
+          "uuid": "127923EF-788D-4EA0-B2B5-7B3C71724C68",
+          "identifier": "com.apple.SharingUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/127923EF-788D-4EA0-B2B5-7B3C71724C68"
+        },
+        {
+          "uuid": "309ED159-2F7C-4267-8830-65D39C6848F5",
+          "identifier": "com.apple.InputUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/309ED159-2F7C-4267-8830-65D39C6848F5"
+        },
+        {
+          "uuid": "0F5E7556-DFBE-4D3C-AFE0-02C4D6A7857F",
+          "identifier": "com.apple.chrono.WidgetRenderer-CarPlay",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0F5E7556-DFBE-4D3C-AFE0-02C4D6A7857F"
+        },
+        {
+          "uuid": "9F0F221C-F32D-44E7-82B0-C31DDF8F3B01",
+          "identifier": "com.apple.datadetectors.DDActionsService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9F0F221C-F32D-44E7-82B0-C31DDF8F3B01"
+        },
+        {
+          "uuid": "C37BE815-3F92-453F-994F-766A9D90170E",
+          "identifier": "com.apple.RemoteiCloudQuotaUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C37BE815-3F92-453F-994F-766A9D90170E"
+        },
+        {
+          "uuid": "FB9D34C5-31FE-4744-88C3-605D0B899681",
+          "identifier": "com.apple.CarPlaySplashScreen",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FB9D34C5-31FE-4744-88C3-605D0B899681"
+        },
+        {
+          "uuid": "034BBE96-B9BF-479E-87F2-06A82889C203",
+          "identifier": "com.apple.Home.HomeControlService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/034BBE96-B9BF-479E-87F2-06A82889C203"
+        },
+        {
+          "uuid": "E1D88835-5386-4291-892A-6BE7AEC7FD95",
+          "identifier": "com.apple.GameOverlayUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E1D88835-5386-4291-892A-6BE7AEC7FD95"
+        },
+        {
+          "uuid": "58ED5A07-FBBF-40CE-A97C-37FFB9BA432E",
+          "identifier": "com.apple.DocumentsApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/58ED5A07-FBBF-40CE-A97C-37FFB9BA432E"
+        },
+        {
+          "uuid": "33068A51-3F2C-4F0D-B0AF-89A5FD1D4169",
+          "identifier": "com.apple.mobilecal",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/33068A51-3F2C-4F0D-B0AF-89A5FD1D4169"
+        },
+        {
+          "uuid": "6CD37FF7-90FF-4653-957D-0B4E4729E9C4",
+          "identifier": "com.apple.MediaRemoteUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/6CD37FF7-90FF-4653-957D-0B4E4729E9C4"
+        },
+        {
+          "uuid": "DC22268D-3D78-4204-8250-1999CFAE552E",
+          "identifier": "com.apple.WebSheet",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DC22268D-3D78-4204-8250-1999CFAE552E"
+        },
+        {
+          "uuid": "E8A9D34B-F5AB-4DE3-9CB5-F58E66965E44",
+          "identifier": "com.apple.CarPlaySetupApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E8A9D34B-F5AB-4DE3-9CB5-F58E66965E44"
+        },
+        {
+          "uuid": "51527A0B-1A2C-4585-8B16-E14BA023410B",
+          "identifier": "com.apple.AskPermissionUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/51527A0B-1A2C-4585-8B16-E14BA023410B"
+        },
+        {
+          "uuid": "D10E4BF0-4B1D-485F-AB9B-672DE2B1BFEF",
+          "identifier": "com.apple.HealthPrivacyService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D10E4BF0-4B1D-485F-AB9B-672DE2B1BFEF"
+        },
+        {
+          "uuid": "423ED528-9BE6-4321-BD68-D3CF430C5E8A",
+          "identifier": "com.apple.SystemPaperViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/423ED528-9BE6-4321-BD68-D3CF430C5E8A"
+        },
+        {
+          "uuid": "74A3B618-4AAA-4E88-B4B7-F48E2B22D959",
+          "identifier": "com.apple.MobileSMS",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/74A3B618-4AAA-4E88-B4B7-F48E2B22D959"
+        },
+        {
+          "uuid": "3135F95C-968A-4BF7-AFC5-2495B3FC246E",
+          "identifier": "com.apple.shortcuts",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/3135F95C-968A-4BF7-AFC5-2495B3FC246E"
+        },
+        {
+          "uuid": "7E15D75F-E323-42A9-A781-55B3D3FD76FE",
+          "identifier": "com.apple.PassbookStub",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7E15D75F-E323-42A9-A781-55B3D3FD76FE"
+        },
+        {
+          "uuid": "686FD0B0-E8E7-4C92-BA6B-B7B9B2D7E818",
+          "identifier": "com.apple.ClockAngel",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/686FD0B0-E8E7-4C92-BA6B-B7B9B2D7E818"
+        },
+        {
+          "uuid": "29CF7A3E-EB8A-4A4F-ACD9-5F4EDA0326F1",
+          "identifier": "com.apple.ScreenTimeWidgetApplication",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/29CF7A3E-EB8A-4A4F-ACD9-5F4EDA0326F1"
+        },
+        {
+          "uuid": "57F4BB3C-E9F0-48F8-BA47-07138B1DAAA8",
+          "identifier": "com.apple.gamecenter.GameCenterUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/57F4BB3C-E9F0-48F8-BA47-07138B1DAAA8"
+        },
+        {
+          "uuid": "A0311522-289B-4B1B-8AE4-76C3B73BC071",
+          "identifier": "com.apple.AppDistributionLaunchAngel",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/A0311522-289B-4B1B-8AE4-76C3B73BC071"
+        },
+        {
+          "uuid": "AE705037-29B1-4489-AE11-8A4D099D42B8",
+          "identifier": "com.apple.CarPlayWallpaper",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AE705037-29B1-4489-AE11-8A4D099D42B8"
+        },
+        {
+          "uuid": "AC78017C-F97D-4A96-8C44-263CF24250B9",
+          "identifier": "com.apple.MobileReplayer",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AC78017C-F97D-4A96-8C44-263CF24250B9"
+        },
+        {
+          "uuid": "D0704199-0A50-4197-B3BD-266F36A9E3D2",
+          "identifier": "com.apple.AccountAuthenticationDialog",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D0704199-0A50-4197-B3BD-266F36A9E3D2"
+        },
+        {
+          "uuid": "F7E52A75-74E4-4497-874E-06083F456A15",
+          "identifier": "com.apple.AXUIViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F7E52A75-74E4-4497-874E-06083F456A15"
+        },
+        {
+          "uuid": "DE81BF98-67AA-42DA-8595-9BB62CAC1893",
+          "identifier": "com.apple.HearingApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DE81BF98-67AA-42DA-8595-9BB62CAC1893"
+        },
+        {
+          "uuid": "F2FB082B-3622-492C-AB7E-9B3BF3DF6750",
+          "identifier": "com.apple.PassbookUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F2FB082B-3622-492C-AB7E-9B3BF3DF6750"
+        },
+        {
+          "uuid": "A2AAD242-0B57-4BAB-9EA1-F5F95600D666",
+          "identifier": "com.apple.PosterBoard",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/A2AAD242-0B57-4BAB-9EA1-F5F95600D666"
+        },
+        {
+          "uuid": "17DACD1E-D74F-4C91-B4A5-312E29A7F00D",
+          "identifier": "com.apple.icq",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/17DACD1E-D74F-4C91-B4A5-312E29A7F00D"
+        },
+        {
+          "uuid": "F0291615-D53B-4B60-AB65-01DB9982DF3E",
+          "identifier": "com.apple.Fitness",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F0291615-D53B-4B60-AB65-01DB9982DF3E"
+        },
+        {
+          "uuid": "DD61AE59-6FC7-4B8A-96BF-1145B6781A20",
+          "identifier": "com.apple.systemactions",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DD61AE59-6FC7-4B8A-96BF-1145B6781A20"
+        },
+        {
+          "uuid": "9A4B305B-BCEA-4D70-BFE2-98E4B57D6BCB",
+          "identifier": "com.apple.PASViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9A4B305B-BCEA-4D70-BFE2-98E4B57D6BCB"
+        },
+        {
+          "uuid": "058483F0-007F-4DCE-82BA-0B87394E436A",
+          "identifier": "com.apple.AppSSOUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/058483F0-007F-4DCE-82BA-0B87394E436A"
+        },
+        {
+          "uuid": "D1FEDD30-2781-4D34-953C-2781335E8A76",
+          "identifier": "com.apple.SpringBoardEducation",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D1FEDD30-2781-4D34-953C-2781335E8A76"
+        },
+        {
+          "uuid": "0E4A0C5C-CF69-4961-B1C2-2A3B093A02BA",
+          "identifier": "com.apple.CTNotifyUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0E4A0C5C-CF69-4961-B1C2-2A3B093A02BA"
+        },
+        {
+          "uuid": "866AB120-5CE9-4CD6-BF4B-E28474F489F6",
+          "identifier": "com.apple.Maps",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/866AB120-5CE9-4CD6-BF4B-E28474F489F6"
+        },
+        {
+          "uuid": "29D18787-1BF9-4539-B958-BFA580817812",
+          "identifier": "com.apple.PeopleViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/29D18787-1BF9-4539-B958-BFA580817812"
+        },
+        {
+          "uuid": "69B2C7EF-C306-4D7F-A4E9-3A3A360512D0",
+          "identifier": "com.apple.iMessageAppsViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/69B2C7EF-C306-4D7F-A4E9-3A3A360512D0"
+        },
+        {
+          "uuid": "11DA2142-E871-428A-B4A2-6294692363A8",
+          "identifier": "com.apple.FinanceUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/11DA2142-E871-428A-B4A2-6294692363A8"
+        },
+        {
+          "uuid": "FC38B316-A97D-4C1A-9600-FDAD78C08E67",
+          "identifier": "com.apple.Health",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FC38B316-A97D-4C1A-9600-FDAD78C08E67"
+        },
+        {
+          "uuid": "2B6F6154-EAC3-4C73-8AAF-FD4816C98523",
+          "identifier": "com.apple.GameCenterRemoteAlert",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/2B6F6154-EAC3-4C73-8AAF-FD4816C98523"
+        },
+        {
+          "uuid": "FEA27C55-23E4-41CE-A65E-4456833E5D8F",
+          "identifier": "com.apple.ScreenshotServicesService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/FEA27C55-23E4-41CE-A65E-4456833E5D8F"
+        },
+        {
+          "uuid": "2B3FFDAA-D19F-4FC1-8B85-54DDC947670B",
+          "identifier": "com.apple.ProductKitViewer",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/2B3FFDAA-D19F-4FC1-8B85-54DDC947670B"
+        },
+        {
+          "uuid": "42B014E7-5304-414C-AF33-50B94DE44C3B",
+          "identifier": "com.apple.Batteries",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/42B014E7-5304-414C-AF33-50B94DE44C3B"
+        },
+        {
+          "uuid": "B3004151-A214-46F2-8209-6D1833E26787",
+          "identifier": "com.apple.shortcuts.runtime",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B3004151-A214-46F2-8209-6D1833E26787"
+        },
+        {
+          "uuid": "833411E0-9085-4231-9D46-5866B9A23ED9",
+          "identifier": "com.apple.Passbook",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/833411E0-9085-4231-9D46-5866B9A23ED9"
+        },
+        {
+          "uuid": "DF79C5C6-FFDD-4D97-A8D5-989FC0DC72CE",
+          "identifier": "com.apple.RemotePassUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/DF79C5C6-FFDD-4D97-A8D5-989FC0DC72CE"
+        },
+        {
+          "uuid": "51B489DC-6FB1-4B32-BFC4-D5AD26165713",
+          "identifier": "com.apple.FCAuthenticationUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/51B489DC-6FB1-4B32-BFC4-D5AD26165713"
+        },
+        {
+          "uuid": "92DC3B10-1C80-4194-8C27-08278F0448CC",
+          "identifier": "com.apple.chrono.WidgetRenderer-Default",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/92DC3B10-1C80-4194-8C27-08278F0448CC"
+        },
+        {
+          "uuid": "0C002ADF-2B16-4B9D-8EFC-E052E3415704",
+          "identifier": "com.apple.MediaRemoteUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0C002ADF-2B16-4B9D-8EFC-E052E3415704"
+        },
+        {
+          "uuid": "4596C608-9491-4CB9-93D3-887FE38448AF",
+          "identifier": "com.apple.Health.Sleep",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4596C608-9491-4CB9-93D3-887FE38448AF"
+        },
+        {
+          "uuid": "38C140C4-15A7-4205-827C-83AA356A9A72",
+          "identifier": "com.apple.ios.StoreKitUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/38C140C4-15A7-4205-827C-83AA356A9A72"
+        },
+        {
+          "uuid": "D6BC8C02-499D-4AD2-9C74-33D3D58B7067",
+          "identifier": "com.apple.TVSetupUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D6BC8C02-499D-4AD2-9C74-33D3D58B7067"
+        },
+        {
+          "uuid": "296FCD0A-C70C-4F3B-95AE-6335C97CE64E",
+          "identifier": "com.apple.CarPlaySettings",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/296FCD0A-C70C-4F3B-95AE-6335C97CE64E"
+        },
+        {
+          "uuid": "708D4E90-88A7-4E60-B300-48188FE61F30",
+          "identifier": "com.apple.SafetyMonitorApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/708D4E90-88A7-4E60-B300-48188FE61F30"
+        },
+        {
+          "uuid": "C4AC0F6C-B0C5-44A5-8EC5-0F33A6057714",
+          "identifier": "com.apple.SharingViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C4AC0F6C-B0C5-44A5-8EC5-0F33A6057714"
+        },
+        {
+          "uuid": "4EE1048D-1C82-4EAA-A495-8A9636AF69A2",
+          "identifier": "com.apple.ActivityProgress.ActivityProgressUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4EE1048D-1C82-4EAA-A495-8A9636AF69A2"
+        },
+        {
+          "uuid": "83CD7A6D-E700-4239-81B7-E8223F79CE4C",
+          "identifier": "com.apple.reminders",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/83CD7A6D-E700-4239-81B7-E8223F79CE4C"
+        },
+        {
+          "uuid": "12EFC666-879C-40F0-827B-230904D7C53A",
+          "identifier": "com.apple.TDGSharingViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/12EFC666-879C-40F0-827B-230904D7C53A"
+        },
+        {
+          "uuid": "D5B6BD13-DB13-467A-82A2-D7DA4886EDD4",
+          "identifier": "com.apple.AAUIViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D5B6BD13-DB13-467A-82A2-D7DA4886EDD4"
+        },
+        {
+          "uuid": "0C0953F1-3CFE-4503-807E-2EAD667072C4",
+          "identifier": "com.apple.MobileAddressBook",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0C0953F1-3CFE-4503-807E-2EAD667072C4"
+        },
+        {
+          "uuid": "BF068BE3-3B0B-45C1-B60C-16B634D2D7E0",
+          "identifier": "com.apple.Sharing.AirDropUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/BF068BE3-3B0B-45C1-B60C-16B634D2D7E0"
+        },
+        {
+          "uuid": "D9FE9F91-0145-434C-B0F3-9F01E3D6542A",
+          "identifier": "com.apple.Passwords",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D9FE9F91-0145-434C-B0F3-9F01E3D6542A"
+        },
+        {
+          "uuid": "95DC3F43-441E-4A50-A4B2-ECCBD317DC69",
+          "identifier": "com.apple.Stickers.UserGenerated",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/95DC3F43-441E-4A50-A4B2-ECCBD317DC69"
+        },
+        {
+          "uuid": "C8C00C1D-B59D-4190-89BE-1CDB7320683A",
+          "identifier": "com.apple.AppleIDSetupUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/C8C00C1D-B59D-4190-89BE-1CDB7320683A"
+        },
+        {
+          "uuid": "0FEAEC7B-1F1F-43D6-A5B6-307994C4C794",
+          "identifier": "com.apple.PreviewShell",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0FEAEC7B-1F1F-43D6-A5B6-307994C4C794"
+        },
+        {
+          "uuid": "7A7538C4-B8E4-4027-BB01-E8C705EEDCE8",
+          "identifier": "com.apple.news",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7A7538C4-B8E4-4027-BB01-E8C705EEDCE8"
+        },
+        {
+          "uuid": "9B0EAD49-8F6D-42D8-B286-CBE16DB04B57",
+          "identifier": "com.apple.TVRemoteUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9B0EAD49-8F6D-42D8-B286-CBE16DB04B57"
+        },
+        {
+          "uuid": "AB4CC397-1381-4443-B807-22F70E8572EE",
+          "identifier": "com.apple.ClipViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AB4CC397-1381-4443-B807-22F70E8572EE"
+        },
+        {
+          "uuid": "7BFE2970-B4F9-4D2F-96EA-1E1893BC3BE8",
+          "identifier": "com.apple.BusinessChatViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7BFE2970-B4F9-4D2F-96EA-1E1893BC3BE8"
+        },
+        {
+          "uuid": "48F8A2EB-69F7-4FCB-9F2E-676D446D2036",
+          "identifier": "com.apple.CameraOverlayAngel",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/48F8A2EB-69F7-4FCB-9F2E-676D446D2036"
+        },
+        {
+          "uuid": "9CD061DC-31FE-48BF-B237-674954CA0708",
+          "identifier": "com.apple.AMSUIAuthenticationViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9CD061DC-31FE-48BF-B237-674954CA0708"
+        },
+        {
+          "uuid": "EF9D5682-B189-4E23-8768-A9A2617C3F12",
+          "identifier": "com.apple.AccessorySetupUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EF9D5682-B189-4E23-8768-A9A2617C3F12"
+        },
+        {
+          "uuid": "D7B91632-711E-4E3F-B1EF-14086FAE4526",
+          "identifier": "com.apple.icloud.apps.messages.business",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D7B91632-711E-4E3F-B1EF-14086FAE4526"
+        },
+        {
+          "uuid": "7567AA12-5F92-445F-B8BA-43EF260003EC",
+          "identifier": "com.apple.Photos.PhotosUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/7567AA12-5F92-445F-B8BA-43EF260003EC"
+        },
+        {
+          "uuid": "BA084E09-512E-4969-8123-8FD95D22FDFD",
+          "identifier": "com.apple.siri.parsec.HashtagImagesApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/BA084E09-512E-4969-8123-8FD95D22FDFD"
+        },
+        {
+          "uuid": "F96A7B93-23BB-43DA-BC68-CAE7664BFCF3",
+          "identifier": "com.apple.ShazamEventsApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/F96A7B93-23BB-43DA-BC68-CAE7664BFCF3"
+        },
+        {
+          "uuid": "18786DAF-3499-4E2E-BC7A-0908F95223BB",
+          "identifier": "com.apple.WorkoutRemoteViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/18786DAF-3499-4E2E-BC7A-0908F95223BB"
+        },
+        {
+          "uuid": "D7A5E377-403A-418E-A69E-31122F54BE0A",
+          "identifier": "com.apple.VoiceOverTouch",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D7A5E377-403A-418E-A69E-31122F54BE0A"
+        },
+        {
+          "uuid": "B6784F9D-13C2-4534-A73D-03DDCCC38855",
+          "identifier": "com.apple.Animoji.StickersApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/B6784F9D-13C2-4534-A73D-03DDCCC38855"
+        },
+        {
+          "uuid": "9308A521-C895-434D-BB81-BFB4891D7741",
+          "identifier": "com.apple.FontInstallViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/9308A521-C895-434D-BB81-BFB4891D7741"
+        },
+        {
+          "uuid": "EACF9817-F404-4015-841C-4D69119AAC48",
+          "identifier": "com.apple.ContactsUI.LimitedAccessPromptView",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EACF9817-F404-4015-841C-4D69119AAC48"
+        },
+        {
+          "uuid": "71752518-5FD8-4D67-B60D-65865C57E5D4",
+          "identifier": "com.apple.AdaptiveMusicApp",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/71752518-5FD8-4D67-B60D-65865C57E5D4"
+        },
+        {
+          "uuid": "AEBA453E-7371-413B-8BCA-5CF375AE769E",
+          "identifier": "com.apple.CredentialSharingService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AEBA453E-7371-413B-8BCA-5CF375AE769E"
+        },
+        {
+          "uuid": "E7464819-5D64-40D2-87C2-10FDC009B87F",
+          "identifier": "com.apple.LoginUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E7464819-5D64-40D2-87C2-10FDC009B87F"
+        },
+        {
+          "uuid": "EA3B8DF7-6670-4199-B73A-09B66D1C8C77",
+          "identifier": "com.apple.FaceTimeLinkTrampoline",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EA3B8DF7-6670-4199-B73A-09B66D1C8C77"
+        },
+        {
+          "uuid": "39767A82-CCC2-43D6-82A1-CC913C9D6776",
+          "identifier": "com.apple.mobilesafari",
+          "category": "Apple System",
+          "size_mb": 31,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/39767A82-CCC2-43D6-82A1-CC913C9D6776"
+        },
+        {
+          "uuid": "D6D72AC3-2DB5-4DFE-8704-D284140E99F1",
+          "identifier": "com.apple.SubcredentialUIService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D6D72AC3-2DB5-4DFE-8704-D284140E99F1"
+        },
+        {
+          "uuid": "D8A6BBE2-6BCE-4CDF-9E5D-60D0BB70BB75",
+          "identifier": "com.apple.AuthenticationServicesUI",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D8A6BBE2-6BCE-4CDF-9E5D-60D0BB70BB75"
+        },
+        {
+          "uuid": "3670A007-71EF-4100-8FA4-201AF8FFEB42",
+          "identifier": "com.apple.musicrecognition",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/3670A007-71EF-4100-8FA4-201AF8FFEB42"
+        },
+        {
+          "uuid": "EB1CB30A-1F4F-489C-A8D8-84F1A8FC5B23",
+          "identifier": "com.apple.EventViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EB1CB30A-1F4F-489C-A8D8-84F1A8FC5B23"
+        },
+        {
+          "uuid": "AD408B80-DE2B-4DAE-BAA4-1A4BBFBD8343",
+          "identifier": "com.apple.siri",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/AD408B80-DE2B-4DAE-BAA4-1A4BBFBD8343"
+        },
+        {
+          "uuid": "4A3572FB-869C-4B87-85B2-53EE103C0533",
+          "identifier": "com.apple.GuestUserHandoverSetup",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4A3572FB-869C-4B87-85B2-53EE103C0533"
+        },
+        {
+          "uuid": "2BBAEC04-B302-41E5-B348-342D0504EBFB",
+          "identifier": "com.apple.HomeCaptiveViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/2BBAEC04-B302-41E5-B348-342D0504EBFB"
+        },
+        {
+          "uuid": "4FAD09B9-0D1E-48B9-87F8-90DC8D662602",
+          "identifier": "com.apple.CloudKit.ShareBear",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/4FAD09B9-0D1E-48B9-87F8-90DC8D662602"
+        },
+        {
+          "uuid": "0BC37F22-B1EA-40C9-83DD-2066E99A9A29",
+          "identifier": "com.apple.AskToMessagesHost",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/0BC37F22-B1EA-40C9-83DD-2066E99A9A29"
+        },
+        {
+          "uuid": "287DC8D3-B697-4382-A49B-C3462EC48D78",
+          "identifier": "com.apple.AppProtectionUIHost",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/287DC8D3-B697-4382-A49B-C3462EC48D78"
+        },
+        {
+          "uuid": "E3D831E3-30AF-4823-8513-EFB4AAAEEE3B",
+          "identifier": "com.apple.ScreenTimeUnlock",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/E3D831E3-30AF-4823-8513-EFB4AAAEEE3B"
+        },
+        {
+          "uuid": "23DE4E90-03A5-41A1-BDB4-8406D53E2785",
+          "identifier": "com.apple.BarcodeScanner",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/23DE4E90-03A5-41A1-BDB4-8406D53E2785"
+        },
+        {
+          "uuid": "EFEB08A5-FBAF-4152-96DC-CC6E529BBE91",
+          "identifier": "com.apple.AXRemoteViewService",
+          "category": "Apple System",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/EFEB08A5-FBAF-4152-96DC-CC6E529BBE91"
+        }
+      ]
+    },
+    "Recipesoup (Development)": {
+      "count": 1,
+      "total_size": 1,
+      "apps": [
+        {
+          "uuid": "D1178AB8-2CF5-4445-A15E-297AB64A9121",
+          "identifier": "com.recipesoup.app.recipesoup",
+          "category": "Recipesoup (Development)",
+          "size_mb": 1,
+          "path": "/Users/hanabi/Library/Developer/CoreSimulator/Devices/F8E334E7-475A-4717-AD70-EF257F20F25C/data/Containers/Data/Application/D1178AB8-2CF5-4445-A15E-297AB64A9121"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total_apps": 132,
+    "total_size_mb": 162
+  }
+}

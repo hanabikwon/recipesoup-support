@@ -5,7 +5,7 @@
 /Users/hanabi/Downloads/practice/Recipesoup/
 ├── recipesoup/                  # 메인 Flutter 프로젝트
 ├── wireframes/                  # XML 와이어프레임 템플릿
-├── tests/                       # 외부 테스트 (Puppeteer 등)
+├── tests/                       # 외부 테스트 (Playwright 등)
 ├── ARCHITECTURE.md              # 시스템 아키텍처 문서
 ├── DESIGN.md                    # UI/UX 디자인 가이드
 ├── PROGRESS.md                  # 개발 진행 상황

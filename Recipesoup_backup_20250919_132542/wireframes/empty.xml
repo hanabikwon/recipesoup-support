@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen name="빈 상태 화면">
+    <description>데이터가 없을 때 표시되는 빈 상태 화면 템플릿</description>
+    
+    <layout type="column">
+        <!-- 상단 바 (선택사항) -->
+        <app_bar
+            height="56dp"
+            background_color="#FFFFFF"
+            elevation="0dp">
+            
+            <icon_button
+                id="back_button"
+                icon="@drawable/ic_arrow_back"
+                width="48dp"
+                height="48dp"
+                tint="#333333"
+                visibility="gone"/>
+            
+            <text
+                id="screen_title"
+                text="[화면 제목]"
+                text_size="20sp"
+                text_color="#333333"
+                text_style="bold"
+                layout_gravity="center"/>
+                
+        </app_bar>
+        
+        <!-- 빈 상태 콘텐츠 -->
+        <container
+            width="match_parent"
+            height="0dp"
+            weight="1"
+            gravity="center"
+            padding="32dp">
+            
+            <container
+                width="match_parent"
+                height="wrap_content"
+                orientation="vertical"
+                gravity="center_horizontal">
+                
+                <!-- 일러스트레이션 -->
+                <image
+                    id="empty_illustration"
+                    width="200dp"
+                    height="200dp"
+                    src="@drawable/illustration_empty"
+                    content_description="빈 상태 일러스트레이션"/>
+                
+                <!-- 메인 메시지 -->
+                <text
+                    id="empty_title"
+                    width="wrap_content"
+                    height="wrap_content"
+                    text="아직 비어있네요!"
+                    text_size="24sp"
+                    text_style="bold"
+                    text_color="#333333"
+                    margin_top="32dp"
+                    text_align="center"/>
+                
+                <!-- 설명 메시지 -->
+                <text
+                    id="empty_description"
+                    width="match_parent"
+                    height="wrap_content"
+                    text="시작하려면 아래 버튼을 눌러\n첫 번째 항목을 추가해보세요."
+                    text_size="16sp"
+                    text_color="#666666"
+                    margin_top="16dp"
+                    text_align="center"
+                    line_height="24sp"/>
+                
+                <!-- CTA 버튼 -->
+                <button
+                    id="empty_action_button"
+                    width="wrap_content"
+                    height="48dp"
+                    text="시작하기"
+                    style="filled"
+                    background_color="#PRIMARY_COLOR"
+                    text_color="#FFFFFF"
+                    corner_radius="24dp"
+                    padding_horizontal="32dp"
+                    margin_top="32dp"/>
+                
+                <!-- 보조 액션 (선택사항) -->
+                <text
+                    id="secondary_action"
+                    width="wrap_content"
+                    height="wrap_content"
+                    text="도움이 필요하신가요?"
+                    text_size="14sp"
+                    text_color="#PRIMARY_COLOR"
+                    margin_top="16dp"
+                    text_style="underline"
+                    clickable="true"
+                    visibility="gone"/>
+                    
+            </container>
+        </container>
+    </layout>
+    
+    <!-- 다양한 빈 상태 템플릿 -->
+    <empty_states>
+        <!-- 일반적인 빈 상태 -->
+        <state name="default">
+            <set_image target="empty_illustration" src="@drawable/illustration_empty"/>
+            <set_text target="empty_title" text="아직 비어있네요!"/>
+            <set_text target="empty_description" text="시작하려면 아래 버튼을 눌러\n첫 번째 항목을 추가해보세요."/>
+            <set_text target="empty_action_button" text="시작하기"/>
+        </state>
+        
+        <!-- 검색 결과 없음 -->
+        <state name="no_search_results">
+            <set_image target="empty_illustration" src="@drawable/illustration_no_results"/>
+            <set_text target="empty_title" text="검색 결과가 없습니다"/>
+            <set_text target="empty_description" text="다른 검색어를 시도해보세요.\n더 넓은 범위로 검색하면 결과를 찾을 수 있을 거예요."/>
+            <set_visibility target="empty_action_button" value="gone"/>
+        </state>
+        
+        <!-- 즐겨찾기 없음 -->
+        <state name="no_favorites">
+            <set_image target="empty_illustration" src="@drawable/illustration_no_favorites"/>
+            <set_text target="empty_title" text="즐겨찾기가 없습니다"/>
+            <set_text target="empty_description" text="마음에 드는 항목을 발견하면\n★ 버튼을 눌러 즐겨찾기에 추가하세요."/>
+            <set_text target="empty_action_button" text="둘러보기"/>
+        </state>
+        
+        <!-- 알림 없음 -->
+        <state name="no_notifications">
+            <set_image target="empty_illustration" src="@drawable/illustration_no_notifications"/>
+            <set_text target="empty_title" text="새로운 알림이 없습니다"/>
+            <set_text target="empty_description" text="새로운 소식이 있으면\n여기에서 확인할 수 있어요."/>
+            <set_visibility target="empty_action_button" value="gone"/>
+        </state>
+        
+        <!-- 네트워크 오류 -->
+        <state name="network_error">
+            <set_image target="empty_illustration" src="@drawable/illustration_no_internet"/>
+            <set_text target="empty_title" text="인터넷 연결 없음"/>
+            <set_text target="empty_description" text="네트워크 연결을 확인하고\n다시 시도해주세요."/>
+            <set_text target="empty_action_button" text="다시 시도"/>
+            <set_visibility target="secondary_action" value="visible"/>
+        </state>
+        
+        <!-- 권한 필요 -->
+        <state name="permission_required">
+            <set_image target="empty_illustration" src="@drawable/illustration_permission"/>
+            <set_text target="empty_title" text="권한이 필요합니다"/>
+            <set_text target="empty_description" text="이 기능을 사용하려면\n필요한 권한을 허용해주세요."/>
+            <set_text target="empty_action_button" text="권한 설정"/>
+        </state>
+        
+        <!-- 성공/완료 상태 -->
+        <state name="success">
+            <set_image target="empty_illustration" src="@drawable/illustration_success"/>
+            <set_text target="empty_title" text="모두 완료했어요!"/>
+            <set_text target="empty_description" text="훌륭해요! 모든 작업을 완료했습니다.\n잠시 휴식을 취해보는 건 어떨까요?"/>
+            <set_text target="empty_action_button" text="홈으로"/>
+        </state>
+        
+        <!-- 업데이트 필요 -->
+        <state name="update_required">
+            <set_image target="empty_illustration" src="@drawable/illustration_update"/>
+            <set_text target="empty_title" text="업데이트가 필요합니다"/>
+            <set_text target="empty_description" text="더 나은 서비스를 위해\n최신 버전으로 업데이트해주세요."/>
+            <set_text target="empty_action_button" text="업데이트"/>
+        </state>
+    </empty_states>
+    
+    <animations>
+        <!-- 일러스트 페이드인 -->
+        <fade_in
+            target="empty_illustration"
+            duration="300ms"
+            start_delay="0ms"/>
+        
+        <!-- 텍스트 슬라이드업 -->
+        <slide_up
+            target="empty_title"
+            duration="300ms"
+            start_delay="150ms"/>
+        
+        <slide_up
+            target="empty_description"
+            duration="300ms"
+            start_delay="200ms"/>
+        
+        <!-- 버튼 스케일인 -->
+        <scale_in
+            target="empty_action_button"
+            duration="300ms"
+            start_delay="300ms"/>
+    </animations>
+    
+    <actions>
+        <!-- 메인 액션 -->
+        <click_action
+            target="empty_action_button"
+            action="perform_empty_action"/>
+        
+        <!-- 보조 액션 -->
+        <click_action
+            target="secondary_action"
+            action="show_help"/>
+        
+        <!-- 뒤로가기 -->
+        <click_action
+            target="back_button"
+            action="navigate_back"/>
+    </actions>
+</screen>

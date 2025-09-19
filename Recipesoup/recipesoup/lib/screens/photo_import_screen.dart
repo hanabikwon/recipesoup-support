@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -223,6 +224,12 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
   }
 
   Widget _buildErrorCard() {
+    // 에러 메시지 안전성 확인 (Ultra Think 추가)
+    final errorText = _error?.trim();
+    if (errorText == null || errorText.isEmpty) {
+      return Container(); // 빈 에러 메시지인 경우 카드 숨김
+    }
+
     return Container(
       padding: const EdgeInsets.all(AppTheme.paddingMedium),
       decoration: BoxDecoration(
@@ -231,11 +238,15 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
         border: Border.all(color: AppTheme.errorColor.withValues(alpha: 77)),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start, // 아이콘과 텍스트 상단 정렬
         children: [
-          Icon(
-            Icons.error_outline,
-            color: AppTheme.errorColor,
-            size: 24,
+          Container(
+            margin: const EdgeInsets.only(top: 2), // 아이콘을 살짝 아래로
+            child: Icon(
+              Icons.info_outline,
+              color: AppTheme.errorColor,
+              size: 24,
+            ),
           ),
           const SizedBox(width: AppTheme.spacing12),
           Expanded(
@@ -243,19 +254,22 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '오류가 발생했습니다',
+                  '안내',
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppTheme.errorColor,
+                    fontSize: 15,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 Text(
-                  _error!,
+                  errorText,
                   style: TextStyle(
                     fontSize: 14,
                     color: AppTheme.errorColor,
+                    height: 1.4, // 줄간격 개선
                   ),
+                  softWrap: true, // 자동 줄바꿈
                 ),
               ],
             ),
@@ -519,7 +533,7 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
     try {
       // 1단계: 레시피 재료 준비중
       await Future.delayed(Duration(milliseconds: 500));
-      
+
       setState(() {
         _currentLoadingMessage = '이미지 타입 감지중';
       });
@@ -528,7 +542,7 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
       final bytes = await _selectedImage!.readAsBytes();
       final optimizedBytes = await _imageService.optimizeForApi(bytes);
       final base64Image = await _imageService.toBase64(optimizedBytes);
-      
+
       // 2단계: 이미지 타입 감지중
       await Future.delayed(Duration(milliseconds: 800));
 
@@ -584,11 +598,40 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
       await Future.delayed(Duration(milliseconds: 400));
 
     } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-        _currentLoadingMessage = '';
-      });
+      // 구체적인 에러 메시지 생성 (Ultra Think 개선)
+      String errorMessage;
+      final errorStr = e.toString().toLowerCase();
+
+      if (errorStr.contains('invalid image format') || errorStr.contains('image format')) {
+        errorMessage = '지원하지 않는 이미지 형식입니다.\nJPG, PNG 파일을 사용해주세요.';
+      } else if (errorStr.contains('api key') || errorStr.contains('unauthorized') || errorStr.contains('401')) {
+        errorMessage = 'AI 분석 서비스에 연결할 수 없습니다.\n잠시 후 다시 시도해주세요.';
+      } else if (errorStr.contains('rate limit') || errorStr.contains('429') || errorStr.contains('quota')) {
+        errorMessage = 'AI 분석 요청이 많습니다.\n1분 후 다시 시도해주세요.';
+      } else if (errorStr.contains('network') || errorStr.contains('timeout') || errorStr.contains('connection')) {
+        errorMessage = '네트워크 연결을 확인해주세요.\n인터넷 연결 상태를 점검해보세요.';
+      } else if (errorStr.contains('food') || errorStr.contains('음식') || errorStr.contains('not food') ||
+                 errorStr.contains('no food') || errorStr.contains('recipe') || errorStr.contains('cooking')) {
+        errorMessage = '음식 사진이 아닌 것 같습니다.\n요리나 음식이 포함된 사진을 촬영해주세요.';
+      } else if (errorStr.isEmpty || errorStr.trim().isEmpty || errorStr == 'null') {
+        errorMessage = '사진 분석 중 문제가 발생했습니다.\n음식이 포함된 다른 사진으로 시도해주세요.';
+      } else {
+        // 기본 fallback: 음식이 아닌 모든 사진에 대한 안내 (MacBook, 풍경 등)
+        errorMessage = '음식이나 요리가 보이지 않습니다.\n맛있는 음식 사진으로 다시 시도해주세요!';
+      }
+
+      if (mounted) {
+        setState(() {
+          _error = errorMessage;
+          _isLoading = false;
+          _currentLoadingMessage = '';
+        });
+      }
+
+      // 디버깅용 로그 (개발 모드에서만)
+      if (kDebugMode) {
+        print('Photo analysis error: $e');
+      }
     }
   }
 

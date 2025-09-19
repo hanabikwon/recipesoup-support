@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen name="메인 화면">
+    <description>앱의 메인 화면 - 주요 기능 접근점</description>
+    
+    <layout type="column">
+        <!-- 상단 앱바 -->
+        <app_bar
+            height="56dp"
+            background_color="#PRIMARY_COLOR">
+            
+            <text
+                id="app_title"
+                text="[앱 이름]"
+                text_size="20sp"
+                text_color="#FFFFFF"
+                text_style="bold"
+                layout_gravity="start"
+                margin_start="16dp"/>
+            
+            <!-- 액션 버튼들 -->
+            <container
+                layout_gravity="end"
+                orientation="horizontal">
+                
+                <icon_button
+                    id="search_button"
+                    icon="@drawable/ic_search"
+                    width="48dp"
+                    height="48dp"
+                    tint="#FFFFFF"/>
+                
+                <icon_button
+                    id="settings_button"
+                    icon="@drawable/ic_settings"
+                    width="48dp"
+                    height="48dp"
+                    tint="#FFFFFF"/>
+                    
+            </container>
+        </app_bar>
+        
+        <!-- 메인 콘텐츠 영역 -->
+        <scroll_view
+            width="match_parent"
+            height="0dp"
+            weight="1">
+            
+            <container
+                width="match_parent"
+                height="wrap_content"
+                orientation="vertical"
+                padding="16dp">
+                
+                <!-- 환영 메시지 -->
+                <text
+                    id="welcome_text"
+                    text="안녕하세요!"
+                    text_size="24sp"
+                    text_style="bold"
+                    text_color="#333333"
+                    margin_bottom="8dp"/>
+                
+                <text
+                    id="subtitle_text"
+                    text="오늘은 무엇을 도와드릴까요?"
+                    text_size="16sp"
+                    text_color="#666666"
+                    margin_bottom="24dp"/>
+                
+                <!-- 주요 기능 카드들 -->
+                <card
+                    id="feature_card_1"
+                    width="match_parent"
+                    height="120dp"
+                    margin_bottom="16dp"
+                    corner_radius="12dp"
+                    elevation="4dp">
+                    
+                    <container
+                        width="match_parent"
+                        height="match_parent"
+                        orientation="horizontal"
+                        padding="16dp"
+                        gravity="center_vertical">
+                        
+                        <icon
+                            width="48dp"
+                            height="48dp"
+                            src="@drawable/ic_feature_1"
+                            tint="#PRIMARY_COLOR"/>
+                        
+                        <container
+                            width="0dp"
+                            height="wrap_content"
+                            weight="1"
+                            orientation="vertical"
+                            margin_start="16dp">
+                            
+                            <text
+                                text="[기능 1]"
+                                text_size="18sp"
+                                text_style="bold"
+                                text_color="#333333"/>
+                            
+                            <text
+                                text="[기능 설명]"
+                                text_size="14sp"
+                                text_color="#666666"
+                                margin_top="4dp"/>
+                                
+                        </container>
+                        
+                        <icon
+                            width="24dp"
+                            height="24dp"
+                            src="@drawable/ic_arrow_right"
+                            tint="#999999"/>
+                            
+                    </container>
+                </card>
+                
+                <!-- 추가 기능 카드들 복사 -->
+                <card
+                    id="feature_card_2"
+                    width="match_parent"
+                    height="120dp"
+                    margin_bottom="16dp"
+                    corner_radius="12dp"
+                    elevation="4dp">
+                    <!-- 내용 동일 구조 -->
+                </card>
+                
+                <!-- 통계/요약 섹션 -->
+                <text
+                    text="최근 활동"
+                    text_size="20sp"
+                    text_style="bold"
+                    text_color="#333333"
+                    margin_top="24dp"
+                    margin_bottom="16dp"/>
+                
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="horizontal"
+                    margin_bottom="16dp">
+                    
+                    <!-- 통계 카드 1 -->
+                    <card
+                        width="0dp"
+                        height="100dp"
+                        weight="1"
+                        margin_end="8dp"
+                        corner_radius="8dp"
+                        elevation="2dp">
+                        
+                        <container
+                            width="match_parent"
+                            height="match_parent"
+                            orientation="vertical"
+                            gravity="center"
+                            padding="12dp">
+                            
+                            <text
+                                text="[숫자]"
+                                text_size="28sp"
+                                text_style="bold"
+                                text_color="#PRIMARY_COLOR"/>
+                            
+                            <text
+                                text="[항목명]"
+                                text_size="14sp"
+                                text_color="#666666"
+                                margin_top="4dp"/>
+                                
+                        </container>
+                    </card>
+                    
+                    <!-- 통계 카드 2 -->
+                    <card
+                        width="0dp"
+                        height="100dp"
+                        weight="1"
+                        margin_start="8dp"
+                        corner_radius="8dp"
+                        elevation="2dp">
+                        <!-- 내용 동일 구조 -->
+                    </card>
+                    
+                </container>
+                
+            </container>
+        </scroll_view>
+        
+        <!-- 하단 네비게이션 (선택사항) -->
+        <bottom_navigation
+            height="56dp"
+            background_color="#FFFFFF"
+            elevation="8dp">
+            
+            <bottom_nav_item
+                id="nav_home"
+                icon="@drawable/ic_home"
+                label="홈"
+                selected="true"/>
+            
+            <bottom_nav_item
+                id="nav_feature1"
+                icon="@drawable/ic_feature"
+                label="[기능1]"/>
+            
+            <bottom_nav_item
+                id="nav_feature2"
+                icon="@drawable/ic_feature"
+                label="[기능2]"/>
+            
+            <bottom_nav_item
+                id="nav_profile"
+                icon="@drawable/ic_profile"
+                label="프로필"/>
+                
+        </bottom_navigation>
+        
+    </layout>
+    
+    <!-- 플로팅 액션 버튼 (선택사항) -->
+    <floating_action_button
+        id="fab_main"
+        width="56dp"
+        height="56dp"
+        icon="@drawable/ic_add"
+        background_color="#ACCENT_COLOR"
+        layout_gravity="bottom|end"
+        margin="16dp"/>
+    
+    <actions>
+        <!-- 클릭 이벤트 -->
+        <click_action
+            target="feature_card_1"
+            navigate_to="feature1_screen"/>
+        
+        <click_action
+            target="feature_card_2"
+            navigate_to="feature2_screen"/>
+        
+        <click_action
+            target="fab_main"
+            navigate_to="create_screen"/>
+    </actions>
+</screen>

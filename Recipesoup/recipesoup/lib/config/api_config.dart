@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'constants.dart';
 
@@ -16,15 +17,18 @@ class ApiConfig {
     
     if (apiKey == null || apiKey.isEmpty) {
       throw ApiConfigException(
-        'OPENAI_API_KEY not found in .env file. '
-        'Please add your API key to .env file.'
+        kDebugMode
+          ? 'OPENAI_API_KEY not found in .env file. Please add your API key to .env file.'
+          : 'API configuration error. Please check your app settings.'
       );
     }
     
     // API 키 형식 검증 (OpenAI API 키는 sk-로 시작)
     if (!apiKey.startsWith('sk-')) {
       throw ApiConfigException(
-        'Invalid OpenAI API key format. API key should start with "sk-"'
+        kDebugMode
+          ? 'Invalid OpenAI API key format. API key should start with "sk-"'
+          : 'Invalid API key format. Please check your configuration.'
       );
     }
     
@@ -36,11 +40,55 @@ class ApiConfig {
     return dotenv.env['API_MODEL'] ?? model;
   }
   
-  /// API 타임아웃 설정
-  static Duration get timeout => const Duration(seconds: AppConstants.apiTimeoutSeconds);
-  
-  /// API 재시도 횟수
-  static int get retryAttempts => AppConstants.apiRetryAttempts;
+  /// API 타임아웃 설정 (환경별 설정 지원)
+  static Duration get timeout {
+    final timeoutSeconds = int.tryParse(dotenv.env['API_TIMEOUT_SECONDS'] ?? '') ?? AppConstants.apiTimeoutSeconds;
+    return Duration(seconds: timeoutSeconds);
+  }
+
+  /// API 재시도 횟수 (환경별 설정 지원)
+  static int get retryAttempts {
+    return int.tryParse(dotenv.env['API_RETRY_ATTEMPTS'] ?? '') ?? AppConstants.apiRetryAttempts;
+  }
+
+  /// 최대 동시 요청 수 (환경별 설정 지원)
+  static int get maxConcurrentRequests {
+    return int.tryParse(dotenv.env['MAX_CONCURRENT_REQUESTS'] ?? '') ?? 3;
+  }
+
+  /// 현재 환경 확인
+  static String get environment {
+    return dotenv.env['ENVIRONMENT'] ?? 'development';
+  }
+
+  /// 로그 레벨 확인
+  static String get logLevel {
+    return dotenv.env['LOG_LEVEL'] ?? 'debug';
+  }
+
+  /// 애널리틱스 활성화 여부
+  static bool get analyticsEnabled {
+    final enabled = dotenv.env['ANALYTICS_ENABLED'];
+    return enabled?.toLowerCase() == 'true';
+  }
+
+  /// 크래시 리포팅 활성화 여부
+  static bool get crashReportingEnabled {
+    final enabled = dotenv.env['CRASH_REPORTING_ENABLED'];
+    return enabled?.toLowerCase() == 'true';
+  }
+
+  /// SSL 피닝 활성화 여부
+  static bool get sslPinningEnabled {
+    final enabled = dotenv.env['ENABLE_SSL_PINNING'];
+    return enabled?.toLowerCase() == 'true';
+  }
+
+  /// HTTPS 강제 여부
+  static bool get requireHttps {
+    final required = dotenv.env['REQUIRE_HTTPS'];
+    return required?.toLowerCase() == 'true';
+  }
   
   /// 요청 헤더 생성
   static Map<String, String> get headers {
@@ -170,6 +218,24 @@ class ApiConfig {
       ],
       'max_tokens': maxTokens ?? 800,
       'temperature': 0.7, // 창의적인 레시피 생성을 위해
+    };
+  }
+
+  /// 냉장고 재료 기반 레시피 추천 요청 생성 (재료 리스트 기반)
+  static Map<String, dynamic> createIngredientsRecipeRequest({
+    required List<String> ingredients,
+    int? maxTokens,
+  }) {
+    return {
+      'model': apiModel,
+      'messages': [
+        {
+          'role': 'user',
+          'content': createIngredientsRecipePrompt(ingredients),
+        },
+      ],
+      'max_tokens': maxTokens ?? 1000, // 3개 레시피 추천을 위한 충분한 토큰
+      'temperature': 0.7, // 창의적인 추천을 위해 약간 높은 temperature
     };
   }
   
@@ -344,6 +410,37 @@ JSON 형식 예제:
 ''';
   }
 
+  /// 냉장고 재료 기반 레시피 추천 프롬프트 템플릿 생성
+  static String createIngredientsRecipePrompt(List<String> ingredients) {
+    final ingredientsText = ingredients.join(', ');
+
+    return '''
+다음 재료들로 만들 수 있는 한국 요리 3개를 추천해주세요: $ingredientsText
+
+각 추천 요리는 다음 JSON 형식으로 응답해주세요:
+
+{
+  "recommendations": [
+    {
+      "dishName": "추천 요리명",
+      "description": "이 요리에 대한 간단한 설명 (1-2줄)",
+      "estimatedTime": "예상 조리시간 (예: 30분)",
+      "difficulty": "난이도 (쉬움/보통/어려움 중 하나)",
+      "additionalIngredients": ["추가로 필요한 재료들"],
+      "cookingSteps": ["간단한 조리 단계 1", "간단한 조리 단계 2", "간단한 조리 단계 3"]
+    }
+  ]
+}
+
+조건:
+1. 정확히 3개의 서로 다른 요리를 추천해주세요
+2. 입력된 재료를 최대한 활용해주세요
+3. 한국 가정에서 쉽게 만들 수 있는 요리로 추천해주세요
+4. 추가 재료는 일반적으로 구하기 쉬운 것들로 제한해주세요
+5. 조리 단계는 간단명료하게 3-5단계로 작성해주세요
+''';
+  }
+
   /// 키워드 기반 퀵레시피 생성 프롬프트 템플릿
   static String createKeywordRecipePrompt(String keyword) {
     return '''
@@ -410,10 +507,120 @@ ${recipeData.toString()}
       'max_tokens': 5,
     };
   }
+
+  // =====================================================================
+  // 🚀 Ultra Think 새로운 기능: 냉장고 재료 기반 단일 레시피 추천
+  // (기존 suggestRecipesFromIngredients 실패 해결을 위해 추가)
+  // =====================================================================
+
+  /// 냉장고 재료 기반 단일 레시피 추천 요청 (새로운 기능 - RecipeAnalysis 호환)
+  static Map<String, dynamic> createSingleIngredientRecipeRequest({
+    required List<String> ingredients,
+    int? maxTokens,
+  }) {
+    return {
+      'model': apiModel,
+      'messages': [
+        {
+          'role': 'user',
+          'content': createSingleIngredientRecipePrompt(ingredients),
+        },
+      ],
+      'max_tokens': maxTokens ?? 800,
+      'temperature': 0.3, // 일관성을 위해 낮은 temperature
+    };
+  }
+
+  /// 냉장고 재료 기반 단일 레시피 추천 프롬프트 (RecipeAnalysis 형식 호환)
+  static String createSingleIngredientRecipePrompt(List<String> ingredients) {
+    final ingredientsText = ingredients.join(', ');
+
+    return '''
+다음 재료들로 만들 수 있는 가장 추천하는 한국 요리 1개를 추천해주세요: $ingredientsText
+
+아래 형식의 JSON으로 답변해주세요:
+
+{
+  "dish_name": "추천 요리명 (한국어)",
+  "ingredients": [
+    {"name": "주재료1", "amount": "양", "unit": "단위"},
+    {"name": "주재료2", "amount": "양", "unit": "단위"}
+  ],
+  "sauce": "소스/조미료/양념 설명 (간장, 참기름, 마늘, 설탕 등 모든 조미료 포함)",
+  "instructions": [
+    "조리 단계 1",
+    "조리 단계 2",
+    "조리 단계 3",
+    "조리 단계 4",
+    "조리 단계 5"
+  ],
+  "estimated_time": "예상 조리 시간 (예: 30분)",
+  "difficulty": "난이도 (쉬움/보통/어려움 중 하나)",
+  "servings": "예상 인분 수 (예: 2-3인분)",
+  "tags": ["#재료활용", "#냉장고털기", "#한식"],
+  "tips": "조리 팁이나 주의사항 (있다면)"
+}
+
+**중요한 분류 기준:**
+- ingredients: 고기, 채소, 곡물, 해산물, 유제품 등 주된 재료만 포함
+- sauce: 기름(올리브오일, 참기름), 양념(소금, 후추, 간장, 된장), 향신료(마늘, 생강), 소스류 모두 포함
+
+**조건:**
+1. 입력된 재료를 최대한 활용한 1개의 최적 요리를 추천해주세요
+2. 한국 가정에서 쉽게 만들 수 있는 요리로 추천해주세요
+3. 추가 재료는 일반적으로 구하기 쉬운 것들로 제한해주세요
+4. 조리 단계는 명확하고 실용적으로 3-7단계로 작성해주세요
+5. 각 재료는 구체적인 양과 단위를 포함해주세요
+6. JSON 형식을 정확히 준수해주세요
+''';
+  }
   
-  /// 환경변수 초기화
+  /// 환경변수 초기화 (빌드 모드별 .env 파일 로드)
   static Future<void> initialize() async {
-    await dotenv.load(fileName: '.env');
+    try {
+      // 빌드 모드에 따라 다른 .env 파일 로드
+      String envFileName;
+
+      if (kReleaseMode) {
+        // 프로덕션/릴리즈 빌드에서는 .env.production 사용
+        envFileName = '.env.production';
+        if (kDebugMode) {
+          debugPrint('🚀 프로덕션 모드: .env.production 로드 중...');
+        }
+      } else {
+        // 개발/디버그 모드에서는 .env 사용
+        envFileName = '.env';
+        if (kDebugMode) {
+          debugPrint('🔧 개발 모드: .env 로드 중...');
+        }
+      }
+
+      await dotenv.load(fileName: envFileName);
+
+      // 로드된 환경 설정 확인
+      final environment = ApiConfig.environment;
+      final debugMode = ApiConfig.isDebugMode;
+      final logLevel = ApiConfig.logLevel;
+
+      if (kDebugMode) {
+        debugPrint('✅ 환경변수 로드 완료');
+        debugPrint('   - 파일: $envFileName');
+        debugPrint('   - 환경: $environment');
+        debugPrint('   - 디버그 모드: $debugMode');
+        debugPrint('   - 로그 레벨: $logLevel');
+        debugPrint('   - SSL 피닝: ${ApiConfig.sslPinningEnabled}');
+        debugPrint('   - HTTPS 강제: ${ApiConfig.requireHttps}');
+      }
+
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('⚠️ 환경변수 로드 실패: $e');
+        debugPrint('   기본 개발 설정으로 폴백합니다.');
+      }
+
+      // 환경변수 로드 실패시 기본값 사용
+      // dotenv.env가 비어있어도 getter들이 기본값을 반환하므로 계속 진행
+    }
   }
   
   /// API 키 유효성 검증

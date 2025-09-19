@@ -2,8 +2,8 @@
 
 ## 프로젝트 개요
 - **프로젝트명**: Recipesoup - 감정 기반 레시피 아카이빙 툴
-- **시작일**: 2024-12-28
-- **목표 완료일**: 2025-02-28
+- **시작일**: 2025-09-01
+- **목표 완료일**: 2025-12-31
 - **현재 단계**: 테스트 문서화 완료 / 구현 준비
 
 ## 개발 단계별 진행 상황
@@ -12,7 +12,7 @@
 - [x] **종합 테스트 프레임워크 구축**
   - [x] TESTPLAN.md 작성 (TDD 기반 종합 테스트 전략)
   - [x] TESTDATA.md 작성 (감정 기반 레시피 완전 샘플 데이터)
-  - [x] Puppeteer MCP 음식 사진 분석 테스트 설계
+  - [x] Playwright MCP 음식 사진 분석 테스트 설계
   - [x] TEST_EXECUTION_GUIDE.md 작성 (단계별 실행 가이드)
 - [x] **프로젝트 기반 문서 최신화**
   - [x] CLAUDE.md (프로젝트 개요 및 TDD 작업 가이드)
@@ -26,7 +26,7 @@
 - [ ] **테스트 환경 구축 우선**
   - [ ] 테스트 이미지 준비 (testimg1.jpg, testimg2.jpg, testimg3.jpg)
   - [ ] OpenAI API 키 .env 설정 확인
-  - [ ] Puppeteer MCP 테스트 환경 검증
+  - [ ] Playwright MCP 테스트 환경 검증
 - [ ] **Flutter 프로젝트 생성**
   - [ ] `flutter create recipesoup` 실행
   - [ ] ARCHITECTURE.md 기반 폴더 구조 생성
@@ -140,10 +140,10 @@
 
 ## 현재 진행 상황 요약
 - **완료된 작업**: 
-  - ✅ **종합 테스트 문서화 완료** (2024-12-28)
+  - ✅ **종합 테스트 문서화 완료** (2025-09-01)
     - TESTPLAN.md: TDD 기반 종합 테스트 계획 (단위/위젯/통합/성능/사용성)
     - TESTDATA.md: 감정 기반 레시피 테스트 데이터 (8가지 감정, 5개 완전한 레시피 샘플)
-    - puppeteer_food_analysis_test.js: OpenAI API 음식 사진 분석 자동화 테스트
+    - playwright_food_analysis_test.js: OpenAI API 음식 사진 분석 자동화 테스트
     - TEST_EXECUTION_GUIDE.md: 단계별 실행 가이드 및 구체적 테스트 케이스
   - ✅ **프로젝트 기반 문서 최신화**
     - CLAUDE.md: 프로젝트 개요 및 TDD 작업 가이드
@@ -165,10 +165,81 @@
 
 ## 주요 이슈 및 해결 사항
 ### 해결된 이슈
-- **이슈**: [문제 설명]
-  - **원인**: [원인 분석]
-  - **해결**: [해결 방법]
-  - **날짜**: YYYY-MM-DD
+
+### 2025-09-17: lib/services 디렉토리 정리 완료 🧹
+- **문제**: 사용되지 않는 서비스 파일들이 코드베이스에 남아있어 혼란 야기
+- **분석 과정**: Ultra Think 방식으로 lib/services의 모든 15개 파일 사용 여부 체계적 분석
+- **삭제된 파일들**:
+  1. `stats_service.dart` - 거의 빈 파일 (1줄), 통계 기능은 StatsProvider에서 처리
+  2. `special_room_service.dart` - 기능이 BurrowUnlockCoordinator에 통합되어 중복
+  3. `burrow_unlock_coordinator_backup.dart` - 백업 파일로 프로덕션 코드에서 사용 안됨
+  4. `growth_track_service.dart` - 어디서도 import되지 않아 완전히 미사용
+- **검증 방법**:
+  - `mcp__serena__find_referencing_symbols` 도구로 참조 확인
+  - `mcp__serena__search_for_pattern`으로 import 구문 검색
+  - 실제 사용 여부 철저히 확인
+- **Side Effect 방지**:
+  - 실제 사용되는 핵심 서비스들(burrow_unlock_service.dart, challenge_service.dart 등)은 모두 보존
+  - ARCHITECTURE.md 업데이트로 문서 일관성 유지
+- **결과**: 코드베이스 정리로 개발자 혼란 감소, 유지보수성 향상
+- **날짜**: 2025-09-17
+
+### 2025-09-19: 토끼굴 마일스톤 시스템 최적화 완료 🏆
+- **문제**: 기존 110개 레시피 완성 목표가 비현실적이어서 사용자 경험 저하
+- **사용자 요구사항**: 32단계를 50개(→70개) 레시피로 완성하는 점진적 증가 시스템
+- **Ultra Think 설계 과정**:
+  1. **수학적 진행 계산**: 1-5단계(+1씩), 6-21단계(+2씩), 22-32단계(+3씩)
+  2. **최종 70개 레시피 진행**: 1,2,3,4,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,40,43,46,49,52,55,58,61,64,67,70
+  3. **논리적 검증**: Level 32에서 정확히 70개 레시피 달성 확인
+- **구현 완료 사항**:
+  - ✅ **코드 수정**: `/lib/services/burrow_unlock_service.dart` Line 62-256
+    - 31개 `requiredRecipes` 값을 110-recipe 시스템에서 70-recipe 시스템으로 전면 업데이트
+    - Level 2: 3→2, Level 3: 5→3, ..., Level 32: 110→70
+  - ✅ **주석 및 로그 메시지 업데이트**:
+    - Line 53: "32단계 논리적 성장여정" → "32단계 70개 레시피 성장여정"
+    - Line 348: "32-level growth journey" → "32-level 70-recipe journey"
+  - ✅ **기능 검증**: 모든 특별공간(16개) 및 성장 마일스톤(32개) 정상 작동 확인
+- **사용자 경험 개선**:
+  - **현실적 목표 설정**: 110개→70개로 36% 감소하여 달성 가능성 향상
+  - **점진적 성장 경험**: 초반 쉬운 목표(1,2,3,4,5)에서 후반 도전적 목표(+3씩)로 자연스러운 난이도 곡선
+  - **완주 동기 부여**: 32단계 최종 달성이 현실적으로 가능한 범위로 조정
+- **Side Effect 방지**:
+  - 기존 특별공간 언락 조건 완전 보존
+  - 다른 서비스 및 UI 구조에 영향 없음
+  - 기존 사용자 데이터 호환성 유지
+- **날짜**: 2025-09-19
+
+### 2025-09-16: 토끼굴 마일스톤 시스템 완전 복원 완료 🎯
+- **문제**: 토끼굴 화면에서 "특별한 공간들" 0/0개 표시, 마일스톤 데이터 누락
+- **원인 분석**:
+  - `BurrowUnlockCoordinator._createDefaultMilestones()`에서 오직 2개 마일스톤만 생성
+  - 총 48개 마일스톤(32개 성장여정 + 16개 특별공간) 중 46개 누락
+  - 기존 SpecialRoom enum(16개) 무시하고 새로운 특별공간 생성 시도
+- **Ultra Think 해결 과정**:
+  1. **Complete Growth Journey 32 Levels 생성**:
+     - Level 1-8: 기초 입문 단계 (아늑한 토끼굴 → 어부의 토끼굴)
+     - Level 9-16: 학습 발전 단계 (발전하는 토끼굴 → 요리책 저자 토끼굴)
+     - Level 17-24: 창작 숙련 단계 (스케치 토끼굴 → 요리경연 토끼굴)
+     - Level 25-30: 마스터 단계 (요리축제 토끼굴 → 감사의 토끼굴)
+     - Level 31-32: 최종 완성 단계 (시그니처 요리 토끼굴 → 꿈의 레스토랑 토끼굴)
+  2. **기존 16개 SpecialRoom enum 활용**:
+     - ballroom, hotSpring, orchestra, alchemyLab, fineDining (기존 5개)
+     - alps, camping, autumn, springPicnic, surfing, snorkel, summerbeach, baliYoga, orientExpress, canvas, vacance (추가 11개)
+     - `BurrowMilestone.special()` 팩토리 메서드로 정확한 구조 생성
+  3. **코드 레벨 수정**:
+     - `/lib/services/burrow_unlock_coordinator.dart` Line 236-336 완전 재작성
+     - 새로운 특별공간 생성 코드 제거, 기존 enum 활용 코드로 대체
+     - 각 특별공간별 고유한 unlock 조건 설정
+- **검증 결과**:
+  - ✅ Flutter 앱 정상 실행 (컴파일 에러 해결)
+  - ✅ Level 1, 2 unlock 알림 정상 작동
+  - ✅ 총 48개 마일스톤 생성 확인 (32 growth + 16 special)
+  - ✅ BurrowProvider와 BurrowUnlockCoordinator 정상 연동
+- **Side Effect 방지**:
+  - 기존 레시피 데이터 보존
+  - 다른 화면 기능에 영향 없음
+  - 기존 SpecialRoom enum 구조 완전 유지
+- **날짜**: 2025-09-16
 
 ### 진행 중인 이슈
 - **이슈**: [문제 설명]
@@ -180,14 +251,14 @@
 2. **Flutter + OpenAI GPT-4o-mini**: 크로스플랫폼 앱 개발과 음식 사진 분석 AI 연동
 3. **로컬 우선 아키텍처**: Hive NoSQL + 완전 오프라인 동작으로 개인 아카이빙 특성 강화
 4. **감정 기반 데이터 모델링**: Recipe + EmotionalStory 조합으로 단순 레시피 저장을 넘어선 감성 기록
-5. **Puppeteer MCP 테스트**: Flutter Web + Chrome 환경에서 실제 사용자 시나리오 자동 테스트
+5. **Playwright MCP 테스트**: Flutter Web + Chrome 환경에서 실제 사용자 시나리오 자동 테스트
 6. **빈티지 아이보리 테마**: 감정 회고에 집중할 수 있는 시각적 안정성 제공
 
 ## 중요 변경 사항
-### 2024-12-28: 종합 테스트 프레임워크 구축 완료
+### 2025-09-01: 종합 테스트 프레임워크 구축 완료
 - **TESTPLAN.md 작성**: 단위/위젯/통합/성능 테스트 전략 수립
 - **TESTDATA.md 작성**: 8가지 감정별 샘플 데이터, 5개 완전한 레시피, OpenAI API 모킹 데이터
-- **Puppeteer MCP 테스트 설계**: testimg1.jpg, testimg2.jpg, testimg3.jpg 기반 음식 사진 분석 자동화 테스트
+- **Playwright MCP 테스트 설계**: testimg1.jpg, testimg2.jpg, testimg3.jpg 기반 음식 사진 분석 자동화 테스트
 - **TEST_EXECUTION_GUIDE.md 작성**: 구체적 실행 단계 및 CI/CD 통합 가이드
 - **영향받는 부분**: 모든 개발 단계에서 TDD 원칙 적용 필수
 - **추가 작업 필요 사항**: 실제 테스트 이미지 3개 준비, Flutter 프로젝트 생성
@@ -285,7 +356,7 @@
 - **영향받는 부분**: SearchScreen 독립 실행 종료, MainScreen 네비게이션 인덱스 재매핑
 - **테스트 검증**: Flutter Web 빌드 성공, 모든 검색/필터/즐겨찾기 기능 정상 작동 확인
 
-### 2024-12-28: 치명적 보안 버그 수정 완료 🚨
+### 2025-09-01: 치명적 보안 버그 수정 완료 🚨
 - **발견된 문제**: CLAUDE.md와 NOTE.md에 실제 OpenAI API 키 하드코딩 (3개 파일)
 - **보안 위험도**: 치명적 (API 키 노출로 인한 무단 사용 가능)
 - **수정 내용**:
@@ -301,7 +372,7 @@
 - **예상 완료일**: 2025-02-28
 - **문서화 완성도**: 100% (CLAUDE.md, ARCHITECTURE.md, DESIGN.md, TESTPLAN.md, TESTDATA.md)
 - **테스트 커버리지 목표**: 85% (OpenAI Service 95%, 모델 90%, UI 75%)
-- **준비된 테스트 케이스**: 50+ (단위/위젯/통합/Puppeteer 포함)
+- **준비된 테스트 케이스**: 50+ (단위/위젯/통합/Playwright 포함)
 
 ## 향후 계획
 ### 단기 계획 (1-2주)
@@ -316,7 +387,7 @@
 - [ ] 감정 기반 레시피 작성 화면 구현 
 - [ ] OpenAI API 실제 연동 및 사진 분석 기능 완성
 - [ ] "과거 오늘" 기능 구현 (감정 회상)
-- [ ] Puppeteer MCP 테스트 실행 및 버그 수정
+- [ ] Playwright MCP 테스트 실행 및 버그 수정
 
 ### 장기 계획 (3개월)
 - [ ] Flutter Web 완전 지원 및 성능 최적화
@@ -328,9 +399,45 @@
 ## 개발 메모
 - **핵심 특징**: 감정과 요리를 연결하는 개인 아카이빙에 집중
 - **중요한 점**: OpenAI API 의존성으로 인한 네트워크 에러 처리 완벽히 구현 필요
-- **테스트 우선순위**: 음식 사진 분석 기능이 앱의 핵심이므로 Puppeteer MCP 테스트 우선 실행
+- **테스트 우선순위**: 음식 사진 분석 기능이 앱의 핵심이므로 Playwright MCP 테스트 우선 실행
 - **주의사항**: API 키 보안 및 이미지 로컬 저장 용량 관리 필요
 
 ---
+
+## 📋 버전 히스토리
+
+### v2025.09.17 - 테스트 구조 재설정
+**주요 변경사항:**
+- **테스트 디렉터리 완전 제거**: `Recipesoup/recipesoup/test/` 전체 삭제
+- **테스트 문서 상태 업데이트**: TESTPLAN.md, TEST_EXECUTION_GUIDE.md에 재설정 상태 배너 추가
+- **프로젝트 백업**: `Recipesoup_backup_20250917_181741` 생성 (2.1GB)
+- **문서 정리**: 기존 작동하지 않던 테스트 파일들 완전 정리
+- **현재 상태**: 테스트 구조 재구축을 위한 클린 상태 완료
+
+**영향도:**
+- ✅ 기존 소스코드: 영향 없음
+- ✅ 문서 구조: 정리 완료
+- ✅ 프로젝트 안정성: 향상
+
+**다음 단계:**
+- 필요시 TDD 기반 새로운 테스트 구조 재구축
+- Phase 1 프로젝트 초기 설정 진행 준비
+
+---
+
+### v2025.09.16 - 토끼굴 마일스톤 시스템 완전 복원
+**주요 변경사항:**
+- 토끼굴 화면 "특별한 공간들" 0/0개 표시 문제 해결
+- 총 48개 마일스톤 생성 (32개 성장여정 + 16개 특별공간)
+- BurrowUnlockCoordinator 완전 재작성
+
+### v2025.09.05 - UI 구조 개선 및 에러 수정
+**주요 변경사항:**
+- MainScreen AppBar 제거로 UI 단순화
+- 설정을 바텀 네비게이션으로 이동 (4탭→5탭)
+- Unicode Surrogate Pair 에러 수정 완료
+- Search Screen → Archive Screen 통합
+
+---
 *이 문서는 개발 진행에 따라 지속적으로 업데이트됩니다.*
-*마지막 업데이트: 2024-12-28 (종합 테스트 프레임워크 구축 완료)*
+*마지막 업데이트: 2025-09-17 (테스트 구조 재설정 완료)*

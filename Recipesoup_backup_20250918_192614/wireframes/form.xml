@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen name="입력 폼 화면">
+    <description>데이터 입력을 위한 폼 화면 템플릿</description>
+    
+    <layout type="column">
+        <!-- 상단 바 -->
+        <app_bar
+            height="56dp"
+            background_color="#PRIMARY_COLOR">
+            
+            <icon_button
+                id="close_button"
+                icon="@drawable/ic_close"
+                width="48dp"
+                height="48dp"
+                tint="#FFFFFF"
+                layout_gravity="start"/>
+            
+            <text
+                id="screen_title"
+                text="[폼 제목]"
+                text_size="20sp"
+                text_color="#FFFFFF"
+                text_style="bold"
+                layout_gravity="center"/>
+            
+            <button
+                id="save_button"
+                text="저장"
+                style="text"
+                text_color="#FFFFFF"
+                layout_gravity="end"
+                margin_end="16dp"
+                enabled="false"/>
+                
+        </app_bar>
+        
+        <!-- 폼 콘텐츠 -->
+        <scroll_view
+            width="match_parent"
+            height="0dp"
+            weight="1">
+            
+            <container
+                width="match_parent"
+                height="wrap_content"
+                orientation="vertical"
+                padding="16dp">
+                
+                <!-- 섹션 1 -->
+                <text
+                    text="기본 정보"
+                    text_size="16sp"
+                    text_style="bold"
+                    text_color="#333333"
+                    margin_bottom="16dp"/>
+                
+                <!-- 텍스트 입력 필드 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="16dp">
+                    
+                    <text_input
+                        id="input_name"
+                        width="match_parent"
+                        height="56dp"
+                        hint="이름을 입력하세요"
+                        input_type="text"
+                        max_length="50"
+                        style="outlined"
+                        corner_radius="8dp">
+                        
+                        <label
+                            text="이름 *"
+                            text_size="12sp"
+                            text_color="#666666"/>
+                            
+                    </text_input>
+                    
+                    <text
+                        id="error_name"
+                        text=""
+                        text_size="12sp"
+                        text_color="#ERROR_COLOR"
+                        margin_top="4dp"
+                        visibility="gone"/>
+                        
+                </container>
+                
+                <!-- 이메일 입력 필드 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="16dp">
+                    
+                    <text_input
+                        id="input_email"
+                        width="match_parent"
+                        height="56dp"
+                        hint="example@email.com"
+                        input_type="email"
+                        style="outlined"
+                        corner_radius="8dp">
+                        
+                        <label
+                            text="이메일"
+                            text_size="12sp"
+                            text_color="#666666"/>
+                            
+                    </text_input>
+                    
+                </container>
+                
+                <!-- 전화번호 입력 필드 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="24dp">
+                    
+                    <text_input
+                        id="input_phone"
+                        width="match_parent"
+                        height="56dp"
+                        hint="010-0000-0000"
+                        input_type="phone"
+                        style="outlined"
+                        corner_radius="8dp">
+                        
+                        <label
+                            text="전화번호"
+                            text_size="12sp"
+                            text_color="#666666"/>
+                            
+                    </text_input>
+                    
+                </container>
+                
+                <!-- 구분선 -->
+                <divider
+                    width="match_parent"
+                    height="1dp"
+                    color="#E0E0E0"
+                    margin_vertical="24dp"/>
+                
+                <!-- 섹션 2 -->
+                <text
+                    text="추가 정보"
+                    text_size="16sp"
+                    text_style="bold"
+                    text_color="#333333"
+                    margin_bottom="16dp"/>
+                
+                <!-- 드롭다운 선택 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="16dp">
+                    
+                    <spinner
+                        id="spinner_category"
+                        width="match_parent"
+                        height="56dp"
+                        style="outlined"
+                        corner_radius="8dp">
+                        
+                        <label
+                            text="카테고리"
+                            text_size="12sp"
+                            text_color="#666666"/>
+                        
+                        <items>
+                            <item value="" text="선택하세요"/>
+                            <item value="cat1" text="카테고리 1"/>
+                            <item value="cat2" text="카테고리 2"/>
+                            <item value="cat3" text="카테고리 3"/>
+                        </items>
+                        
+                    </spinner>
+                    
+                </container>
+                
+                <!-- 날짜 선택 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="16dp">
+                    
+                    <date_picker
+                        id="date_picker"
+                        width="match_parent"
+                        height="56dp"
+                        hint="날짜를 선택하세요"
+                        style="outlined"
+                        corner_radius="8dp">
+                        
+                        <label
+                            text="날짜"
+                            text_size="12sp"
+                            text_color="#666666"/>
+                            
+                    </date_picker>
+                    
+                </container>
+                
+                <!-- 여러 줄 텍스트 입력 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="16dp">
+                    
+                    <text_input
+                        id="input_description"
+                        width="match_parent"
+                        height="120dp"
+                        hint="설명을 입력하세요"
+                        input_type="text_multiline"
+                        max_length="500"
+                        style="outlined"
+                        corner_radius="8dp"
+                        gravity="top"
+                        padding="12dp">
+                        
+                        <label
+                            text="설명"
+                            text_size="12sp"
+                            text_color="#666666"/>
+                            
+                    </text_input>
+                    
+                    <text
+                        id="char_count"
+                        text="0/500"
+                        text_size="12sp"
+                        text_color="#999999"
+                        layout_gravity="end"
+                        margin_top="4dp"/>
+                        
+                </container>
+                
+                <!-- 체크박스 -->
+                <checkbox
+                    id="checkbox_agree"
+                    width="match_parent"
+                    height="wrap_content"
+                    text="이용약관에 동의합니다"
+                    text_size="14sp"
+                    margin_bottom="16dp"/>
+                
+                <!-- 라디오 버튼 그룹 -->
+                <text
+                    text="옵션 선택"
+                    text_size="14sp"
+                    text_color="#666666"
+                    margin_bottom="8dp"/>
+                
+                <radio_group
+                    id="radio_options"
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="24dp">
+                    
+                    <radio_button
+                        id="option1"
+                        text="옵션 1"
+                        value="opt1"/>
+                    
+                    <radio_button
+                        id="option2"
+                        text="옵션 2"
+                        value="opt2"/>
+                    
+                    <radio_button
+                        id="option3"
+                        text="옵션 3"
+                        value="opt3"/>
+                        
+                </radio_group>
+                
+                <!-- 파일 첨부 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    margin_bottom="24dp">
+                    
+                    <text
+                        text="파일 첨부"
+                        text_size="14sp"
+                        text_color="#666666"
+                        margin_bottom="8dp"/>
+                    
+                    <button
+                        id="attach_file_button"
+                        width="match_parent"
+                        height="48dp"
+                        text="파일 선택"
+                        style="outlined"
+                        border_color="#999999"
+                        text_color="#666666"
+                        corner_radius="8dp"
+                        icon="@drawable/ic_attach_file"
+                        icon_gravity="start"/>
+                    
+                    <text
+                        id="file_name"
+                        text="선택된 파일 없음"
+                        text_size="12sp"
+                        text_color="#999999"
+                        margin_top="8dp"/>
+                        
+                </container>
+                
+            </container>
+        </scroll_view>
+        
+        <!-- 하단 버튼 (고정) -->
+        <container
+            width="match_parent"
+            height="wrap_content"
+            padding="16dp"
+            background_color="#FFFFFF"
+            elevation="8dp">
+            
+            <button
+                id="submit_button"
+                width="match_parent"
+                height="48dp"
+                text="제출하기"
+                style="filled"
+                background_color="#PRIMARY_COLOR"
+                text_color="#FFFFFF"
+                corner_radius="8dp"
+                enabled="false"/>
+                
+        </container>
+        
+    </layout>
+    
+    <validation>
+        <!-- 필수 필드 검증 -->
+        <required_field
+            target="input_name"
+            error_target="error_name"
+            error_message="이름은 필수 입력 항목입니다"/>
+        
+        <!-- 이메일 형식 검증 -->
+        <email_validation
+            target="input_email"
+            error_message="올바른 이메일 형식이 아닙니다"/>
+        
+        <!-- 전화번호 형식 검증 -->
+        <phone_validation
+            target="input_phone"
+            error_message="올바른 전화번호 형식이 아닙니다"/>
+        
+        <!-- 폼 전체 검증 -->
+        <form_validation
+            enable_button="submit_button"
+            require_all_valid="true"/>
+    </validation>
+    
+    <actions>
+        <!-- 닫기 -->
+        <click_action
+            target="close_button"
+            action="show_discard_dialog"/>
+        
+        <!-- 저장 -->
+        <click_action
+            target="save_button"
+            action="save_draft"/>
+        
+        <!-- 파일 첨부 -->
+        <click_action
+            target="attach_file_button"
+            action="pick_file"/>
+        
+        <!-- 제출 -->
+        <click_action
+            target="submit_button"
+            action="submit_form"/>
+    </actions>
+</screen>

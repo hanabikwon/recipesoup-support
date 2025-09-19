@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen name="에러 화면">
+    <description>에러 발생 시 표시되는 화면</description>
+    
+    <layout type="column">
+        <!-- 상단 바 (선택사항) -->
+        <app_bar
+            height="56dp"
+            background_color="#FFFFFF"
+            elevation="0dp">
+            
+            <icon_button
+                id="back_button"
+                icon="@drawable/ic_arrow_back"
+                width="48dp"
+                height="48dp"
+                tint="#333333"
+                layout_gravity="start"/>
+                
+        </app_bar>
+        
+        <!-- 메인 콘텐츠 -->
+        <container
+            width="match_parent"
+            height="0dp"
+            weight="1"
+            gravity="center"
+            padding="32dp">
+            
+            <container
+                width="match_parent"
+                height="wrap_content"
+                orientation="vertical"
+                gravity="center_horizontal">
+                
+                <!-- 에러 아이콘/일러스트 -->
+                <image
+                    id="error_illustration"
+                    width="200dp"
+                    height="200dp"
+                    src="@drawable/illustration_error"
+                    content_description="에러 일러스트레이션"/>
+                
+                <!-- 에러 제목 -->
+                <text
+                    id="error_title"
+                    width="wrap_content"
+                    height="wrap_content"
+                    text="문제가 발생했습니다"
+                    text_size="24sp"
+                    text_style="bold"
+                    text_color="#333333"
+                    margin_top="32dp"
+                    text_align="center"/>
+                
+                <!-- 에러 설명 -->
+                <text
+                    id="error_message"
+                    width="match_parent"
+                    height="wrap_content"
+                    text="요청을 처리하는 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요."
+                    text_size="16sp"
+                    text_color="#666666"
+                    margin_top="16dp"
+                    text_align="center"
+                    line_height="24sp"/>
+                
+                <!-- 에러 코드 (선택사항) -->
+                <text
+                    id="error_code"
+                    width="wrap_content"
+                    height="wrap_content"
+                    text="오류 코드: E001"
+                    text_size="12sp"
+                    text_color="#999999"
+                    margin_top="8dp"
+                    visibility="gone"/>
+                
+                <!-- 액션 버튼들 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"
+                    margin_top="48dp">
+                    
+                    <!-- 주요 액션 버튼 -->
+                    <button
+                        id="retry_button"
+                        width="match_parent"
+                        height="48dp"
+                        text="다시 시도"
+                        style="filled"
+                        background_color="#PRIMARY_COLOR"
+                        text_color="#FFFFFF"
+                        corner_radius="8dp"
+                        margin_bottom="12dp"/>
+                    
+                    <!-- 보조 액션 버튼 -->
+                    <button
+                        id="home_button"
+                        width="match_parent"
+                        height="48dp"
+                        text="홈으로 돌아가기"
+                        style="outlined"
+                        border_color="#PRIMARY_COLOR"
+                        text_color="#PRIMARY_COLOR"
+                        corner_radius="8dp"/>
+                        
+                </container>
+                
+                <!-- 추가 도움말 (선택사항) -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="horizontal"
+                    gravity="center"
+                    margin_top="24dp">
+                    
+                    <text
+                        text="도움이 필요하신가요?"
+                        text_size="14sp"
+                        text_color="#666666"/>
+                    
+                    <text
+                        id="help_link"
+                        text=" 고객센터"
+                        text_size="14sp"
+                        text_color="#PRIMARY_COLOR"
+                        text_style="underline"/>
+                        
+                </container>
+                
+            </container>
+        </container>
+    </layout>
+    
+    <error_types>
+        <!-- 네트워크 에러 -->
+        <error_type name="network">
+            <set_image target="error_illustration" src="@drawable/illustration_no_internet"/>
+            <set_text target="error_title" text="인터넷 연결 없음"/>
+            <set_text target="error_message" text="네트워크 연결을 확인해주세요.\n인터넷에 연결되어 있지 않습니다."/>
+        </error_type>
+        
+        <!-- 서버 에러 -->
+        <error_type name="server">
+            <set_image target="error_illustration" src="@drawable/illustration_server_error"/>
+            <set_text target="error_title" text="서버 오류"/>
+            <set_text target="error_message" text="서버에 일시적인 문제가 발생했습니다.\n잠시 후 다시 시도해주세요."/>
+            <set_visibility target="error_code" value="visible"/>
+        </error_type>
+        
+        <!-- 권한 에러 -->
+        <error_type name="permission">
+            <set_image target="error_illustration" src="@drawable/illustration_permission"/>
+            <set_text target="error_title" text="권한이 필요합니다"/>
+            <set_text target="error_message" text="이 기능을 사용하려면 권한이 필요합니다.\n설정에서 권한을 허용해주세요."/>
+            <set_text target="retry_button" text="설정으로 이동"/>
+        </error_type>
+        
+        <!-- 데이터 없음 -->
+        <error_type name="no_data">
+            <set_image target="error_illustration" src="@drawable/illustration_empty"/>
+            <set_text target="error_title" text="데이터가 없습니다"/>
+            <set_text target="error_message" text="표시할 데이터가 없습니다.\n새로운 항목을 추가해보세요."/>
+            <set_text target="retry_button" text="새로 만들기"/>
+        </error_type>
+    </error_types>
+    
+    <actions>
+        <!-- 뒤로가기 -->
+        <click_action
+            target="back_button"
+            action="navigate_back"/>
+        
+        <!-- 재시도 -->
+        <click_action
+            target="retry_button"
+            action="retry_last_action"/>
+        
+        <!-- 홈으로 -->
+        <click_action
+            target="home_button"
+            navigate_to="main_screen"/>
+        
+        <!-- 고객센터 -->
+        <click_action
+            target="help_link"
+            action="open_help_center"/>
+    </actions>
+</screen>

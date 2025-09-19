@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -7,7 +8,11 @@ import 'config/constants.dart';
 import 'config/api_config.dart';
 import 'providers/recipe_provider.dart';
 import 'providers/burrow_provider.dart';
+import 'providers/challenge_provider.dart';
+import 'providers/message_provider.dart';
 import 'services/hive_service.dart'; // 🔥 CRITICAL FIX: HiveService import 추가
+import 'services/openai_service.dart'; // 🔥 ULTRA FIX: OpenAiService import 추가
+import 'services/burrow_unlock_service.dart';
 import 'utils/burrow_error_handler.dart';
 import 'screens/splash_screen.dart';
 
@@ -24,21 +29,31 @@ Future<void> initializeApp() async {
     // 환경변수 로드 (.env 파일) - 파일이 없으면 무시
     try {
       await ApiConfig.initialize();
-      debugPrint('✅ 환경변수 로드 완료');
+      if (kDebugMode) {
+        debugPrint('✅ 환경변수 로드 완료');
+      }
       
       // API 키 검증
       if (ApiConfig.validateApiKey()) {
-        debugPrint('✅ OpenAI API 키 검증 완료');
+        if (kDebugMode) {
+          debugPrint('✅ OpenAI API 키 검증 완료');
+        }
       } else {
-        debugPrint('⚠️ OpenAI API 키가 설정되지 않았습니다. 이미지 분석 기능이 제한될 수 있습니다.');
+        if (kDebugMode) {
+          debugPrint('⚠️ OpenAI API 키가 설정되지 않았습니다. 이미지 분석 기능이 제한될 수 있습니다.');
+        }
       }
     } catch (e) {
-      debugPrint('⚠️ .env 파일을 찾을 수 없습니다. API 기능이 제한될 수 있습니다: $e');
+      if (kDebugMode) {
+        debugPrint('⚠️ .env 파일을 찾을 수 없습니다. API 기능이 제한될 수 있습니다: $e');
+      }
     }
     
     // JSON 기반 Hive 초기화 (TypeAdapter 없이 동작)
     await Hive.initFlutter();
-    debugPrint('✅ Hive 초기화 완료');
+    if (kDebugMode) {
+      debugPrint('✅ Hive 초기화 완료');
+    }
     
     // JSON Box 열기 (HiveService에서 Box<Map<String, dynamic>> 사용)
     await Hive.openBox<Map<String, dynamic>>(AppConstants.recipeBoxName);
@@ -48,10 +63,14 @@ Future<void> initializeApp() async {
     // 토끼굴 시스템 Box 열기
     await Hive.openBox<Map<String, dynamic>>(AppConstants.burrowMilestonesBoxName);
     await Hive.openBox<Map<String, dynamic>>(AppConstants.burrowProgressBoxName);
-    debugPrint('✅ Hive Box 열기 완료 (토끼굴 시스템 포함)');
+    if (kDebugMode) {
+      debugPrint('✅ Hive Box 열기 완료 (토끼굴 시스템 포함)');
+    }
     
   } catch (e) {
-    debugPrint('❌ 앱 초기화 중 오류 발생: $e');
+    if (kDebugMode) {
+      debugPrint('❌ 앱 초기화 중 오류 발생: $e');
+    }
     // 초기화 실패해도 앱은 계속 실행되도록 함
   }
 }
@@ -78,9 +97,13 @@ class _RecipesoupAppState extends State<RecipesoupApp> {
     // Hive 박스 확인 (에러가 있어도 계속 진행)
     try {
       final box = Hive.box<Map<String, dynamic>>(AppConstants.recipeBoxName);
-      debugPrint('✅ Hive 박스 확인 완료: ${box.isOpen}');
+      if (kDebugMode) {
+        debugPrint('✅ Hive 박스 확인 완료: ${box.isOpen}');
+      }
     } catch (e) {
-      debugPrint('⚠️ Hive 박스 확인 실패: $e');
+      if (kDebugMode) {
+        debugPrint('⚠️ Hive 박스 확인 실패: $e');
+      }
     }
     
     if (mounted) {
@@ -95,21 +118,52 @@ class _RecipesoupAppState extends State<RecipesoupApp> {
 
     // 🔥 CRITICAL FIX: HiveService 싱글톤 인스턴스 생성
     final hiveServiceSingleton = HiveService();
-    debugPrint('🔥 MAIN DEBUG: Created HiveService singleton with hashCode: ${hiveServiceSingleton.hashCode}');
+    if (kDebugMode) {
+      debugPrint('🔥 MAIN DEBUG: Created HiveService singleton with hashCode: ${hiveServiceSingleton.hashCode}');
+    }
     
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) {
           final provider = RecipeProvider(hiveService: hiveServiceSingleton); // 🔥 CRITICAL: 동일 인스턴스 전달
-          debugPrint('🔥 MAIN DEBUG: RecipeProvider using HiveService: ${hiveServiceSingleton.hashCode}');
+          if (kDebugMode) {
+            debugPrint('🔥 MAIN DEBUG: RecipeProvider using HiveService: ${hiveServiceSingleton.hashCode}');
+          }
           // 앱 시작시 레시피 로드 (Hive 초기화 완료 후)
           Future.microtask(() => provider.loadRecipes());
           return provider;
         }),
         ChangeNotifierProvider(create: (_) {
-          final provider = BurrowProvider(hiveService: hiveServiceSingleton); // 🔥 CRITICAL: 동일 인스턴스 전달
-          debugPrint('🔥 MAIN DEBUG: BurrowProvider using HiveService: ${hiveServiceSingleton.hashCode}');
+          final service = BurrowUnlockService(hiveService: hiveServiceSingleton);
+          final provider = BurrowProvider(unlockCoordinator: service);
+          if (kDebugMode) {
+            debugPrint('🔥 MAIN DEBUG: BurrowProvider using BurrowUnlockService');
+          }
           return provider;
+        }),
+        ChangeNotifierProvider(create: (_) {
+          final provider = ChallengeProvider();
+          if (kDebugMode) {
+            debugPrint('🔥 MAIN DEBUG: ChallengeProvider 초기화 완료');
+          }
+          return provider;
+        }),
+        ChangeNotifierProvider(create: (_) {
+          final provider = MessageProvider();
+          if (kDebugMode) {
+            debugPrint('🔥 MAIN DEBUG: MessageProvider 초기화 완료');
+          }
+          // 앱 시작시 메시지 로드
+          Future.microtask(() => provider.initialize());
+          return provider;
+        }),
+        // 🔥 ULTRA FIX: OpenAiService Provider 추가 (냉장고 재료 추천 에러 해결)
+        Provider(create: (_) {
+          final service = OpenAiService();
+          if (kDebugMode) {
+            debugPrint('🔥 MAIN DEBUG: OpenAiService Provider 등록 완료');
+          }
+          return service;
         }),
       ],
       child: MaterialApp(
@@ -144,12 +198,16 @@ class _RecipesoupAppState extends State<RecipesoupApp> {
 Future<void> _initializeBurrowProvider(BurrowProvider provider, BuildContext context) async {
   try {
     await provider.initialize();
-    debugPrint('✅ BurrowProvider 초기화 완료');
+    if (kDebugMode) {
+      debugPrint('✅ BurrowProvider 초기화 완료');
+    }
     
     // 초기화 완료 후 즉시 콜백 연결 (타이밍 이슈 해결)
     _connectProviderCallbacks(context);
   } catch (e) {
-    debugPrint('❌ BurrowProvider 초기화 실패: $e');
+    if (kDebugMode) {
+      debugPrint('❌ BurrowProvider 초기화 실패: $e');
+    }
     
     // 초기화 실패시 에러 핸들러를 통한 복구 시도
     final recovered = await BurrowErrorHandler.handleProviderInitializationFailure(
@@ -158,11 +216,15 @@ Future<void> _initializeBurrowProvider(BurrowProvider provider, BuildContext con
     );
     
     if (recovered) {
-      debugPrint('✅ BurrowProvider 복구 완료');
+      if (kDebugMode) {
+        debugPrint('✅ BurrowProvider 복구 완료');
+      }
       // 복구 성공시 콜백 연결
       _connectProviderCallbacks(context);
     } else {
-      debugPrint('❌ BurrowProvider 복구 실패 - 제한된 기능으로 동작');
+      if (kDebugMode) {
+        debugPrint('❌ BurrowProvider 복구 실패 - 제한된 기능으로 동작');
+      }
     }
   }
 }
@@ -186,17 +248,25 @@ void _connectProviderCallbacks(BuildContext context) {
     // 🔥 ULTRA FIX: 2. RecipeProvider의 레시피 리스트를 BurrowProvider에 제공
     burrowProvider.setRecipeListCallback(() => recipeProvider.recipes);
     
-    debugPrint('✅ Provider 간 양방향 콜백 연결 완료: RecipeProvider ↔ BurrowProvider');
+    if (kDebugMode) {
+      debugPrint('✅ Provider 간 양방향 콜백 연결 완료: RecipeProvider ↔ BurrowProvider');
+    }
     
   } catch (e) {
-    debugPrint('❌ Provider 콜백 연결 실패: $e');
+    if (kDebugMode) {
+      debugPrint('❌ Provider 콜백 연결 실패: $e');
+    }
     
     // 콜백 연결 실패시 에러 핸들러를 통한 복구 시도
     BurrowErrorHandler.handleCallbackConnectionFailure(context).then((recovered) {
       if (recovered) {
-        debugPrint('✅ Provider 콜백 연결 복구 완료');
+        if (kDebugMode) {
+          debugPrint('✅ Provider 콜백 연결 복구 완료');
+        }
       } else {
-        debugPrint('❌ Provider 콜백 연결 복구 실패 - 토끼굴은 수동 업데이트 모드로 동작');
+        if (kDebugMode) {
+          debugPrint('❌ Provider 콜백 연결 복구 실패 - 토끼굴은 수동 업데이트 모드로 동작');
+        }
       }
     });
   }

@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screen name="설정 화면">
+    <description>앱 설정 및 환경설정 화면 템플릿</description>
+    
+    <layout type="column">
+        <!-- 상단 바 -->
+        <app_bar
+            height="56dp"
+            background_color="#FFFFFF"
+            elevation="2dp">
+            
+            <icon_button
+                id="back_button"
+                icon="@drawable/ic_arrow_back"
+                width="48dp"
+                height="48dp"
+                tint="#333333"/>
+            
+            <text
+                text="설정"
+                text_size="20sp"
+                text_color="#333333"
+                text_style="bold"
+                layout_gravity="center"/>
+                
+        </app_bar>
+        
+        <!-- 설정 콘텐츠 -->
+        <scroll_view
+            width="match_parent"
+            height="match_parent">
+            
+            <container
+                width="match_parent"
+                height="wrap_content"
+                orientation="vertical">
+                
+                <!-- 프로필 섹션 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    padding="16dp"
+                    background_color="#F5F5F5">
+                    
+                    <container
+                        width="match_parent"
+                        height="wrap_content"
+                        orientation="horizontal"
+                        gravity="center_vertical">
+                        
+                        <!-- 프로필 이미지 -->
+                        <image
+                            id="profile_image"
+                            width="64dp"
+                            height="64dp"
+                            src="@drawable/default_avatar"
+                            corner_radius="32dp"
+                            background_color="#E0E0E0"/>
+                        
+                        <!-- 사용자 정보 -->
+                        <container
+                            width="0dp"
+                            height="wrap_content"
+                            weight="1"
+                            orientation="vertical"
+                            margin_start="16dp">
+                            
+                            <text
+                                id="user_name"
+                                text="[사용자 이름]"
+                                text_size="18sp"
+                                text_style="bold"
+                                text_color="#333333"/>
+                            
+                            <text
+                                id="user_email"
+                                text="[이메일 주소]"
+                                text_size="14sp"
+                                text_color="#666666"
+                                margin_top="4dp"/>
+                                
+                        </container>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="24dp"
+                            height="24dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                </container>
+                
+                <!-- 설정 그룹 1: 일반 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"
+                    margin_top="24dp">
+                    
+                    <text
+                        text="일반"
+                        text_size="14sp"
+                        text_style="bold"
+                        text_color="#PRIMARY_COLOR"
+                        margin_horizontal="16dp"
+                        margin_bottom="8dp"/>
+                    
+                    <!-- 설정 아이템: 알림 -->
+                    <container
+                        id="settings_notifications"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF"
+                        clickable="true">
+                        
+                        <icon
+                            icon="@drawable/ic_notifications"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="알림 설정"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <text
+                            id="notification_status"
+                            text="켜짐"
+                            text_size="14sp"
+                            text_color="#999999"
+                            margin_end="8dp"/>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="20dp"
+                            height="20dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                    
+                    <divider height="1dp" color="#F0F0F0"/>
+                    
+                    <!-- 설정 아이템: 언어 -->
+                    <container
+                        id="settings_language"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF"
+                        clickable="true">
+                        
+                        <icon
+                            icon="@drawable/ic_language"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="언어"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <text
+                            id="current_language"
+                            text="한국어"
+                            text_size="14sp"
+                            text_color="#999999"
+                            margin_end="8dp"/>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="20dp"
+                            height="20dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                    
+                    <divider height="1dp" color="#F0F0F0"/>
+                    
+                    <!-- 설정 아이템: 테마 -->
+                    <container
+                        id="settings_theme"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF">
+                        
+                        <icon
+                            icon="@drawable/ic_theme"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="테마"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <switch
+                            id="theme_switch"
+                            width="wrap_content"
+                            height="wrap_content"
+                            checked="false"/>
+                            
+                    </container>
+                    
+                </container>
+                
+                <!-- 설정 그룹 2: 데이터 및 저장소 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"
+                    margin_top="24dp">
+                    
+                    <text
+                        text="데이터 및 저장소"
+                        text_size="14sp"
+                        text_style="bold"
+                        text_color="#PRIMARY_COLOR"
+                        margin_horizontal="16dp"
+                        margin_bottom="8dp"/>
+                    
+                    <!-- 설정 아이템: 백업 -->
+                    <container
+                        id="settings_backup"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF"
+                        clickable="true">
+                        
+                        <icon
+                            icon="@drawable/ic_backup"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="백업 및 복원"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="20dp"
+                            height="20dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                    
+                    <divider height="1dp" color="#F0F0F0"/>
+                    
+                    <!-- 설정 아이템: 캐시 정리 -->
+                    <container
+                        id="settings_cache"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF"
+                        clickable="true">
+                        
+                        <icon
+                            icon="@drawable/ic_storage"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="캐시 정리"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <text
+                            id="cache_size"
+                            text="12.5 MB"
+                            text_size="14sp"
+                            text_color="#999999"
+                            margin_end="8dp"/>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="20dp"
+                            height="20dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                    
+                </container>
+                
+                <!-- 설정 그룹 3: 정보 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"
+                    margin_top="24dp">
+                    
+                    <text
+                        text="정보"
+                        text_size="14sp"
+                        text_style="bold"
+                        text_color="#PRIMARY_COLOR"
+                        margin_horizontal="16dp"
+                        margin_bottom="8dp"/>
+                    
+                    <!-- 설정 아이템: 도움말 -->
+                    <container
+                        id="settings_help"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF"
+                        clickable="true">
+                        
+                        <icon
+                            icon="@drawable/ic_help"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="도움말"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="20dp"
+                            height="20dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                    
+                    <divider height="1dp" color="#F0F0F0"/>
+                    
+                    <!-- 설정 아이템: 이용약관 -->
+                    <container
+                        id="settings_terms"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF"
+                        clickable="true">
+                        
+                        <icon
+                            icon="@drawable/ic_description"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="이용약관"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="20dp"
+                            height="20dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                    
+                    <divider height="1dp" color="#F0F0F0"/>
+                    
+                    <!-- 설정 아이템: 앱 정보 -->
+                    <container
+                        id="settings_about"
+                        width="match_parent"
+                        height="56dp"
+                        orientation="horizontal"
+                        gravity="center_vertical"
+                        padding_horizontal="16dp"
+                        background_color="#FFFFFF"
+                        clickable="true">
+                        
+                        <icon
+                            icon="@drawable/ic_info"
+                            width="24dp"
+                            height="24dp"
+                            tint="#666666"/>
+                        
+                        <text
+                            text="앱 정보"
+                            text_size="16sp"
+                            text_color="#333333"
+                            margin_start="16dp"
+                            layout_weight="1"/>
+                        
+                        <text
+                            id="app_version"
+                            text="v1.0.0"
+                            text_size="14sp"
+                            text_color="#999999"
+                            margin_end="8dp"/>
+                        
+                        <icon
+                            icon="@drawable/ic_arrow_right"
+                            width="20dp"
+                            height="20dp"
+                            tint="#999999"/>
+                            
+                    </container>
+                    
+                </container>
+                
+                <!-- 로그아웃/계정 삭제 -->
+                <container
+                    width="match_parent"
+                    height="wrap_content"
+                    orientation="vertical"
+                    margin_top="24dp"
+                    margin_bottom="24dp"
+                    padding_horizontal="16dp">
+                    
+                    <button
+                        id="logout_button"
+                        width="match_parent"
+                        height="48dp"
+                        text="로그아웃"
+                        style="outlined"
+                        border_color="#999999"
+                        text_color="#666666"
+                        corner_radius="8dp"
+                        margin_bottom="12dp"/>
+                    
+                    <text
+                        id="delete_account"
+                        text="계정 삭제"
+                        text_size="14sp"
+                        text_color="#ERROR_COLOR"
+                        text_align="center"
+                        padding="8dp"
+                        clickable="true"/>
+                        
+                </container>
+                
+            </container>
+        </scroll_view>
+        
+    </layout>
+    
+    <actions>
+        <!-- 뒤로가기 -->
+        <click_action
+            target="back_button"
+            action="navigate_back"/>
+        
+        <!-- 프로필 편집 -->
+        <click_action
+            target="profile_section"
+            navigate_to="profile_edit_screen"/>
+        
+        <!-- 설정 항목들 -->
+        <click_action
+            target="settings_notifications"
+            navigate_to="notification_settings_screen"/>
+        
+        <click_action
+            target="settings_language"
+            show_bottom_sheet="language_picker"/>
+        
+        <click_action
+            target="settings_backup"
+            navigate_to="backup_screen"/>
+        
+        <click_action
+            target="settings_cache"
+            show_dialog="clear_cache_dialog"/>
+        
+        <click_action
+            target="settings_help"
+            navigate_to="help_screen"/>
+        
+        <click_action
+            target="settings_terms"
+            navigate_to="terms_screen"/>
+        
+        <click_action
+            target="settings_about"
+            navigate_to="about_screen"/>
+        
+        <!-- 테마 토글 -->
+        <toggle_action
+            target="theme_switch"
+            on_change="toggle_theme"/>
+        
+        <!-- 로그아웃 -->
+        <click_action
+            target="logout_button"
+            show_dialog="logout_confirmation"/>
+        
+        <!-- 계정 삭제 -->
+        <click_action
+            target="delete_account"
+            show_dialog="delete_account_warning"/>
+    </actions>
+    
+    <!-- 다이얼로그 -->
+    <dialog id="clear_cache_dialog">
+        <title text="캐시 정리"/>
+        <message text="캐시를 정리하면 임시 데이터가 삭제됩니다. 계속하시겠습니까?"/>
+        <positive_button text="정리" action="clear_cache"/>
+        <negative_button text="취소"/>
+    </dialog>
+    
+    <dialog id="logout_confirmation">
+        <title text="로그아웃"/>
+        <message text="정말 로그아웃하시겠습니까?"/>
+        <positive_button text="로그아웃" action="perform_logout"/>
+        <negative_button text="취소"/>
+    </dialog>
+    
+    <dialog id="delete_account_warning">
+        <title text="계정 삭제"/>
+        <message text="계정을 삭제하면 모든 데이터가 영구적으로 삭제됩니다. 이 작업은 되돌릴 수 없습니다."/>
+        <positive_button text="삭제" action="delete_account" style="destructive"/>
+        <negative_button text="취소"/>
+    </dialog>
+</screen>

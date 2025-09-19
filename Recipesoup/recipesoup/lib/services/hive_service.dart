@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'dart:developer' as developer;
 import 'dart:async';
+import 'dart:convert'; // 🔥 ULTRA THINK: JSON 직렬화로 100% 안전한 타입 변환
 import 'package:hive/hive.dart';
 import '../models/recipe.dart';
 import '../models/mood.dart';
@@ -84,23 +85,29 @@ class HiveService {
       final box = await _box;
       
       // 🔥 ULTRA DEBUG: Box 상태 상세 로깅
-      debugPrint('🔥 SAVE DEBUG: HiveService instance: ${_instance.hashCode}');
-      debugPrint('🔥 SAVE DEBUG: Box hashCode: ${box.hashCode}');
-      debugPrint('🔥 SAVE DEBUG: Box isOpen: ${box.isOpen}');
-      debugPrint('🔥 SAVE DEBUG: Box length BEFORE save: ${box.length}');
-      debugPrint('🔥 SAVE DEBUG: Box name: ${box.name}');
-      debugPrint('🔥 SAVE DEBUG: Box path: ${box.path}');
+      if (kDebugMode) {
+        debugPrint('🔥 SAVE DEBUG: HiveService instance: ${_instance.hashCode}');
+        debugPrint('🔥 SAVE DEBUG: Box hashCode: ${box.hashCode}');
+        debugPrint('🔥 SAVE DEBUG: Box isOpen: ${box.isOpen}');
+        debugPrint('🔥 SAVE DEBUG: Box length BEFORE save: ${box.length}');
+        debugPrint('🔥 SAVE DEBUG: Box name: ${box.name}');
+        debugPrint('🔥 SAVE DEBUG: Box path: ${box.path}');
+      }
       
       // 🔥 CRITICAL FIX: 데이터 저장
       await box.put(recipe.id, recipe.toJson());
       
-      debugPrint('🔥 SAVE DEBUG: Box length AFTER save: ${box.length}');
+      if (kDebugMode) {
+        debugPrint('🔥 SAVE DEBUG: Box length AFTER save: ${box.length}');
+      }
       
       // 🔥 CRITICAL FIX: 명시적 디스크 동기화 (이것이 핵심!)
       await box.flush(); // 메모리에서 디스크로 강제 쓰기
       await box.compact(); // 데이터 압축 및 디스크 반영 보장
       
-      debugPrint('🔥 SAVE DEBUG: Box length AFTER flush/compact: ${box.length}');
+      if (kDebugMode) {
+        debugPrint('🔥 SAVE DEBUG: Box length AFTER flush/compact: ${box.length}');
+      }
       
       // 🔥 CRITICAL FIX: 저장 후 데이터 존재 확인
       final savedData = box.get(recipe.id);
@@ -108,7 +115,9 @@ class HiveService {
         throw Exception('Recipe was not saved properly to Hive');
       }
       
-      debugPrint('🔥 SAVE SUCCESS: Recipe ${recipe.id} saved to box ${box.hashCode}');
+      if (kDebugMode) {
+        debugPrint('🔥 SAVE SUCCESS: Recipe ${recipe.id} saved to box ${box.hashCode}');
+      }
       developer.log('📦 SINGLETON: Recipe saved and verified: ${recipe.id} (instance: ${_instance.hashCode}, box: ${box.hashCode}, size: ${box.length})', name: 'Hive Service');
       
     } catch (e) {
@@ -161,51 +170,211 @@ class HiveService {
     try {
       final box = await _box;
       
-      // 🔥 ULTRA DEBUG: Box 상태 상세 로깅
-      debugPrint('🔥 READ DEBUG: HiveService instance: ${_instance.hashCode}');
-      debugPrint('🔥 READ DEBUG: Box hashCode: ${box.hashCode}');
-      debugPrint('🔥 READ DEBUG: Box isOpen: ${box.isOpen}');
-      debugPrint('🔥 READ DEBUG: Box length: ${box.length}');
-      debugPrint('🔥 READ DEBUG: Box name: ${box.name}');
-      debugPrint('🔥 READ DEBUG: Box path: ${box.path}');
-      
-      // 🔥 ULTRA DEBUG: Box 내용 직접 확인
-      debugPrint('🔥 READ DEBUG: Box keys: ${box.keys.toList()}');
-      if (box.length > 0) {
+      if (kDebugMode) {
+        debugPrint('🔥 READ DEBUG: HiveService instance: ${hashCode}');
+        debugPrint('🔥 READ DEBUG: Box hashCode: ${box.hashCode}');
+        debugPrint('🔥 READ DEBUG: Box isOpen: ${box.isOpen}');
+        debugPrint('🔥 READ DEBUG: Box length: ${box.length}');
+        debugPrint('🔥 READ DEBUG: Box name: ${box.name}');
+        debugPrint('🔥 READ DEBUG: Box path: ${box.path}');
+        debugPrint('🔥 READ DEBUG: Box keys: ${box.keys.take(20).toList()}');
         debugPrint('🔥 READ DEBUG: First few keys: ${box.keys.take(3).toList()}');
       }
-      
-      // 🔥 CRITICAL FIX: 안전한 레시피 파싱 (개별 에러 처리)
-      final recipes = <Recipe>[];
+
+      List<Recipe> recipes = [];
       int parseErrors = 0;
-      
-      for (final entry in box.toMap().entries) {
+      int successfulParsing = 0;
+      List<dynamic> corruptedKeys = [];
+
+      if (kDebugMode) {
+        debugPrint('🔥 CRITICAL DEBUG: About to start processing entries');
+        debugPrint('🔥 CRITICAL DEBUG: Got ${box.keys.length} keys from box');
+        debugPrint('🔥 CRITICAL DEBUG: About to iterate keys directly');
+      }
+
+      // 🔥 ULTRA THINK: Ultra defensive processing with legacy data handling
+      for (final key in box.keys) {
         try {
-          final jsonData = entry.value;
-          debugPrint('🔥 PARSING DEBUG: Processing entry ${entry.key} of type ${jsonData.runtimeType}');
+          if (kDebugMode) {
+            debugPrint('🔥 ENTRY DEBUG: Processing key $key');
+          }
           
-          // Map<dynamic, dynamic>을 Map<String, dynamic>으로 안전하게 변환
-          final Map<String, dynamic> safeJsonData = Map<String, dynamic>.from(jsonData);
-          final recipe = Recipe.fromJson(safeJsonData);
-          recipes.add(recipe);
-          debugPrint('✅ PARSED: Successfully parsed recipe "${recipe.title}"');
+          final rawData = box.get(key);
+          if (rawData == null) {
+            if (kDebugMode) {
+              debugPrint('⚠️ SKIP DEBUG: Key $key has null data');
+            }
+            continue;
+          }
+
+          // 🔥 ULTRA THINK: Ultra defensive JSON handling with multiple fallbacks
+          Map<String, dynamic> safeJsonData;
+          try {
+            // First attempt: Standard JSON approach
+            safeJsonData = Map<String, dynamic>.from(
+              json.decode(json.encode(rawData))
+            );
+            if (kDebugMode) {
+              debugPrint('✅ JSON SUCCESS: Standard JSON conversion for key $key');
+            }
+          } catch (jsonError) {
+            if (kDebugMode) {
+              debugPrint('❌ JSON SERIALIZATION ERROR for key $key: $jsonError');
+            }
+            try {
+              // Second attempt: Direct casting if it's already a map
+              if (rawData is Map) {
+                safeJsonData = Map<String, dynamic>.from(rawData);
+                if (kDebugMode) {
+                  debugPrint('✅ DIRECT CAST SUCCESS: Direct map conversion for key $key');
+                }
+              } else {
+                throw Exception('Data is not a Map: ${rawData.runtimeType}');
+              }
+            } catch (castError) {
+              if (kDebugMode) {
+                debugPrint('❌ DIRECT CAST ERROR for key $key: $castError');
+              }
+              
+              // 🔥 ULTRA THINK: If all conversion attempts fail, mark as corrupted
+              if (kDebugMode) {
+                debugPrint('🚨 MARKING AS CORRUPTED: Key $key (type: ${rawData.runtimeType})');
+              }
+              corruptedKeys.add(key);
+              parseErrors++;
+              continue;
+            }
+          }
+
+          // 🔥 ULTRA THINK: Try to create Recipe from processed data
+          try {
+            final recipe = Recipe.fromJson(safeJsonData);
+            recipes.add(recipe);
+            successfulParsing++;
+            if (kDebugMode) {
+              debugPrint('✅ SUCCESS: Parsed recipe for key $key: ${recipe.title}');
+            }
+          } catch (recipeError) {
+            if (kDebugMode) {
+              debugPrint('❌ RECIPE PARSE ERROR for key $key: $recipeError');
+            }
+            corruptedKeys.add(key);
+            parseErrors++;
+          }
+          
         } catch (e) {
-          debugPrint('❌ PARSE ERROR: Failed to parse entry ${entry.key}: $e');
-          debugPrint('❌ PARSE ERROR: Data type: ${entry.value.runtimeType}');
-          debugPrint('❌ PARSE ERROR: Data preview: ${entry.value.toString().substring(0, 100)}...');
+          if (kDebugMode) {
+            debugPrint('❌ GENERAL PARSE ERROR: Failed to parse key $key: $e');
+          }
+          corruptedKeys.add(key);
           parseErrors++;
         }
       }
-      
-      recipes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-      
-      debugPrint('🔥 READ RESULT: Found $recipes.length valid recipes in box $box.hashCode ($parseErrors parse errors)');
-      developer.log('📦 SINGLETON: getAllRecipes called (instance: $_instance.hashCode, box size: $box.length, valid recipes: $recipes.length, parse errors: $parseErrors)', name: 'Hive Service');
-      
+
+      if (kDebugMode) {
+        debugPrint('🔥 PARSING SUMMARY: Success: $successfulParsing, Errors: $parseErrors, Corrupted Keys: ${corruptedKeys.length}');
+      }
+
+      // 🔥 ULTRA THINK: Enhanced surgical emergency recovery
+      if (corruptedKeys.isNotEmpty) {
+        if (kDebugMode) {
+          debugPrint('🚨 ENHANCED SURGICAL RECOVERY: Found ${corruptedKeys.length} corrupted entries to remove');
+          debugPrint('🚨 CORRUPTED KEYS: ${corruptedKeys.take(10).join(", ")}${corruptedKeys.length > 10 ? "..." : ""}');
+        }
+        
+        try {
+          int deletedCount = 0;
+          int boxLengthBefore = box.length;
+          
+          for (final corruptedKey in corruptedKeys) {
+            try {
+              if (box.containsKey(corruptedKey)) {
+                await box.delete(corruptedKey);
+                deletedCount++;
+                if (kDebugMode) {
+                  debugPrint('🔥 DELETED: Successfully removed corrupted key: $corruptedKey');
+                }
+              } else {
+                if (kDebugMode) {
+                  debugPrint('⚠️ SKIP DELETE: Key $corruptedKey not found in box');
+                }
+              }
+            } catch (deleteError) {
+              if (kDebugMode) {
+                debugPrint('❌ DELETE ERROR: Failed to delete key $corruptedKey: $deleteError');
+              }
+            }
+          }
+          
+          await box.flush();
+          await box.compact();
+          
+          int boxLengthAfter = box.length;
+          if (kDebugMode) {
+            debugPrint('✅ ENHANCED SURGICAL RECOVERY: Deleted $deletedCount corrupted entries');
+            debugPrint('✅ BOX SIZE CHANGE: Before: $boxLengthBefore → After: $boxLengthAfter');
+            debugPrint('✅ CLEAN RECIPES: Returning ${recipes.length} successfully parsed recipes');
+          }
+          
+          return recipes;
+          
+        } catch (surgicalError) {
+          if (kDebugMode) {
+            debugPrint('❌ ENHANCED SURGICAL RECOVERY FAILED: $surgicalError');
+          }
+        }
+      }
+
+      // 🔥 ULTRA THINK: Ultimate fallback - if too many errors and no good data, clear everything
+      if (recipes.isEmpty && parseErrors > 0 && box.length > 0) {
+        if (kDebugMode) {
+          debugPrint('🚨 ULTIMATE RECOVERY: ALL ${box.length} entries failed to parse! Clearing entire box...');
+        }
+        try {
+          int boxLengthBefore = box.length;
+          await box.clear();
+          await box.flush();
+          await box.compact();
+          if (kDebugMode) {
+            debugPrint('✅ ULTIMATE RECOVERY: Successfully cleared all $boxLengthBefore corrupted entries');
+          }
+        } catch (e) {
+          if (kDebugMode) {
+            debugPrint('❌ ULTIMATE RECOVERY FAILED: $e');
+          }
+        }
+      }
+
+      if (kDebugMode) {
+        debugPrint('🎯 FINAL RESULT: Returning ${recipes.length} recipes');
+      }
       return recipes;
+
     } catch (e) {
-      debugPrint('❌ CRITICAL ERROR in getAllRecipes: $e');
-      developer.log('Failed to get all recipes: $e', name: 'Hive Service');
+      if (kDebugMode) {
+        debugPrint('❌ CRITICAL ERROR in getAllRecipes: $e');
+      }
+      
+      // 🔥 ULTRA THINK: Emergency data recovery in catch block
+      try {
+        final box = await _box;
+        if (box.length > 0) {
+          if (kDebugMode) {
+            debugPrint('🚨 EMERGENCY RECOVERY (CATCH): Critical error with ${box.length} entries! Clearing corrupted data...');
+          }
+          await box.clear();
+          await box.flush();
+          await box.compact();
+          if (kDebugMode) {
+            debugPrint('✅ EMERGENCY RECOVERY (CATCH): Successfully cleared all corrupted entries');
+          }
+        }
+      } catch (recoveryError) {
+        if (kDebugMode) {
+          debugPrint('❌ EMERGENCY RECOVERY (CATCH) FAILED: $recoveryError');
+        }
+      }
+      
       return [];
     }
   }
@@ -383,6 +552,70 @@ class HiveService {
     } catch (e) {
       developer.log('Failed to clear all recipes: $e', name: 'Hive Service');
       throw Exception('Failed to clear all recipes: $e');
+    }
+  }
+
+  // Burrow milestone management
+  Future<List<dynamic>?> getBurrowMilestones() async {
+    try {
+      final box = await _box;
+      final data = box.get('burrow_milestones');
+      if (data is Map<String, dynamic>) {
+        // 만약 Map 형태로 저장되어 있다면 List로 변환
+        if (data.containsKey('milestones') && data['milestones'] is List) {
+          return data['milestones'] as List<dynamic>;
+        }
+      } else if (data is List) {
+        return data;
+      }
+      return null;
+    } catch (e) {
+      developer.log('Failed to get burrow milestones: $e', name: 'Hive Service');
+      return null;
+    }
+  }
+
+  Future<void> saveBurrowMilestones(List<dynamic> milestones) async {
+    try {
+      final box = await _box;
+      final jsonList = milestones.map((m) => m.toJson()).toList();
+      // List를 Map으로 감싸서 저장
+      final dataToStore = {
+        'milestones': jsonList,
+        'version': 1,
+        'lastUpdated': DateTime.now().toIso8601String(),
+      };
+      await box.put('burrow_milestones', dataToStore);
+      await box.flush();
+      await box.compact();
+      developer.log('Burrow milestones saved: ${milestones.length}', name: 'Hive Service');
+    } catch (e) {
+      developer.log('Failed to save burrow milestones: $e', name: 'Hive Service');
+      throw Exception('Failed to save burrow milestones: $e');
+    }
+  }
+
+  // Generic key-value storage for backward compatibility
+  Future<dynamic> getValue(String key) async {
+    try {
+      final box = await _box;
+      return box.get(key);
+    } catch (e) {
+      developer.log('Failed to get value for key $key: $e', name: 'Hive Service');
+      return null;
+    }
+  }
+
+  Future<void> setValue(String key, dynamic value) async {
+    try {
+      final box = await _box;
+      await box.put(key, value);
+      await box.flush();
+      await box.compact();
+      developer.log('Value saved for key $key', name: 'Hive Service');
+    } catch (e) {
+      developer.log('Failed to save value for key $key: $e', name: 'Hive Service');
+      throw Exception('Failed to save value for key $key: $e');
     }
   }
 

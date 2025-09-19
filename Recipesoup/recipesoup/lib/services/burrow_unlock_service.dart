@@ -34,6 +34,9 @@ class BurrowUnlockService {
   }) : _hiveService = hiveService ?? HiveService(),
        _storageService = storageService ?? BurrowStorageService();
 
+  /// HiveService getter for provider access
+  HiveService get hiveService => _hiveService;
+
   /// 초기화 - 기본 마일스톤 생성 및 진행상황 로드
   Future<void> initialize() async {
     try {
@@ -47,7 +50,7 @@ class BurrowUnlockService {
     }
   }
   
-  /// 기본 마일스톤들 생성 (32단계 논리적 성장여정)
+  /// 기본 마일스톤들 생성 (32단계 70개 레시피 성장여정)
   Future<void> _createDefaultMilestones() async {
     final existingMilestones = await _loadMilestones();
     if (existingMilestones.isNotEmpty) return; // 이미 존재하면 생성하지 않음
@@ -62,43 +65,43 @@ class BurrowUnlockService {
       ),
       BurrowMilestone.growth(
         level: 2,
-        requiredRecipes: 3,
+        requiredRecipes: 2,
         title: '작은 토끼굴',
         description: '점점 커지는 요리에 대한 관심과 열정',
       ),
       BurrowMilestone.growth(
         level: 3,
-        requiredRecipes: 5,
+        requiredRecipes: 3,
         title: '홈쿡 토끼굴',
         description: '집에서 만드는 요리의 즐거움 발견',
       ),
       BurrowMilestone.growth(
         level: 4,
-        requiredRecipes: 7,
+        requiredRecipes: 4,
         title: '정원사 토끼굴',
         description: '재료를 심고 가꾸며 느끼는 자연의 소중함',
       ),
       BurrowMilestone.growth(
         level: 5,
-        requiredRecipes: 10,
+        requiredRecipes: 5,
         title: '수확의 토끼굴',
         description: '첫 수확의 기쁨과 성취감이 가득',
       ),
       BurrowMilestone.growth(
         level: 6,
-        requiredRecipes: 12,
+        requiredRecipes: 7,
         title: '가족식사 토끼굴',
         description: '사랑하는 가족과 함께하는 따뜻한 식탁',
       ),
       BurrowMilestone.growth(
         level: 7,
-        requiredRecipes: 15,
+        requiredRecipes: 9,
         title: '시장탐험 토끼굴',
         description: '다양한 식재료를 찾아 탐험하는 재미',
       ),
       BurrowMilestone.growth(
         level: 8,
-        requiredRecipes: 18,
+        requiredRecipes: 11,
         title: '어부의 토끼굴',
         description: '자연에서 건져올린 싱싱한 식재료',
       ),
@@ -106,49 +109,49 @@ class BurrowUnlockService {
       // ===== 📚 학습 발전 단계 (9-16레벨): 기술 습득 =====
       BurrowMilestone.growth(
         level: 9,
-        requiredRecipes: 21,
+        requiredRecipes: 13,
         title: '발전하는 토끼굴',
         description: '더 많은 가능성을 품은 토끼굴',
       ),
       BurrowMilestone.growth(
         level: 10,
-        requiredRecipes: 25,
+        requiredRecipes: 15,
         title: '회복의 토끼굴',
         description: '건강 관리와 치유의 요리법 터득',
       ),
       BurrowMilestone.growth(
         level: 11,
-        requiredRecipes: 28,
+        requiredRecipes: 17,
         title: '견습 요리사 토끼굴',
         description: '본격적인 요리의 길로 들어선 견습생',
       ),
       BurrowMilestone.growth(
         level: 12,
-        requiredRecipes: 32,
+        requiredRecipes: 19,
         title: '연구실 토끼굴',
         description: '과학적으로 분석하는 레시피 연구',
       ),
       BurrowMilestone.growth(
         level: 13,
-        requiredRecipes: 35,
+        requiredRecipes: 21,
         title: '실험정신 토끼굴',
         description: '새로운 조합과 실험을 즐기며 도전',
       ),
       BurrowMilestone.growth(
         level: 14,
-        requiredRecipes: 39,
+        requiredRecipes: 23,
         title: '서재 토끼굴',
         description: '넓고 깊은 요리 지식이 쌓인 보물 창고',
       ),
       BurrowMilestone.growth(
         level: 15,
-        requiredRecipes: 42,
+        requiredRecipes: 25,
         title: '버섯채집가 토끼굴',
         description: '고급 재료와 특별한 식재료 탐구',
       ),
       BurrowMilestone.growth(
         level: 16,
-        requiredRecipes: 46,
+        requiredRecipes: 27,
         title: '요리책 저자 토끼굴',
         description: '첫 번째 요리책을 완성한 작가',
       ),
@@ -156,49 +159,49 @@ class BurrowUnlockService {
       // ===== 🎨 창작 숙련 단계 (17-24레벨): 전문성 개발 =====
       BurrowMilestone.growth(
         level: 17,
-        requiredRecipes: 50,
+        requiredRecipes: 29,
         title: '스케치 토끼굴',
         description: '요리 재료를 관찰하며 그리는 화실 모임',
       ),
       BurrowMilestone.growth(
         level: 18,
-        requiredRecipes: 54,
+        requiredRecipes: 31,
         title: '장인정신 토끼굴',
         description: '요리를 담아낼 그릇까지 직접 빚는 공방',
       ),
       BurrowMilestone.growth(
         level: 19,
-        requiredRecipes: 58,
+        requiredRecipes: 33,
         title: '전문주방 토끼굴',
         description: '프로페셔널한 장비가 갖춰진 전문 주방',
       ),
       BurrowMilestone.growth(
         level: 20,
-        requiredRecipes: 62,
+        requiredRecipes: 35,
         title: '요리선생 토끼굴',
         description: '요리의 기본기를 가르치는 멘토링 시간',
       ),
       BurrowMilestone.growth(
         level: 21,
-        requiredRecipes: 66,
+        requiredRecipes: 37,
         title: '미쉐린 토끼굴',
         description: '뛰어난 레스토랑을 방문하는 미식 탐험가',
       ),
       BurrowMilestone.growth(
         level: 22,
-        requiredRecipes: 70,
+        requiredRecipes: 40,
         title: '대규모 토끼굴',
         description: '넓게 확장된 웅장한 규모의 토끼굴',
       ),
       BurrowMilestone.growth(
         level: 23,
-        requiredRecipes: 74,
+        requiredRecipes: 43,
         title: '소믈리에 토끼굴',
         description: '요리와 완벽한 마리아쥬를 이루는 와인 셀렉션',
       ),
       BurrowMilestone.growth(
         level: 24,
-        requiredRecipes: 78,
+        requiredRecipes: 46,
         title: '요리경연 토끼굴',
         description: '치열한 요리 경연에서 실력을 겨루는 콘테스트',
       ),
@@ -206,37 +209,37 @@ class BurrowUnlockService {
       // ===== 🌍 마스터 단계 (25-30레벨): 세계적 인정 =====
       BurrowMilestone.growth(
         level: 25,
-        requiredRecipes: 82,
+        requiredRecipes: 49,
         title: '요리축제 토끼굴',
         description: '마을 사람들과 어우러져 요리를 즐기는 축제',
       ),
       BurrowMilestone.growth(
         level: 26,
-        requiredRecipes: 86,
+        requiredRecipes: 52,
         title: '미식여행 토끼굴',
         description: '세계 각지의 미식 여행으로 넓어지는 견문',
       ),
       BurrowMilestone.growth(
         level: 27,
-        requiredRecipes: 90,
+        requiredRecipes: 55,
         title: '세계적 요리사 토끼굴',
         description: '국제적 명성의 셰프들과 협업하는 주방',
       ),
       BurrowMilestone.growth(
         level: 28,
-        requiredRecipes: 94,
+        requiredRecipes: 58,
         title: '티 소믈리에 토끼굴',
         description: '일본 전통 차문화의 정수를 배우는 토끼굴',
       ),
       BurrowMilestone.growth(
         level: 29,
-        requiredRecipes: 98,
+        requiredRecipes: 61,
         title: '치즈투어 토끼굴',
         description: '전통 있는 이탈리아 치즈 공장 견학',
       ),
       BurrowMilestone.growth(
         level: 30,
-        requiredRecipes: 102,
+        requiredRecipes: 64,
         title: '감사의 토끼굴',
         description: '다같이 둘러앉아 행복이 가득한 식탁',
       ),
@@ -244,13 +247,13 @@ class BurrowUnlockService {
       // ===== 🏆 최종 완성 단계 (31-32레벨): 꿈의 실현 =====
       BurrowMilestone.growth(
         level: 31,
-        requiredRecipes: 106,
+        requiredRecipes: 67,
         title: '시그니처 요리 토끼굴',
         description: '나만의 시그니처 요리가 탄생한 순간',
       ),
       BurrowMilestone.growth(
         level: 32,
-        requiredRecipes: 110,
+        requiredRecipes: 70,
         title: '꿈의 레스토랑 토끼굴',
         description: '꿈에 그리던 작고 따스한 레스토랑을 연 토끼',
       ),
@@ -342,7 +345,7 @@ class BurrowUnlockService {
     
     // Storage Service에 저장
     await _storageService.saveMilestones(milestones);
-    developer.log('Created ${milestones.length} default milestones with 32-level growth journey', name: 'BurrowUnlockService');
+    developer.log('Created ${milestones.length} default milestones with 32-level 70-recipe journey', name: 'BurrowUnlockService');
   }
   
   /// 진행상황 데이터 로드
@@ -363,22 +366,41 @@ class BurrowUnlockService {
   
   /// 새 레시피에 대한 마일스톤 체크 (메인 엔트리포인트)
   Future<List<BurrowMilestone>> checkUnlocksForRecipe(Recipe recipe) async {
+    // 이미 처리된 레시피는 스킵 (중복 처리 방지)
     if (_processedRecipeIds.contains(recipe.id)) {
-      developer.log('Recipe ${recipe.id} already processed, skipping', name: 'BurrowUnlockService');
-      return []; // 이미 처리된 레시피는 스킵 (중복 방지)
+      developer.log('Recipe ${recipe.id} already processed, skipping unlock check', name: 'BurrowUnlockService');
+      return [];
     }
     
     final newUnlocks = <BurrowMilestone>[];
     
+    // 🔥 ULTRA THINK FIX: 성장 트랙과 특별한 공간을 독립적으로 체크
+    
+    // 성장 트랙 체크 (독립적 try-catch)
     try {
-      // 성장 트랙 체크
+      debugPrint('🚨 STEP 1A: Checking growth track...');
       final growthUnlocks = await _checkGrowthTrack();
       newUnlocks.addAll(growthUnlocks);
-      
-      // 특별 공간 체크 (성능 최적화: 언락되지 않은 것만)
+      debugPrint('🚨 STEP 1B: Growth track found ${growthUnlocks.length} unlocks');
+    } catch (e) {
+      debugPrint('🚨 WARNING: Growth track check failed: $e');
+      developer.log('Growth track check failed: $e', name: 'BurrowUnlockService');
+      // 성장 트랙 실패해도 특별한 공간은 계속 체크
+    }
+    
+    // 특별 공간 체크 (독립적 try-catch) 
+    try {
+      debugPrint('🚨 STEP 2A: Checking special rooms...');
       final specialUnlocks = await _checkSpecialRooms(recipe);
       newUnlocks.addAll(specialUnlocks);
-      
+      debugPrint('🚨 STEP 2B: Special rooms found ${specialUnlocks.length} unlocks');
+    } catch (e) {
+      debugPrint('🚨 WARNING: Special rooms check failed: $e');
+      developer.log('Special rooms check failed: $e', name: 'BurrowUnlockService');
+      // 특별한 공간 실패해도 처리 계속
+    }
+    
+    try {
       // 처리된 레시피 마킹
       _processedRecipeIds.add(recipe.id);
       
@@ -424,16 +446,56 @@ class BurrowUnlockService {
         }
         
         developer.log('Unlocked ${newUnlocks.length} milestones for recipe ${recipe.id}', name: 'BurrowUnlockService');
+      } else {
+        debugPrint('🚨 STEP 3: No new unlocks found for recipe ${recipe.id}');
       }
       
     } catch (e) {
-      developer.log('Failed to check unlocks for recipe ${recipe.id}: $e', name: 'BurrowUnlockService');
+      debugPrint('🚨 ERROR: Failed to save unlocks for recipe ${recipe.id}: $e');
+      developer.log('Failed to save unlocks for recipe ${recipe.id}: $e', name: 'BurrowUnlockService');
       // 에러 발생시 처리된 레시피에서 제거 (재시도 가능하도록)
       _processedRecipeIds.remove(recipe.id);
     }
     
+    debugPrint('🚨 FINAL: checkUnlocksForRecipe returning ${newUnlocks.length} unlocks');
     return newUnlocks;
   }
+
+
+  /// 특별 공간 조건 체크
+  Future<List<BurrowMilestone>> _checkSpecialRooms(Recipe triggerRecipe) async {
+    debugPrint('🔥 SPECIAL ROOMS DEBUG: Starting check for recipe "${triggerRecipe.title}" (ID: ${triggerRecipe.id})');
+    debugPrint('🔥 SPECIAL ROOMS DEBUG: Emotional story: "${triggerRecipe.emotionalStory}"');
+
+    final milestones = await _loadMilestones();
+    final specialMilestones = milestones.where((m) => m.isSpecialRoom && !m.isUnlocked).toList();
+
+    debugPrint('🔥 SPECIAL ROOMS DEBUG: Found ${specialMilestones.length} locked special milestones');
+    for (final milestone in specialMilestones) {
+      debugPrint('🔥 SPECIAL ROOMS DEBUG: - ${milestone.specialRoom?.toString()} (L${milestone.level})');
+    }
+
+    final newUnlocks = <BurrowMilestone>[];
+
+    for (final milestone in specialMilestones) {
+      if (milestone.specialRoom != null) {
+        debugPrint('🔥 SPECIAL ROOMS DEBUG: Checking condition for ${milestone.specialRoom?.toString()}');
+
+        final shouldUnlock = await _checkSpecialRoomCondition(milestone.specialRoom!, triggerRecipe);
+
+        debugPrint('🔥 SPECIAL ROOMS DEBUG: ${milestone.specialRoom?.toString()} result: $shouldUnlock');
+
+        if (shouldUnlock) {
+          debugPrint('🔥 SPECIAL ROOMS DEBUG: ✅ Adding ${milestone.specialRoom?.toString()} to unlocks!');
+          newUnlocks.add(milestone);
+        }
+      }
+    }
+
+    debugPrint('🔥 SPECIAL ROOMS DEBUG: Final result - ${newUnlocks.length} special rooms to unlock');
+    return newUnlocks;
+  }
+
   
   /// 성장 트랙 마일스톤 체크
   Future<List<BurrowMilestone>> _checkGrowthTrack() async {
@@ -552,24 +614,6 @@ class BurrowUnlockService {
     return newUnlocks;
   }
   
-  /// 특별 공간 마일스톤 체크
-  Future<List<BurrowMilestone>> _checkSpecialRooms(Recipe triggerRecipe) async {
-    final milestones = await _loadMilestones();
-    final specialMilestones = milestones.where((m) => m.isSpecialRoom && !m.isUnlocked).toList();
-    
-    final newUnlocks = <BurrowMilestone>[];
-    
-    for (final milestone in specialMilestones) {
-      if (milestone.specialRoom != null) {
-        final shouldUnlock = await _checkSpecialRoomCondition(milestone.specialRoom!, triggerRecipe);
-        if (shouldUnlock) {
-          newUnlocks.add(milestone);
-        }
-      }
-    }
-    
-    return newUnlocks;
-  }
   
   /// 개별 특별 공간 언락 조건 체크
   Future<bool> _checkSpecialRoomCondition(SpecialRoom room, Recipe triggerRecipe) async {
@@ -612,38 +656,57 @@ class BurrowUnlockService {
     }
   }
   
-  /// 무도회장 조건: 사교적 요리사 (10개 레시피에서 3명 이상 언급)
+  /// 무도회장 조건: 사교적 요리사 (3개 레시피에서 3명 이상 언급)
   Future<bool> _checkBallroomCondition(Recipe triggerRecipe) async {
-    final progress = await _getOrCreateProgress(SpecialRoom.ballroom, 10);
+    debugPrint('🔥 BALLROOM DEBUG: Recipe "${triggerRecipe.title}" (ID: ${triggerRecipe.id})');
+    debugPrint('🔥 BALLROOM DEBUG: Emotional story: "${triggerRecipe.emotionalStory}"');
     
+    final progress = await _getOrCreateProgress(SpecialRoom.ballroom, 3);
+    
+    debugPrint('🔥 BALLROOM PROGRESS: Current ${progress.currentCount}/3');
+
     // 이미 처리된 레시피면 스킵
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
+      debugPrint('🔥 BALLROOM SKIP: Recipe already processed');
       return false;
     }
-    
+
     // 감정 스토리에서 사람 언급 체크
     final mentionedPeople = _extractMentionedPeople(triggerRecipe.emotionalStory);
-    
+    debugPrint('🔥 BALLROOM PEOPLE: Found people: $mentionedPeople');
+
     if (mentionedPeople.isNotEmpty) {
       // 새로 언급된 사람들을 메타데이터에 추가
       final existingPeople = Set<String>.from(progress.getMetadata<List>('mentionedPeople') ?? []);
+      final oldCount = existingPeople.length;
+      
       existingPeople.addAll(mentionedPeople);
       progress.setMetadata('mentionedPeople', existingPeople.toList());
       
+      debugPrint('🔥 BALLROOM METADATA: People count $oldCount → ${existingPeople.length}');
+      debugPrint('🔥 BALLROOM METADATA: All people: $existingPeople');
+
       // 레시피 처리 마킹 및 카운트 증가
       if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
         progress.incrementCount();
         
-        developer.log('Ballroom progress: ${progress.currentCount}/10, people: ${existingPeople.length}', 
+        debugPrint('🔥 BALLROOM SUCCESS: Recipe marked as processed, count now ${progress.currentCount}/3');
+
+        developer.log('Ballroom progress: ${progress.currentCount}/3, people: ${existingPeople.length}',
                      name: 'BurrowUnlockService');
-        
-        await _saveProgress([progress]);
-        
-        // 조건 확인: 10개 레시피 + 3명 이상 언급
-        return progress.isCompleted && existingPeople.length >= 3;
+
+        await _updateSingleProgress(progress);
+
+        // 조건 확인: 3개 레시피 + 3명 이상 언급
+        final conditionMet = progress.isCompleted && existingPeople.length >= 3;
+        debugPrint('🔥 BALLROOM CONDITION: isCompleted=${progress.isCompleted}, people>=${existingPeople.length>=3} → $conditionMet');
+
+        return conditionMet;
       }
+    } else {
+      debugPrint('🔥 BALLROOM FAIL: No people mentioned in emotional story');
     }
-    
+
     return false;
   }
   
@@ -673,49 +736,45 @@ class BurrowUnlockService {
     return people;
   }
   
-  /// 온천탕 조건: 힐링 요리사 (sad/tired/nostalgic 각 3개씩)
+  /// 온천탕 조건: 힐링 요리사 (sad/tired/nostalgic 각 1개씩)
   Future<bool> _checkHotSpringCondition(Recipe triggerRecipe) async {
     if (![Mood.sad, Mood.tired, Mood.nostalgic].contains(triggerRecipe.mood)) {
       return false; // 힐링 감정이 아니면 체크하지 않음
     }
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.hotSpring, 9); // 총 9개 (각 3개씩)
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.hotSpring, 3); // 총 3개 (각 1개씩)
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
+
     // 감정별 카운트 추적
     final moodCounts = Map<String, int>.from(progress.getMetadata<Map>('moodCounts') ?? {});
     final moodKey = triggerRecipe.mood.name;
-    
-    if ((moodCounts[moodKey] ?? 0) < 3) {
+
+    if ((moodCounts[moodKey] ?? 0) < 1) {
       moodCounts[moodKey] = (moodCounts[moodKey] ?? 0) + 1;
       progress.setMetadata('moodCounts', moodCounts);
-      
+
       if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
         progress.incrementCount();
-        
+
         developer.log('HotSpring progress: $moodCounts', name: 'BurrowUnlockService');
-        
-        await _saveProgress([progress]);
-        
-        // 조건 확인: sad, tired, nostalgic 각각 3개 이상
-        return (moodCounts['sad'] ?? 0) >= 3 &&
-               (moodCounts['tired'] ?? 0) >= 3 &&
-               (moodCounts['nostalgic'] ?? 0) >= 3;
+
+        await _updateSingleProgress(progress);
+
+        // 조건 확인: sad, tired, nostalgic 각각 1개 이상
+        return (moodCounts['sad'] ?? 0) >= 1 &&
+               (moodCounts['tired'] ?? 0) >= 1 &&
+               (moodCounts['nostalgic'] ?? 0) >= 1;
       }
     }
-    
+
     return false;
   }
   
-  /// 음악회장 조건: 감정 마에스트로 (8가지 감정 모두 완성, 평점 3+ )
+  /// 음악회장 조건: 감정 마에스트로 (8가지 감정 모두 완성)
   Future<bool> _checkOrchestraCondition(Recipe triggerRecipe) async {
-    // 평점 3 미만이면 체크하지 않음
-    if (triggerRecipe.rating == null || triggerRecipe.rating! < 3) {
-      return false;
-    }
     
     final progress = await _getOrCreateProgress(SpecialRoom.orchestra, 8); // 8가지 감정
     
@@ -736,9 +795,9 @@ class BurrowUnlockService {
         
         developer.log('Orchestra progress: ${achievedMoods.length}/8 moods', name: 'BurrowUnlockService');
         
-        await _saveProgress([progress]);
+        await _updateSingleProgress(progress);
         
-        // 조건 확인: 8가지 감정 모두 달성
+        // 조건 확인: 8가지 감정 모두 달성 (평점 조건 제거)
         return achievedMoods.length >= 8;
       }
     }
@@ -749,76 +808,137 @@ class BurrowUnlockService {
   /// 연금술실 조건: 도전적 요리사 (실패→성공 3회)
   Future<bool> _checkAlchemyLabCondition(Recipe triggerRecipe) async {
     final progress = await _getOrCreateProgress(SpecialRoom.alchemyLab, 3);
-    
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
-    // 동일한 제목의 이전 레시피들 찾기
-    final allRecipes = await _hiveService.getAllRecipes();
-    final sameTitle = triggerRecipe.title.toLowerCase().trim();
-    
-    final relatedRecipes = allRecipes.where((r) => 
-        r.title.toLowerCase().trim() == sameTitle &&
-        r.id != triggerRecipe.id &&
-        r.rating != null
-    ).toList();
-    
-    if (relatedRecipes.isNotEmpty) {
-      // 이전 평점 중 2점 이하가 있고, 현재 평점이 4점 이상인지 체크
-      final hasFailure = relatedRecipes.any((r) => r.rating! <= 2);
-      final currentSuccess = triggerRecipe.rating != null && triggerRecipe.rating! >= 4;
-      
-      if (hasFailure && currentSuccess) {
+
+    // 🔥 ULTRA THINK FIX: HiveService 파싱 에러로부터 보호
+    try {
+      debugPrint('🚨 AlchemyLab: Attempting to get all recipes...');
+
+      // 동일한 제목의 이전 레시피들 찾기
+      final allRecipes = await _hiveService.getAllRecipes();
+      debugPrint('🚨 AlchemyLab: Successfully got ${allRecipes.length} recipes');
+
+      final sameTitle = triggerRecipe.title.toLowerCase().trim();
+
+      // 🔧 IMPROVED: 더 관대한 제목 매칭 (공백 및 특수문자 정규화)
+      final normalizedTitle = sameTitle.replaceAll(RegExp(r'[^\w가-힣]'), '');
+
+      final relatedRecipes = allRecipes.where((r) {
+        final otherTitle = r.title.toLowerCase().trim().replaceAll(RegExp(r'[^\w가-힣]'), '');
+        return otherTitle == normalizedTitle &&
+               r.id != triggerRecipe.id &&
+               r.rating != null;
+      }).toList();
+
+      debugPrint('🚨 AlchemyLab: Found ${relatedRecipes.length} related recipes for "$sameTitle"');
+
+      if (relatedRecipes.isNotEmpty) {
+        // 이전 평점 중 2점 이하가 있고, 현재 평점이 4점 이상인지 체크
+        final hasFailure = relatedRecipes.any((r) => r.rating! <= 2);
+        final currentSuccess = triggerRecipe.rating != null && triggerRecipe.rating! >= 4;
+
+        debugPrint('🚨 AlchemyLab: hasFailure=$hasFailure, currentSuccess=$currentSuccess');
+
+        if (hasFailure && currentSuccess) {
+          if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
+            progress.incrementCount();
+
+            developer.log('AlchemyLab progress: ${progress.currentCount}/3 improvements', name: 'BurrowUnlockService');
+
+            await _updateSingleProgress(progress);
+
+            return progress.isCompleted;
+          }
+        }
+      }
+
+    } catch (e) {
+      // 🔥 ULTRA THINK: HiveService 에러 시에도 연금술실이 완전히 차단되지 않도록
+      debugPrint('🚨 CRITICAL: AlchemyLab HiveService error: $e');
+      developer.log('AlchemyLab HiveService failed, but continuing: $e', name: 'BurrowUnlockService');
+
+      // 🔧 FALLBACK: HiveService 실패 시 단순 조건으로 대체
+      // 현재 레시피가 평점 4+ 이면 개선 시도로 간주
+      if (triggerRecipe.rating != null && triggerRecipe.rating! >= 4) {
         if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
           progress.incrementCount();
-          
-          developer.log('AlchemyLab progress: ${progress.currentCount}/3 improvements', name: 'BurrowUnlockService');
-          
-          await _saveProgress([progress]);
-          
+
+          developer.log('AlchemyLab progress (fallback): ${progress.currentCount}/3', name: 'BurrowUnlockService');
+
+          await _updateSingleProgress(progress);
+
           return progress.isCompleted;
         }
       }
     }
-    
+
     return false;
   }
   
-  /// 파인다이닝 조건: 완벽주의자 (평점 5점 레시피 10개)
+  /// 파인다이닝 조건: 완벽주의자 (평점 5점 레시피 5개)
   Future<bool> _checkFineDiningCondition(Recipe triggerRecipe) async {
     if (triggerRecipe.rating != 5) {
       return false; // 5점이 아니면 체크하지 않음
     }
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.fineDining, 10);
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.fineDining, 5);
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
+
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
-      
-      developer.log('FineDining progress: ${progress.currentCount}/10 perfect recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
+
+      developer.log('FineDining progress: ${progress.currentCount}/5 perfect recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
+
       return progress.isCompleted;
     }
-    
+
     return false;
   }
   
   /// 진행상황 가져오기 또는 생성
   Future<UnlockProgress> _getOrCreateProgress(SpecialRoom room, int requiredCount) async {
     final progressList = await _loadProgress();
-    final existing = progressList.firstWhere(
-      (p) => p.roomType == room,
-      orElse: () => UnlockProgress(roomType: room, requiredCount: requiredCount),
-    );
-    
-    return existing;
+
+    // 🔥 ULTRA DEBUG: Progress 로드 상태 분석
+    debugPrint('🔥 GET_OR_CREATE DEBUG: Looking for room ${room.name}');
+    debugPrint('🔥 GET_OR_CREATE DEBUG: Loaded ${progressList.length} progress items');
+
+    for (int i = 0; i < progressList.length; i++) {
+      final p = progressList[i];
+      debugPrint('🔥 GET_OR_CREATE DEBUG: [$i] ${p.roomType?.name} - ${p.currentCount}/${p.requiredCount}');
+    }
+
+    try {
+      // 기존 progress 찾기 - 더 안전한 비교
+      final existingProgress = progressList.where((p) => p.roomType == room).toList();
+
+      if (existingProgress.isNotEmpty) {
+        debugPrint('🔥 GET_OR_CREATE SUCCESS: Found existing progress for ${room.name}');
+        debugPrint('🔥 GET_OR_CREATE SUCCESS: Current progress ${existingProgress.first.currentCount}/${existingProgress.first.requiredCount}');
+        return existingProgress.first;
+      } else {
+        debugPrint('🔥 GET_OR_CREATE DEBUG: No existing progress found for ${room.name}');
+        throw StateError('No progress found');
+      }
+    } catch (e) {
+      // 기존 progress가 없으면 새로 생성하고 저장
+      debugPrint('🔥 GET_OR_CREATE DEBUG: Creating new progress for ${room.name} (reason: $e)');
+
+      final newProgress = UnlockProgress(roomType: room, requiredCount: requiredCount);
+      progressList.add(newProgress);
+      await _saveProgress(progressList);
+
+      debugPrint('🔥 PROGRESS FIX: Created new progress for ${room.name}');
+      return newProgress;
+    }
   }
   
   /// 언락 큐에서 다음 아이템 가져오기 (순차 처리용)
@@ -852,151 +972,160 @@ class BurrowUnlockService {
   Future<List<UnlockProgress>> getCurrentProgress() async {
     return await _loadProgress();
   }
+
+  /// 모든 레시피 가져오기 (Provider 호환성을 위한 wrapper)
+  Future<List<Recipe>> getAllRecipes() async {
+    return await _hiveService.getAllRecipes();
+  }
   
   // === 새로운 11개 특별 공간 조건 체크 메서드들 ===
   
-  /// 알프스 별장 조건: 극한 도전자 (재료 5개 이상 + 평점 4+ 레시피 5개)
+  /// 알프스 별장 조건: 극한 도전자 (재료 5개 이상 + 평점 4+ 레시피 3개)
   Future<bool> _checkAlpsCondition(Recipe triggerRecipe) async {
     // 재료 5개 미만이거나 평점 4 미만이면 체크하지 않음
-    if (triggerRecipe.ingredients.length < 5 || 
+    if (triggerRecipe.ingredients.length < 5 ||
         triggerRecipe.rating == null || triggerRecipe.rating! < 4) {
       return false;
     }
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.alps, 5);
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.alps, 3);
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
+
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
-      
-      developer.log('Alps progress: ${progress.currentCount}/5 extreme recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
+
+      developer.log('Alps progress: ${progress.currentCount}/3 extreme recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
+
       return progress.isCompleted;
     }
-    
+
     return false;
   }
   
-  /// 캠핑장 조건: 자연 애호가 (자연 키워드 7개 레시피)
+  /// 캠핑장 조건: 자연 애호가 (자연 키워드 4개 레시피)
   Future<bool> _checkCampingCondition(Recipe triggerRecipe) async {
+    debugPrint('🔥 CAMPING DEBUG: Recipe "${triggerRecipe.title}" (ID: ${triggerRecipe.id})');
+    debugPrint('🔥 CAMPING DEBUG: Emotional story: "${triggerRecipe.emotionalStory}"');
+    
     final story = triggerRecipe.emotionalStory.toLowerCase();
     const natureKeywords = [
       '자연', '야외', '캠핑', '숲', '산', '강', '바다', '하늘',
       '바람', '공기', '햇살', '나무', '풀', '꽃', '새', '별'
     ];
+
+    debugPrint('🔥 CAMPING DEBUG: Story lowercase: "$story"');
     
+    final matchedKeywords = <String>[];
+    for (final keyword in natureKeywords) {
+      if (story.contains(keyword)) {
+        matchedKeywords.add(keyword);
+        debugPrint('🔥 CAMPING MATCH: Found keyword "$keyword"');
+      }
+    }
+
     // 자연 키워드가 포함되지 않으면 체크하지 않음
     final hasNatureKeyword = natureKeywords.any((keyword) => story.contains(keyword));
-    if (!hasNatureKeyword) return false;
+    debugPrint('🔥 CAMPING RESULT: hasNatureKeyword = $hasNatureKeyword, matched: $matchedKeywords');
     
-    final progress = await _getOrCreateProgress(SpecialRoom.camping, 7);
-    
-    if (progress.hasProcessedRecipe(triggerRecipe.id)) {
+    if (!hasNatureKeyword) {
+      debugPrint('🔥 CAMPING FAIL: No nature keywords found');
       return false;
     }
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.camping, 4);
+    debugPrint('🔥 CAMPING PROGRESS: Current ${progress.currentCount}/4');
+
+    if (progress.hasProcessedRecipe(triggerRecipe.id)) {
+      debugPrint('🔥 CAMPING SKIP: Recipe already processed');
+      return false;
+    }
+
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
+      debugPrint('🔥 CAMPING SUCCESS: Progress incremented to ${progress.currentCount}/4');
+
+      developer.log('Camping progress: ${progress.currentCount}/4 nature recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
       
-      developer.log('Camping progress: ${progress.currentCount}/7 nature recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
-      return progress.isCompleted;
+      final isCompleted = progress.isCompleted;
+      debugPrint('🔥 CAMPING FINAL: isCompleted = $isCompleted');
+
+      return isCompleted;
     }
-    
+
+    debugPrint('🔥 CAMPING ERROR: markRecipeAsProcessed failed');
     return false;
   }
   
-  /// 가을 정원 조건: 계절 감성가 (4계절 키워드 각 2개씩, 총 8개)
+  /// 가을 정원 조건: 가을 감성가 (가을 키워드 4개 레시피)
   Future<bool> _checkAutumnCondition(Recipe triggerRecipe) async {
     final story = triggerRecipe.emotionalStory.toLowerCase();
-    final seasonKeywords = {
-      '봄': ['봄', '벚꽃', '새싹', '따뜻', '화사'],
-      '여름': ['여름', '더위', '시원', '바다', '휴가'],
-      '가을': ['가을', '단풍', '추위', '쌀쌀', '고구마'],
-      '겨울': ['겨울', '눈', '추위', '따뜻', '크리스마스']
-    };
-    
-    String? matchedSeason;
-    for (final entry in seasonKeywords.entries) {
-      if (entry.value.any((keyword) => story.contains(keyword))) {
-        matchedSeason = entry.key;
-        break;
-      }
-    }
-    
-    if (matchedSeason == null) return false;
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.autumn, 8);
-    
+    const autumnKeywords = [
+      '가을', '단풍', '추위', '쌀쌀', '고구마', '밤', '감', '코스모스',
+      '낙엽', '억새', '국화', '단감', '배', '도토리', '은행'
+    ];
+
+    // 가을 키워드가 포함되지 않으면 체크하지 않음
+    final hasAutumnKeyword = autumnKeywords.any((keyword) => story.contains(keyword));
+    if (!hasAutumnKeyword) return false;
+
+    final progress = await _getOrCreateProgress(SpecialRoom.autumn, 4);
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
-    // 계절별 카운트 추적
-    final seasonCounts = Map<String, int>.from(progress.getMetadata<Map>('seasonCounts') ?? {});
-    
-    if ((seasonCounts[matchedSeason] ?? 0) < 2) {
-      seasonCounts[matchedSeason] = (seasonCounts[matchedSeason] ?? 0) + 1;
-      progress.setMetadata('seasonCounts', seasonCounts);
-      
-      if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
-        progress.incrementCount();
-        
-        developer.log('Autumn progress: $seasonCounts', name: 'BurrowUnlockService');
-        
-        await _saveProgress([progress]);
-        
-        // 모든 계절 2개씩 달성 확인
-        return seasonCounts.values.every((count) => count >= 2) && 
-               seasonCounts.length >= 4;
-      }
+
+    if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
+      progress.incrementCount();
+
+      developer.log('Autumn progress: ${progress.currentCount}/4 autumn recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
+
+      return progress.isCompleted;
     }
-    
+
     return false;
   }
   
-  /// 봄날의 피크닉 조건: 외출 요리사 (외출 키워드 6개 레시피)
+  /// 봄날의 피크닉 조건: 외출 요리사 (외출 키워드 4개 레시피)
   Future<bool> _checkSpringPicnicCondition(Recipe triggerRecipe) async {
     final story = triggerRecipe.emotionalStory.toLowerCase();
     const outdoorKeywords = [
       '나들이', '외출', '여행', '산책', '공원', '피크닉', '소풍',
       '드라이브', '나가서', '밖에서', '야외에서', '외식'
     ];
-    
+
     final hasOutdoorKeyword = outdoorKeywords.any((keyword) => story.contains(keyword));
     if (!hasOutdoorKeyword) return false;
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.springPicnic, 6);
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.springPicnic, 4);
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
+
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
-      
-      developer.log('SpringPicnic progress: ${progress.currentCount}/6 outdoor recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
+
+      developer.log('SpringPicnic progress: ${progress.currentCount}/4 outdoor recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
+
       return progress.isCompleted;
     }
-    
+
     return false;
   }
   
-  /// 서핑 비치 조건: 해변 요리사 (해변 키워드 + excited 감정 4개)
+  /// 서핑 비치 조건: 해변 요리사 (해변 키워드 4개)
   Future<bool> _checkSurfingCondition(Recipe triggerRecipe) async {
-    // excited 감정이 아니면 체크하지 않음
-    if (triggerRecipe.mood != Mood.excited) return false;
-    
     final story = triggerRecipe.emotionalStory.toLowerCase();
     const beachKeywords = ['바다', '해변', '파도', '서핑', '바닷바람', '해수욕'];
     
@@ -1014,7 +1143,7 @@ class BurrowUnlockService {
       
       developer.log('Surfing progress: ${progress.currentCount}/4 excited beach recipes', name: 'BurrowUnlockService');
       
-      await _saveProgress([progress]);
+      await _updateSingleProgress(progress);
       
       return progress.isCompleted;
     }
@@ -1022,124 +1151,143 @@ class BurrowUnlockService {
     return false;
   }
   
-  /// 스노클링 만 조건: 바다 탐험가 (해산물 재료 + 평점 3+ 레시피 8개)
+  /// 스노클링 만 조건: 바다 탐험가 (해산물 재료 4개 레시피)
   Future<bool> _checkSnorkelCondition(Recipe triggerRecipe) async {
-    // 평점 3 미만이면 체크하지 않음
-    if (triggerRecipe.rating == null || triggerRecipe.rating! < 3) {
-      return false;
-    }
-    
     // 해산물 재료 체크
     const seafoodKeywords = ['생선', '새우', '게', '조개', '굴', '전복', '오징어', '문어', '연어', '고등어'];
-    final hasSeafood = triggerRecipe.ingredients.any((ingredient) => 
+    final hasSeafood = triggerRecipe.ingredients.any((ingredient) =>
         seafoodKeywords.any((keyword) => ingredient.name.toLowerCase().contains(keyword))
     );
-    
+
     if (!hasSeafood) return false;
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.snorkel, 8);
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.snorkel, 4);
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
+
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
-      
-      developer.log('Snorkel progress: ${progress.currentCount}/8 seafood recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
+
+      developer.log('Snorkel progress: ${progress.currentCount}/4 seafood recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
+
       return progress.isCompleted;
     }
-    
+
     return false;
   }
   
-  /// 여름 해변 조건: 휴양지 요리사 (comfortable 감정 + 휴식 키워드 5개)
+  /// 여름 해변 조건: 휴양지 요리사 (휴식 키워드 4개 레시피)
   Future<bool> _checkSummerbeachCondition(Recipe triggerRecipe) async {
-    // comfortable 감정이 아니면 체크하지 않음
-    if (triggerRecipe.mood != Mood.comfortable) return false;
-    
+
     final story = triggerRecipe.emotionalStory.toLowerCase();
     const relaxKeywords = ['휴식', '쉬는', '여유', '편안', '느긋', '휴가', '바캉스'];
-    
+
     final hasRelaxKeyword = relaxKeywords.any((keyword) => story.contains(keyword));
     if (!hasRelaxKeyword) return false;
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.summerbeach, 5);
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.summerbeach, 4);
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
+
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
-      
-      developer.log('Summerbeach progress: ${progress.currentCount}/5 comfortable rest recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
+
+      developer.log('Summerbeach progress: ${progress.currentCount}/4 rest recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
+
       return progress.isCompleted;
     }
-    
+
     return false;
   }
   
-  /// 발리 요가 조건: 명상 요리사 (peaceful 감정 + 건강 키워드 6개)
+  /// 발리 요가 조건: 명상 요리사 (건강 키워드 3개 레시피)
   Future<bool> _checkBaliYogaCondition(Recipe triggerRecipe) async {
-    // peaceful 감정이 아니면 체크하지 않음
-    if (triggerRecipe.mood != Mood.peaceful) return false;
-    
+
     final story = triggerRecipe.emotionalStory.toLowerCase();
     const healthKeywords = ['건강', '웰빙', '요가', '명상', '마음', '몸', '균형'];
+
+    // 🔥 ULTRA THINK DEBUG: 키워드 매칭 상세 로깅
+    debugPrint('🔥 BALI YOGA CHECK: Recipe "${triggerRecipe.title}" (ID: ${triggerRecipe.id})');
+    debugPrint('🔥 BALI YOGA CHECK: Emotional story: "${triggerRecipe.emotionalStory}"');
+    debugPrint('🔥 BALI YOGA CHECK: Story lowercase: "$story"');
+    
+    final matchedKeywords = <String>[];
+    for (final keyword in healthKeywords) {
+      if (story.contains(keyword)) {
+        matchedKeywords.add(keyword);
+        debugPrint('🔥 BALI YOGA MATCH: Found keyword "$keyword" in story');
+      }
+    }
     
     final hasHealthKeyword = healthKeywords.any((keyword) => story.contains(keyword));
-    if (!hasHealthKeyword) return false;
+    debugPrint('🔥 BALI YOGA RESULT: hasHealthKeyword = $hasHealthKeyword, matched keywords: $matchedKeywords');
     
-    final progress = await _getOrCreateProgress(SpecialRoom.baliYoga, 6);
-    
-    if (progress.hasProcessedRecipe(triggerRecipe.id)) {
+    if (!hasHealthKeyword) {
+      debugPrint('🔥 BALI YOGA FAIL: No health keywords found - returning false');
       return false;
     }
+
+    final progress = await _getOrCreateProgress(SpecialRoom.baliYoga, 3);
+    
+    debugPrint('🔥 BALI YOGA PROGRESS: Current progress ${progress.currentCount}/3, required: 3');
+
+    if (progress.hasProcessedRecipe(triggerRecipe.id)) {
+      debugPrint('🔥 BALI YOGA SKIP: Recipe already processed - returning false');
+      return false;
+    }
+
+    debugPrint('🔥 BALI YOGA PROCESS: About to mark recipe as processed and increment count');
     
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
+
+      debugPrint('🔥 BALI YOGA SUCCESS: Progress incremented to ${progress.currentCount}/3');
+      developer.log('BaliYoga progress: ${progress.currentCount}/3 health recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
       
-      developer.log('BaliYoga progress: ${progress.currentCount}/6 peaceful health recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
-      return progress.isCompleted;
+      final isCompleted = progress.isCompleted;
+      debugPrint('🔥 BALI YOGA FINAL: isCompleted = $isCompleted, returning $isCompleted');
+
+      return isCompleted;
     }
-    
+
+    debugPrint('🔥 BALI YOGA ERROR: markRecipeAsProcessed returned false');
     return false;
   }
   
-  /// 오리엔트 특급열차 조건: 여행 요리사 (여행 키워드 + 다양한 국가 요리 7개)
+  /// 오리엔트 특급열차 조건: 여행 요리사 (여행 키워드 3개 레시피)
   Future<bool> _checkOrientExpressCondition(Recipe triggerRecipe) async {
     final story = triggerRecipe.emotionalStory.toLowerCase();
     const travelKeywords = ['여행', '외국', '해외', '국가', '나라', '문화', '전통'];
-    
+
     final hasTravelKeyword = travelKeywords.any((keyword) => story.contains(keyword));
     if (!hasTravelKeyword) return false;
-    
-    final progress = await _getOrCreateProgress(SpecialRoom.orientExpress, 7);
-    
+
+    final progress = await _getOrCreateProgress(SpecialRoom.orientExpress, 3);
+
     if (progress.hasProcessedRecipe(triggerRecipe.id)) {
       return false;
     }
-    
+
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
-      
-      developer.log('OrientExpress progress: ${progress.currentCount}/7 travel recipes', name: 'BurrowUnlockService');
-      
-      await _saveProgress([progress]);
-      
+
+      developer.log('OrientExpress progress: ${progress.currentCount}/3 travel recipes', name: 'BurrowUnlockService');
+
+      await _updateSingleProgress(progress);
+
       return progress.isCompleted;
     }
-    
+
     return false;
   }
   
@@ -1167,7 +1315,7 @@ class BurrowUnlockService {
       
       developer.log('Canvas progress: ${progress.currentCount}/5 artistic recipes', name: 'BurrowUnlockService');
       
-      await _saveProgress([progress]);
+      await _updateSingleProgress(progress);
       
       return progress.isCompleted;
     }
@@ -1175,11 +1323,8 @@ class BurrowUnlockService {
     return false;
   }
   
-  /// 바캉스 빌라 조건: 휴식 요리사 (grateful 감정 + 휴양 키워드 4개)
+  /// 바캉스 빌라 조건: 휴식 요리사 (휴양 키워드 4개)
   Future<bool> _checkVacanceCondition(Recipe triggerRecipe) async {
-    // grateful 감정이 아니면 체크하지 않음
-    if (triggerRecipe.mood != Mood.grateful) return false;
-    
     final story = triggerRecipe.emotionalStory.toLowerCase();
     const vacationKeywords = ['휴가', '바캉스', '리조트', '호텔', '여유', '감사'];
     
@@ -1195,9 +1340,9 @@ class BurrowUnlockService {
     if (progress.markRecipeAsProcessed(triggerRecipe.id)) {
       progress.incrementCount();
       
-      developer.log('Vacance progress: ${progress.currentCount}/4 grateful vacation recipes', name: 'BurrowUnlockService');
+      developer.log('Vacance progress: ${progress.currentCount}/4 vacation recipes', name: 'BurrowUnlockService');
       
-      await _saveProgress([progress]);
+      await _updateSingleProgress(progress);
       
       return progress.isCompleted;
     }
@@ -1238,13 +1383,36 @@ class BurrowUnlockService {
     }
   }
   
-  /// 진행상황들 저장
+  /// 진행상황들 저장 (전체 리스트용)
   Future<void> _saveProgress(List<UnlockProgress> progressList) async {
     try {
+      debugPrint('🔥 SAVE PROGRESS DEBUG: Saving ${progressList.length} progress items');
+      for (final progress in progressList) {
+        debugPrint('🔥 SAVE PROGRESS DEBUG: - ${progress.roomType?.toString()}: ${progress.currentCount}/${progress.requiredCount}, processed: ${progress.processedRecipeIds.length}');
+      }
+
       await _storageService.saveProgress(progressList);
+      debugPrint('🔥 SAVE PROGRESS DEBUG: Successfully saved to storage');
+
       developer.log('Saved ${progressList.length} progress items', name: 'BurrowUnlockService');
     } catch (e) {
+      debugPrint('🔥 SAVE PROGRESS ERROR: Failed to save: $e');
       developer.log('Failed to save progress: $e', name: 'BurrowUnlockService');
+    }
+  }
+
+  /// 🔥 FIX: 단일 진행상황 업데이트 (기존 데이터 보존)
+  Future<void> _updateSingleProgress(UnlockProgress progress) async {
+    try {
+      debugPrint('🔥 UPDATE SINGLE PROGRESS: ${progress.roomType?.toString()}: ${progress.currentCount}/${progress.requiredCount}');
+
+      await _storageService.updateProgress(progress);
+      debugPrint('🔥 UPDATE SINGLE PROGRESS: Successfully updated to storage');
+
+      developer.log('Updated single progress for ${progress.roomType?.toString()}', name: 'BurrowUnlockService');
+    } catch (e) {
+      debugPrint('🔥 UPDATE SINGLE PROGRESS ERROR: Failed to update: $e');
+      developer.log('Failed to update single progress: $e', name: 'BurrowUnlockService');
     }
   }
   
