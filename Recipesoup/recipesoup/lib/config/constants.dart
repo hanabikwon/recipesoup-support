@@ -50,11 +50,7 @@ class AppConstants {
   static const int searchResultsLimit = 50;
   static const int recentSearchesLimit = 10;
   static const String searchHintText = '요리명, 감정, 재료로 검색하세요';
-  
-  // "과거 오늘" 기능 설정
-  static const int pastTodayMaxYears = 10; // 최대 10년 이전까지
-  static const String pastTodayEmptyMessage = '오늘 같은날에 만든 요리가 없네요?';
-  
+
   // 통계 설정
   static const int statsMaxDays = 365; // 최대 1년간 통계
   static const int continuousStreakMaxDays = 365; // 연속 기록 최대 일수

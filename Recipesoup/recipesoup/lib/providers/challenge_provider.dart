@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../models/challenge_models.dart';
 import '../services/challenge_service.dart';
+import '../services/cooking_method_service.dart';
 
 /// 깡총 챌린지 시스템 상태 관리 Provider
 /// ChallengeService와 연동하여 UI 상태를 관리하는 핵심 Provider
@@ -10,9 +11,7 @@ class ChallengeProvider extends ChangeNotifier {
 
   // 상태 변수들
   List<Challenge> _allChallenges = [];
-  List<ChallengeBadge> _allBadges = [];
   Map<String, ChallengeProgress> _userProgress = {};
-  List<UserBadge> _userBadges = [];
   ChallengeStatistics? _statistics;
 
   bool _isLoading = false;
@@ -26,9 +25,7 @@ class ChallengeProvider extends ChangeNotifier {
 
   // Getters
   List<Challenge> get allChallenges => _allChallenges;
-  List<ChallengeBadge> get allBadges => _allBadges;
   Map<String, ChallengeProgress> get userProgress => _userProgress;
-  List<UserBadge> get userBadges => _userBadges;
   ChallengeStatistics? get statistics => _statistics;
   
   bool get isLoading => _isLoading;
@@ -133,40 +130,6 @@ class ChallengeProvider extends ChangeNotifier {
     return recommendations.take(3).toList();
   }
 
-  /// 완료 통계
-  Map<ChallengeCategory, int> get completionStats {
-    final stats = <ChallengeCategory, int>{};
-    
-    for (var category in ChallengeCategory.values) {
-      final totalInCategory = _allChallenges.where((c) => c.category == category).length;
-      final completedInCategory = _allChallenges
-          .where((c) => c.category == category)
-          .where((c) => _userProgress[c.id]?.isCompleted ?? false)
-          .length;
-      
-      stats[category] = totalInCategory > 0 
-          ? (completedInCategory * 100 ~/ totalInCategory) 
-          : 0;
-    }
-    
-    return stats;
-  }
-
-  /// 최근 완료한 챌린지들
-  List<Challenge> get recentlyCompleted {
-    final recentProgress = _userProgress.values
-        .where((progress) => progress.isCompleted && progress.completedAt != null)
-        .toList()
-      ..sort((a, b) => b.completedAt!.compareTo(a.completedAt!));
-
-    return recentProgress
-        .take(5)
-        .map((progress) => _allChallenges.firstWhere(
-              (challenge) => challenge.id == progress.challengeId,
-              orElse: () => _allChallenges.first,
-            ))
-        .toList();
-  }
 
   /// 초기 데이터 로드
   Future<void> loadInitialData() async {
@@ -179,27 +142,19 @@ class ChallengeProvider extends ChangeNotifier {
       // 병렬로 데이터 로드
       final futures = await Future.wait([
         _challengeService.loadAllChallenges(),
-        _challengeService.loadAllBadges(),
         _challengeService.loadUserProgress(),
-        _challengeService.getUserBadges(),
       ]);
 
       _allChallenges = futures[0] as List<Challenge>;
-      _allBadges = futures[1] as List<ChallengeBadge>;
-      _userProgress = futures[2] as Map<String, ChallengeProgress>;
-      _userBadges = futures[3] as List<UserBadge>;
+      _userProgress = futures[1] as Map<String, ChallengeProgress>;
 
       // 통계 업데이트
       await _updateStatistics();
 
       if (kDebugMode) {
-        if (kDebugMode) {
-          debugPrint('✅ ChallengeProvider initialized:');
-          debugPrint('  📋 Challenges: ${_allChallenges.length}');
-          debugPrint('  🏅 Badges: ${_allBadges.length}');
-          debugPrint('  📈 User Progress: ${_userProgress.length}');
-          debugPrint('  🎖️ User Badges: ${_userBadges.length}');
-        }
+        debugPrint('✅ ChallengeProvider initialized:');
+        debugPrint('  📋 Challenges: ${_allChallenges.length}');
+        debugPrint('  📈 User Progress: ${_userProgress.length}');
       }
     } catch (e) {
       _setError('챌린지 데이터 로드 실패: $e');
@@ -217,10 +172,13 @@ class ChallengeProvider extends ChangeNotifier {
   Future<bool> startChallenge(String challengeId) async {
     try {
       _clearError();
-      
+
       final progress = await _challengeService.startChallenge(challengeId);
       _userProgress[challengeId] = progress;
-      
+
+      // 통계 업데이트 (진행중 개수 변경)
+      await _refreshUserData();
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -239,19 +197,20 @@ class ChallengeProvider extends ChangeNotifier {
   }) async {
     try {
       _clearError();
-      
+
       final progress = await _challengeService.completeChallenge(
         challengeId,
         userNote: userNote,
         userImagePath: userImagePath,
         userRating: userRating,
       );
-      
+
       _userProgress[challengeId] = progress;
-      
-      // 뱃지 및 통계 업데이트
+
+      // 통계 업데이트 (await 완료 후 notifyListeners)
       await _refreshUserData();
-      
+
+      // 통계 업데이트 완료 후 UI 업데이트
       notifyListeners();
       return true;
     } catch (e) {
@@ -414,21 +373,13 @@ class ChallengeProvider extends ChangeNotifier {
     await loadInitialData();
   }
 
-  /// 사용자 데이터 업데이트 (뱃지, 통계)
+  /// 사용자 데이터 업데이트 (통계)
   Future<void> _refreshUserData() async {
     try {
-      final futures = await Future.wait([
-        _challengeService.getUserBadges(),
-        _challengeService.getStatistics(),
-      ]);
-
-      _userBadges = futures[0] as List<UserBadge>;
-      _statistics = futures[1] as ChallengeStatistics;
+      _statistics = await _challengeService.getStatistics();
     } catch (e) {
       if (kDebugMode) {
-        if (kDebugMode) {
-          debugPrint('⚠️ Failed to refresh user data: $e');
-        }
+        debugPrint('⚠️ Failed to refresh user data: $e');
       }
     }
   }
@@ -472,16 +423,12 @@ class ChallengeProvider extends ChangeNotifier {
   void clearCache() {
     _challengeService.clearCache();
     _allChallenges.clear();
-    _allBadges.clear();
     _userProgress.clear();
-    _userBadges.clear();
     _statistics = null;
     clearFilters();
-    
+
     if (kDebugMode) {
-      if (kDebugMode) {
-        debugPrint('🗑️ ChallengeProvider cache cleared');
-      }
+      debugPrint('🗑️ ChallengeProvider cache cleared');
     }
   }
 
@@ -508,16 +455,21 @@ class ChallengeProvider extends ChangeNotifier {
     }
   }
 
-  /// 🔥 특정 챌린지의 전체 조리법 정보 가져오기
-  Future<Map<String, dynamic>?> getCookingMethodDetails(String challengeId) async {
+  /// 🔥 특정 챌린지의 전체 조리법 정보 가져오기 (DetailedCookingMethod 반환)
+  Future<DetailedCookingMethod?> getCookingMethodDetails(String challengeId) async {
     try {
-      final cookingMethod = await _challengeService.getCookingMethodByRecipeId(challengeId);
+      // CookingMethodService를 통해 상세 조리법 로드
+      final cookingMethodService = CookingMethodService();
+      final cookingMethod = await cookingMethodService.getCookingMethodById(challengeId);
+
+      if (kDebugMode && cookingMethod != null) {
+        debugPrint('✅ Loaded cooking method details for challenge: $challengeId');
+      }
+
       return cookingMethod;
     } catch (e) {
       if (kDebugMode) {
-        if (kDebugMode) {
-          debugPrint('❌ Failed to get cooking method details for $challengeId: $e');
-        }
+        debugPrint('❌ Failed to get cooking method details for $challengeId: $e');
       }
       return null;
     }
@@ -527,9 +479,7 @@ class ChallengeProvider extends ChangeNotifier {
   Map<String, dynamic> getDebugInfo() {
     return {
       'total_challenges': _allChallenges.length,
-      'total_badges': _allBadges.length,
       'user_progress_count': _userProgress.length,
-      'user_badges_count': _userBadges.length,
       'is_loading': _isLoading,
       'has_error': _error != null,
       'error': _error,

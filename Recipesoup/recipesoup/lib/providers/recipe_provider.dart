@@ -16,9 +16,7 @@ class RecipeProvider extends ChangeNotifier {
   String? _error;
 
   // 성능 최적화를 위한 캐시 변수들
-  List<Recipe>? _cachedTodayMemories;
   List<Recipe>? _cachedRecentRecipes;
-  DateTime? _cacheDate; // 캐시 무효화를 위한 날짜
   
   // 버로우 시스템 콜백 (순환 참조 방지)
   Function(Recipe)? _onRecipeAdded;
@@ -42,34 +40,7 @@ class RecipeProvider extends ChangeNotifier {
 
   /// 캐시 무효화 (레시피 변경시 호출)
   void _invalidateCache() {
-    _cachedTodayMemories = null;
     _cachedRecentRecipes = null;
-    _cacheDate = null;
-  }
-  
-  /// "과거 오늘" 기능 - 같은 월/일, 다른 년도 레시피들 (캐싱 최적화)
-  List<Recipe> get todayMemories {
-    final today = DateTime.now();
-
-    // 캐시가 유효한지 확인 (같은 날짜)
-    if (_cachedTodayMemories != null &&
-        _cacheDate != null &&
-        _cacheDate!.day == today.day &&
-        _cacheDate!.month == today.month &&
-        _cacheDate!.year == today.year) {
-      return _cachedTodayMemories!;
-    }
-
-    // 캐시 갱신
-    _cachedTodayMemories = _recipes.where((recipe) {
-      final recipeDate = recipe.createdAt;
-      return recipeDate.month == today.month &&
-             recipeDate.day == today.day &&
-             recipeDate.year != today.year;
-    }).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt));
-
-    _cacheDate = today;
-    return _cachedTodayMemories!;
   }
   
   /// 최근 레시피들 (최신순 정렬, 캐싱 최적화)
@@ -102,34 +73,35 @@ class RecipeProvider extends ChangeNotifier {
   
   /// 모든 레시피 로딩 (안전한 로딩 - 기존 데이터 보존)
   Future<void> loadRecipes() async {
+    print('🔥 LOAD START: RecipeProvider.loadRecipes() called');
     _setLoading(true);
-    
+
     try {
+      print('🔥 LOAD: Calling HiveService.getAllRecipes()...');
       final loadedRecipes = await _hiveService.getAllRecipes();
-      
+      print('🔥 LOAD: HiveService returned ${loadedRecipes.length} recipes');
+
       // 로드된 데이터가 유효할 때만 교체
       if (loadedRecipes.isNotEmpty || _recipes.isEmpty) {
         _recipes = loadedRecipes;
         _recipes.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // 최신순 정렬
         _invalidateCache(); // 캐시 무효화
         _clearError();
-        if (kDebugMode) {
-          developer.log('Successfully loaded ${_recipes.length} recipes', name: 'RecipeProvider');
-        }
+        print('✅ LOAD SUCCESS: Loaded ${_recipes.length} recipes');
+        developer.log('Successfully loaded ${_recipes.length} recipes', name: 'RecipeProvider');
       } else {
         // 로드된 데이터가 비어있고 기존 데이터가 있으면 기존 데이터 유지
-        if (kDebugMode) {
-          developer.log('No recipes loaded, keeping existing ${_recipes.length} recipes', name: 'RecipeProvider');
-        }
+        print('⚠️ LOAD: No new recipes, keeping existing ${_recipes.length} recipes');
+        developer.log('No recipes loaded, keeping existing ${_recipes.length} recipes', name: 'RecipeProvider');
       }
     } catch (e) {
+      print('❌ LOAD ERROR: $e');
       _setError('Failed to load recipes: $e');
-      if (kDebugMode) {
-        developer.log('Failed to load recipes, keeping existing ${_recipes.length} recipes: $e', name: 'RecipeProvider');
-      }
+      developer.log('Failed to load recipes, keeping existing ${_recipes.length} recipes: $e', name: 'RecipeProvider');
       // 🔥 CRITICAL FIX: 에러 발생시 기존 _recipes 데이터 유지 (덮어쓰지 않음)
     } finally {
       _setLoading(false);
+      print('🔥 LOAD END: Loading process completed');
     }
   }
   

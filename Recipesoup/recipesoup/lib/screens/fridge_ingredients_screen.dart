@@ -215,6 +215,14 @@ class _FridgeIngredientsScreenState extends State<FridgeIngredientsScreen> {
     } catch (e) {
       if (mounted) {
         Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
+
+        // Rate Limit 에러 감지 및 전용 다이얼로그 표시
+        final errorStr = e.toString().toLowerCase();
+        if (errorStr.contains('rate limit') || errorStr.contains('429') || errorStr.contains('quota')) {
+          _showRateLimitDialog();
+          return;
+        }
+
         _showEnhancedErrorDialog(e.toString());
       }
     } finally {
@@ -765,6 +773,100 @@ class _FridgeIngredientsScreenState extends State<FridgeIngredientsScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showRateLimitDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.hourglass_empty,
+              color: AppTheme.accentOrange,
+              size: 28,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              '잠시만 기다려주세요 🐰',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '시간당 AI 분석 요청 한도를 초과했습니다.',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryLight.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: AppTheme.accentOrange,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '시간당 최대 50회까지 분석 가능합니다',
+                      style: TextStyle(
+                        color: AppTheme.textSecondary,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '잠시 후 다시 시도해주세요.\n조금만 기다리면 다시 사용하실 수 있습니다.',
+              style: TextStyle(
+                color: AppTheme.textSecondary,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              backgroundColor: AppTheme.accentOrange,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text('확인'),
+          ),
+        ],
       ),
     );
   }

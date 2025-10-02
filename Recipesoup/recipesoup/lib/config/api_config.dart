@@ -6,95 +6,151 @@ import 'constants.dart';
 /// 환경변수(.env)에서 API 키를 가져와 안전하게 관리
 
 class ApiConfig {
-  // OpenAI API 설정
-  static const String baseUrl = 'https://api.openai.com/v1';
-  static const String chatCompletionsEndpoint = '/chat/completions';
+  // Vercel 프록시 서버 설정 (OpenAI API 보안 강화)
+  static const String baseUrl = 'https://recipesoup-proxy-n3crx7b51-hanabikwons-projects.vercel.app';
+  static const String chatCompletionsEndpoint = '/api/chat';
   static const String model = AppConstants.openAiModel; // gpt-4o-mini
+
+  // Vercel 프록시 인증 토큰 (x-app-token 헤더용)
+  static const String proxyToken = 'e4dbe63b81f2029720374d4b76144b6f17c566d19754793ce01b4f04951780ed';
   
   /// OpenAI API 키 가져오기 및 검증
   static String? get openAiApiKey {
-    final apiKey = dotenv.env['OPENAI_API_KEY'];
-    
-    if (apiKey == null || apiKey.isEmpty) {
-      throw ApiConfigException(
-        kDebugMode
-          ? 'OPENAI_API_KEY not found in .env file. Please add your API key to .env file.'
-          : 'API configuration error. Please check your app settings.'
-      );
+    try {
+      final apiKey = dotenv.env['OPENAI_API_KEY'];
+
+      if (apiKey == null || apiKey.isEmpty) {
+        throw ApiConfigException(
+          kDebugMode
+            ? 'OPENAI_API_KEY not found in .env file. Please add your API key to .env file.'
+            : 'API configuration error. Please check your app settings.'
+        );
+      }
+
+      // API 키 형식 검증 (OpenAI API 키는 sk-로 시작)
+      if (!apiKey.startsWith('sk-')) {
+        throw ApiConfigException(
+          kDebugMode
+            ? 'Invalid OpenAI API key format. API key should start with "sk-"'
+            : 'Invalid API key format. Please check your configuration.'
+        );
+      }
+
+      return apiKey;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우
+      if (e is ApiConfigException) {
+        rethrow; // API 키 관련 예외는 그대로 전달
+      }
+      // NotInitializedError는 무시하고 null 반환
+      return null;
     }
-    
-    // API 키 형식 검증 (OpenAI API 키는 sk-로 시작)
-    if (!apiKey.startsWith('sk-')) {
-      throw ApiConfigException(
-        kDebugMode
-          ? 'Invalid OpenAI API key format. API key should start with "sk-"'
-          : 'Invalid API key format. Please check your configuration.'
-      );
-    }
-    
-    return apiKey;
   }
   
   /// API 모델 설정 가져오기 (.env에서 커스텀 모델 사용 가능)
   static String get apiModel {
-    return dotenv.env['API_MODEL'] ?? model;
+    try {
+      return dotenv.env['API_MODEL'] ?? model;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return model;
+    }
   }
   
   /// API 타임아웃 설정 (환경별 설정 지원)
   static Duration get timeout {
-    final timeoutSeconds = int.tryParse(dotenv.env['API_TIMEOUT_SECONDS'] ?? '') ?? AppConstants.apiTimeoutSeconds;
-    return Duration(seconds: timeoutSeconds);
+    try {
+      final timeoutSeconds = int.tryParse(dotenv.env['API_TIMEOUT_SECONDS'] ?? '') ?? AppConstants.apiTimeoutSeconds;
+      return Duration(seconds: timeoutSeconds);
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return Duration(seconds: AppConstants.apiTimeoutSeconds);
+    }
   }
 
   /// API 재시도 횟수 (환경별 설정 지원)
   static int get retryAttempts {
-    return int.tryParse(dotenv.env['API_RETRY_ATTEMPTS'] ?? '') ?? AppConstants.apiRetryAttempts;
+    try {
+      return int.tryParse(dotenv.env['API_RETRY_ATTEMPTS'] ?? '') ?? AppConstants.apiRetryAttempts;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return AppConstants.apiRetryAttempts;
+    }
   }
 
   /// 최대 동시 요청 수 (환경별 설정 지원)
   static int get maxConcurrentRequests {
-    return int.tryParse(dotenv.env['MAX_CONCURRENT_REQUESTS'] ?? '') ?? 3;
+    try {
+      return int.tryParse(dotenv.env['MAX_CONCURRENT_REQUESTS'] ?? '') ?? 3;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return 3;
+    }
   }
 
   /// 현재 환경 확인
   static String get environment {
-    return dotenv.env['ENVIRONMENT'] ?? 'development';
+    try {
+      return dotenv.env['ENVIRONMENT'] ?? 'development';
+    } catch (e) {
+      return 'development';
+    }
   }
 
   /// 로그 레벨 확인
   static String get logLevel {
-    return dotenv.env['LOG_LEVEL'] ?? 'debug';
+    try {
+      return dotenv.env['LOG_LEVEL'] ?? 'debug';
+    } catch (e) {
+      return 'debug';
+    }
   }
 
   /// 애널리틱스 활성화 여부
   static bool get analyticsEnabled {
-    final enabled = dotenv.env['ANALYTICS_ENABLED'];
-    return enabled?.toLowerCase() == 'true';
+    try {
+      final enabled = dotenv.env['ANALYTICS_ENABLED'];
+      return enabled?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
   }
 
   /// 크래시 리포팅 활성화 여부
   static bool get crashReportingEnabled {
-    final enabled = dotenv.env['CRASH_REPORTING_ENABLED'];
-    return enabled?.toLowerCase() == 'true';
+    try {
+      final enabled = dotenv.env['CRASH_REPORTING_ENABLED'];
+      return enabled?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
   }
 
   /// SSL 피닝 활성화 여부
   static bool get sslPinningEnabled {
-    final enabled = dotenv.env['ENABLE_SSL_PINNING'];
-    return enabled?.toLowerCase() == 'true';
+    try {
+      final enabled = dotenv.env['ENABLE_SSL_PINNING'];
+      return enabled?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
   }
 
   /// HTTPS 강제 여부
   static bool get requireHttps {
-    final required = dotenv.env['REQUIRE_HTTPS'];
-    return required?.toLowerCase() == 'true';
+    try {
+      final required = dotenv.env['REQUIRE_HTTPS'];
+      return required?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
   }
   
-  /// 요청 헤더 생성
+  /// 요청 헤더 생성 (Vercel 프록시용)
   static Map<String, String> get headers {
     return {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $openAiApiKey',
+      'x-app-token': proxyToken,
     };
   }
   
@@ -635,13 +691,21 @@ ${recipeData.toString()}
   
   /// 디버그/릴리즈 모드 확인
   static bool get isDebugMode {
-    final debugMode = dotenv.env['DEBUG_MODE'];
-    return debugMode?.toLowerCase() == 'true';
+    try {
+      final debugMode = dotenv.env['DEBUG_MODE'];
+      return debugMode?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
   }
-  
+
   /// 앱 버전 확인 (.env에서 커스텀 버전 사용 가능)
   static String get appVersion {
-    return dotenv.env['APP_VERSION'] ?? AppConstants.appVersion;
+    try {
+      return dotenv.env['APP_VERSION'] ?? AppConstants.appVersion;
+    } catch (e) {
+      return AppConstants.appVersion;
+    }
   }
 }
 

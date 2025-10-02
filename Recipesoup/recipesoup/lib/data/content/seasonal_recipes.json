@@ -10,7 +10,7 @@
       "cookingTime": "35분",
       "difficulty": "보통",
       "calories": "240kcal",
-      "image": "assets/images/recipes/recipe_014.png"
+      "image": "assets/images/recipes/recipe_014.webp"
     },
     {
       "id": "recipe_013",
@@ -22,7 +22,7 @@
       "cookingTime": "30분",
       "difficulty": "보통",
       "calories": "120kcal",
-      "image": "assets/images/recipes/recipe_013.png"
+      "image": "assets/images/recipes/recipe_013.webp"
     },
     {
       "id": "recipe_012",
@@ -34,7 +34,7 @@
       "cookingTime": "40분",
       "difficulty": "어려움",
       "calories": "220kcal",
-      "image": "assets/images/recipes/recipe_012.png"
+      "image": "assets/images/recipes/recipe_012.webp"
     },
     {
       "id": "recipe_011",
@@ -46,7 +46,7 @@
       "cookingTime": "55분",
       "difficulty": "쉬움",
       "calories": "280kcal",
-      "image": "assets/images/recipes/recipe_011.png"
+      "image": "assets/images/recipes/recipe_011.webp"
     },
     {
       "id": "recipe_010",
@@ -58,7 +58,7 @@
       "cookingTime": "40분",
       "difficulty": "보통",
       "calories": "160kcal",
-      "image": "assets/images/recipes/recipe_010.png"
+      "image": "assets/images/recipes/recipe_010.webp"
     },
     {
       "id": "recipe_009",
@@ -70,7 +70,7 @@
       "cookingTime": "25분",
       "difficulty": "쉬움",
       "calories": "50kcal",
-      "image": "assets/images/recipes/recipe_009.png"
+      "image": "assets/images/recipes/recipe_009.webp"
     },
     {
       "id": "recipe_008",
@@ -82,7 +82,7 @@
       "cookingTime": "45분",
       "difficulty": "쉬움",
       "calories": "220kcal",
-      "image": "assets/images/recipes/recipe_008.png"
+      "image": "assets/images/recipes/recipe_008.webp"
     },
     {
       "id": "recipe_007",
@@ -94,7 +94,7 @@
       "cookingTime": "25분",
       "difficulty": "쉬움",
       "calories": "150kcal",
-      "image": "assets/images/recipes/recipe_007.png"
+      "image": "assets/images/recipes/recipe_007.webp"
     },
     {
       "id": "recipe_006",
@@ -106,7 +106,7 @@
       "cookingTime": "20분",
       "difficulty": "쉬움",
       "calories": "280kcal",
-      "image": "assets/images/recipes/recipe_006.png"
+      "image": "assets/images/recipes/recipe_006.webp"
     },
     {
       "id": "recipe_005",
@@ -118,7 +118,7 @@
       "cookingTime": "30분",
       "difficulty": "쉬움",
       "calories": "200kcal",
-      "image": "assets/images/recipes/recipe_005.png"
+      "image": "assets/images/recipes/recipe_005.webp"
     },
     {
       "id": "recipe_004",
@@ -130,7 +130,7 @@
       "cookingTime": "35분",
       "difficulty": "보통",
       "calories": "180kcal",
-      "image": "assets/images/recipes/recipe_004.png"
+      "image": "assets/images/recipes/recipe_004.webp"
     },
     {
       "id": "recipe_003",
@@ -142,7 +142,7 @@
       "cookingTime": "40분",
       "difficulty": "보통",
       "calories": "200kcal",
-      "image": "assets/images/recipes/recipe_003.png"
+      "image": "assets/images/recipes/recipe_003.webp"
     },
     {
       "id": "recipe_002",
@@ -154,7 +154,7 @@
       "cookingTime": "15분",
       "difficulty": "쉬움",
       "calories": "250kcal",
-      "image": "assets/images/recipes/recipe_002.png"
+      "image": "assets/images/recipes/recipe_002.webp"
     },
     {
       "id": "recipe_001",
@@ -166,7 +166,7 @@
       "cookingTime": "30분",
       "difficulty": "쉬움",
       "calories": "180kcal",
-      "image": "assets/images/recipes/recipe_001.jpg"
+      "image": "assets/images/recipes/recipe_001.webp"
     }
   ]
 }

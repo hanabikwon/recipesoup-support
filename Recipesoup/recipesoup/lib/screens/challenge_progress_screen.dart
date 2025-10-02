@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../config/theme.dart';
 import '../providers/challenge_provider.dart';
 import '../models/challenge_models.dart';
-import '../services/cooking_method_service.dart';
+import '../services/cooking_method_service.dart'; // For DetailedCookingMethod model
 
 /// 챌린지 진행 화면
 /// 사용자가 실제로 챌린지를 수행하며 단계별로 진행할 수 있는 화면
@@ -286,7 +286,8 @@ class _ChallengeProgressScreenState extends State<ChallengeProgressScreen>
           ),
           SizedBox(height: 16),
           FutureBuilder<DetailedCookingMethod?>(
-            future: CookingMethodService().getCookingMethodById(widget.challenge.id),
+            future: Provider.of<ChallengeProvider>(context, listen: false)
+                .getCookingMethodDetails(widget.challenge.id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Container(

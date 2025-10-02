@@ -8,22 +8,24 @@ class BurrowStorageService {
   final String _milestoneBoxName = 'burrow_milestones';
   final String _progressBoxName = 'unlock_progress';
   
-  Box<Map<String, dynamic>>? _milestoneBox;
-  Box<Map<String, dynamic>>? _progressBox;
+  // 🔥 TEST 18: Box 타입을 dynamic으로 변경
+  Box<dynamic>? _milestoneBox;
+  Box<dynamic>? _progressBox;
   
   /// 초기화
   Future<void> initialize() async {
     try {
+      // 🔥 TEST 18: Box 타입을 dynamic으로 변경 (main.dart와 일치)
       if (!Hive.isBoxOpen(_milestoneBoxName)) {
-        _milestoneBox = await Hive.openBox<Map<String, dynamic>>(_milestoneBoxName);
+        _milestoneBox = await Hive.openBox<dynamic>(_milestoneBoxName);
       } else {
-        _milestoneBox = Hive.box<Map<String, dynamic>>(_milestoneBoxName);
+        _milestoneBox = Hive.box<dynamic>(_milestoneBoxName);
       }
-      
+
       if (!Hive.isBoxOpen(_progressBoxName)) {
-        _progressBox = await Hive.openBox<Map<String, dynamic>>(_progressBoxName);
+        _progressBox = await Hive.openBox<dynamic>(_progressBoxName);
       } else {
-        _progressBox = Hive.box<Map<String, dynamic>>(_progressBoxName);
+        _progressBox = Hive.box<dynamic>(_progressBoxName);
       }
       
       developer.log('BurrowStorageService initialized', name: 'BurrowStorageService');
@@ -34,15 +36,17 @@ class BurrowStorageService {
   }
   
   /// 마일스톤 박스 가져오기
-  Future<Box<Map<String, dynamic>>> get _getMilestoneBox async {
+  /// 🔥 TEST 18: 반환 타입도 dynamic으로 변경
+  Future<Box<dynamic>> get _getMilestoneBox async {
     if (_milestoneBox == null || !_milestoneBox!.isOpen) {
       await initialize();
     }
     return _milestoneBox!;
   }
-  
+
   /// 진행상황 박스 가져오기
-  Future<Box<Map<String, dynamic>>> get _getProgressBox async {
+  /// 🔥 TEST 18: 반환 타입도 dynamic으로 변경
+  Future<Box<dynamic>> get _getProgressBox async {
     if (_progressBox == null || !_progressBox!.isOpen) {
       await initialize();
     }

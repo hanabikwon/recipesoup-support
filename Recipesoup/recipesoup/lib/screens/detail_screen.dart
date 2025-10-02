@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../config/theme.dart';
 import '../models/mood.dart';
@@ -88,15 +90,7 @@ class _DetailScreenState extends State<DetailScreen>
               ],
             ),
           ),
-          child: _currentRecipe.localImagePath != null
-              ? Image.asset(
-                  _currentRecipe.localImagePath!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildPlaceholderImage();
-                  },
-                )
-              : _buildPlaceholderImage(),
+          child: _buildPlaceholderImage(),
         ),
       ),
       actions: [
@@ -224,6 +218,52 @@ class _DetailScreenState extends State<DetailScreen>
                 ],
               ),
             ),
+            // 링크 표시 (sourceUrl이 있을 경우)
+            if (_currentRecipe.sourceUrl != null && _currentRecipe.sourceUrl!.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              GestureDetector(
+                onTap: () => _showLinkBottomSheet(_currentRecipe.sourceUrl!),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryLight.withValues(alpha: 51),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppTheme.primaryColor.withValues(alpha: 102),
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.link,
+                        size: 20,
+                        color: AppTheme.primaryColor,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          _currentRecipe.sourceUrl!,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppTheme.textSecondary,
+                            decoration: TextDecoration.underline,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.open_in_new,
+                        size: 16,
+                        color: AppTheme.textTertiary,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
             // "저장하기" 버튼 (AI 생성 임시 레시피인 경우)
             if (widget.isTemporaryRecipe && !_isSaved) ...[
               const SizedBox(height: 16),
@@ -845,6 +885,161 @@ class _DetailScreenState extends State<DetailScreen>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // 링크 바텀시트 표시
+  void _showLinkBottomSheet(String url) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 제목
+            Text(
+              '레시피 링크',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: AppTheme.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // URL 표시
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.cardColor,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppTheme.dividerColor,
+                ),
+              ),
+              child: Text(
+                url,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppTheme.textSecondary,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // 링크 복사하기 버튼
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.primaryLight.withValues(alpha: 51),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.content_copy,
+                  color: AppTheme.primaryColor,
+                  size: 24,
+                ),
+              ),
+              title: const Text(
+                '링크 복사하기',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+              onTap: () async {
+                // 클립보드에 복사
+                await Clipboard.setData(ClipboardData(text: url));
+
+                // 바텀시트 닫기
+                if (mounted) Navigator.pop(context);
+
+                // 성공 메시지 표시
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('링크가 복사되었습니다'),
+                      backgroundColor: AppTheme.successColor,
+                      duration: const Duration(seconds: 2),
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+
+            const Divider(color: AppTheme.dividerColor),
+
+            // 바로가기 버튼
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppTheme.accentOrange.withValues(alpha: 51),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.open_in_new,
+                  color: AppTheme.accentOrange,
+                  size: 24,
+                ),
+              ),
+              title: const Text(
+                '바로가기',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.textPrimary,
+                ),
+              ),
+              onTap: () async {
+                // URL 열기
+                final uri = Uri.parse(url);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(
+                    uri,
+                    mode: LaunchMode.externalApplication,
+                  );
+
+                  // 바텀시트 닫기
+                  if (mounted) Navigator.pop(context);
+                } else {
+                  // URL 열기 실패
+                  if (mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('링크를 열 수 없습니다'),
+                        backgroundColor: AppTheme.errorColor,
+                        duration: const Duration(seconds: 2),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }

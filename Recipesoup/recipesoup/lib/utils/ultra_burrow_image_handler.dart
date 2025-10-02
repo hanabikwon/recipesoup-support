@@ -47,9 +47,9 @@ class UltraBurrowImageHandler {
       
       for (final base in baseVariations) {
         variations.addAll([
-          '$base.png',
-          '$base.jpg',
-          '$base.jpeg',
+          '$base.webp',
+          '$base.webp',
+          '$base.webp',
         ]);
       }
     }
@@ -222,11 +222,11 @@ class UltraBurrowImageHandler {
     // Level 3: 하드코딩된 기본 이미지들 시도
     debugPrint('🔥 ULTRA Level 3: Trying hardcoded defaults');
     final hardcodedPaths = [
-      'assets/images/burrow/special_rooms/burrow_locked.png', // 특별 공간 잠김 이미지 우선
-      'assets/images/burrow/milestones/burrow_tiny.png',
-      'assets/images/burrow/milestones/burrow_small.png',
-      'assets/images/burrow/milestones/burrow_medium.png',
-      'assets/images/burrow/milestones/burrow_large.png',
+      'assets/images/burrow/special_rooms/burrow_locked.webp', // 특별 공간 잠김 이미지 우선
+      'assets/images/burrow/milestones/burrow_tiny.webp',
+      'assets/images/burrow/milestones/burrow_small.webp',
+      'assets/images/burrow/milestones/burrow_medium.webp',
+      'assets/images/burrow/milestones/burrow_large.webp',
     ];
     
     for (final path in hardcodedPaths) {
@@ -379,11 +379,11 @@ class UltraBurrowImageHandler {
     debugPrint('🔥🔥🔥 ULTRA DEBUG: Checking all image paths');
     
     final testPaths = [
-      'assets/images/burrow/burrow_tiny.png',
-      'assets/images/burrow/burrow_small.png',
-      'assets/images/burrow/burrow_medium.png',
-      'assets/images/burrow/burrow_large.png',
-      'assets/images/burrow/burrow_locked.png',
+      'assets/images/burrow/burrow_tiny.webp',
+      'assets/images/burrow/burrow_small.webp',
+      'assets/images/burrow/burrow_medium.webp',
+      'assets/images/burrow/burrow_large.webp',
+      'assets/images/burrow/burrow_locked.webp',
     ];
     
     for (final path in testPaths) {

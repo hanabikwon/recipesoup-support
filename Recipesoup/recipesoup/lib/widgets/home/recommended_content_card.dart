@@ -340,7 +340,7 @@ class RecommendedContentCard extends StatelessWidget {
     final type = data['type'] as String? ?? 'movie';
     final id = data['id'] as String? ?? 'default';
     final folder = _isMovieType(type) ? 'movies' : 'books';
-    return 'assets/images/content/$folder/$id.jpg';
+    return 'assets/images/content/$folder/$id.webp';
   }
 
   /// 영화 타입 여부 확인 (안전한 null 체크 포함)

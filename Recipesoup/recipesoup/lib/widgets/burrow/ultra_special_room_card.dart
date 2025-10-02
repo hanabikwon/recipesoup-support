@@ -22,16 +22,17 @@ class UltraSpecialRoomCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       child: Card(
         elevation: milestone.isUnlocked ? 8 : 3,
-        shadowColor: milestone.isUnlocked 
+        shadowColor: milestone.isUnlocked
             ? _getThemeColor().withValues(alpha: 77)
             : Colors.black.withValues(alpha: 26),
-        color: milestone.isUnlocked 
+        color: milestone.isUnlocked
             ? const Color(0xFFFFFEFB)
             : const Color(0xFFF5F5F5),
+        margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
           side: BorderSide(
-            color: milestone.isUnlocked 
+            color: milestone.isUnlocked
                 ? _getThemeColor()
                 : const Color(0xFFE0E0E0),
             width: milestone.isUnlocked ? 2 : 1,
@@ -45,24 +46,26 @@ class UltraSpecialRoomCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
                     // 특별 공간 썸네일
                     _buildThumbnail(),
-                    
+
                     const SizedBox(width: 16),
-                    
+
                     // 메인 콘텐츠
                     Expanded(
                       child: _buildContent(context),
                     ),
-                    
+
                     // 우측 상태
                     _buildStatusIcon(),
                   ],
                 ),
-                
+
                 // 진행도 바 (잠긴 상태일 때만)
                 if (!milestone.isUnlocked)
                   _buildProgressBar(context),
@@ -109,7 +112,7 @@ class UltraSpecialRoomCard extends StatelessWidget {
   /// 잠긴 특별 공간 이미지 (burrow_locked.png 직접 사용)
   Widget _buildLockedImage() {
     return Image.asset(
-      'assets/images/burrow/special_rooms/burrow_locked.png',
+      'assets/images/burrow/special_rooms/burrow_locked.webp',
       width: 80,
       height: 80,
       fit: BoxFit.cover,

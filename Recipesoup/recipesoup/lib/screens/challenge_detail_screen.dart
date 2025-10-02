@@ -1790,12 +1790,10 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
         ],
         instructions: instructionsList, // 상세 요리법 → "만드는 법" 필드로 전달
         sauce: sauceString, // 소스&양념 → "소스 비율" 필드로 전달
-        localImagePath: null, // 사용자가 업로드할 이미지
         tags: ['#챌린지완료', '#${widget.challenge.category.name}'],
         createdAt: DateTime.now(),
         mood: Mood.values[0], // 기본 감정 (사용자가 선택)
         rating: null, // 사용자가 평가
-        reminderDate: null,
         isFavorite: false,
       );
 

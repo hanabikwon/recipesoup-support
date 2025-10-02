@@ -1,7 +1,6 @@
 class AppMessage {
   final String id;
   final String type;
-  final String priority;
   final String title;
   final String preview;
   final String content;
@@ -10,7 +9,6 @@ class AppMessage {
   const AppMessage({
     required this.id,
     required this.type,
-    required this.priority,
     required this.title,
     required this.preview,
     required this.content,
@@ -21,7 +19,6 @@ class AppMessage {
     return AppMessage(
       id: json['id'] as String,
       type: json['type'] as String,
-      priority: json['priority'] as String,
       title: json['title'] as String,
       preview: json['preview'] as String,
       content: json['content'] as String,
@@ -33,7 +30,6 @@ class AppMessage {
     return {
       'id': id,
       'type': type,
-      'priority': priority,
       'title': title,
       'preview': preview,
       'content': content,
@@ -74,19 +70,3 @@ enum MessageType {
   }
 }
 
-/// 메시지 우선순위 enum
-enum MessagePriority {
-  high('high'),
-  medium('medium'),
-  low('low');
-
-  const MessagePriority(this.value);
-  final String value;
-
-  static MessagePriority fromString(String value) {
-    return MessagePriority.values.firstWhere(
-      (priority) => priority.value == value,
-      orElse: () => MessagePriority.medium,
-    );
-  }
-}

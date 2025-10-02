@@ -34,12 +34,6 @@ class MessageService {
     return allMessages.where((message) => message.type == type).toList();
   }
 
-  /// 우선순위가 높은 메시지만 로드
-  Future<List<AppMessage>> loadHighPriorityMessages() async {
-    final allMessages = await loadMessages();
-    return allMessages.where((message) => message.priority == 'high').toList();
-  }
-
   /// JSON 파일의 버전 정보 가져오기
   Future<String> getMessagesVersion() async {
     try {
@@ -104,13 +98,11 @@ class MessageService {
     String? title,
     String? content,
     String type = 'announcement',
-    String priority = 'medium',
   }) {
     final now = DateTime.now();
     return AppMessage(
       id: id ?? 'sample_${now.millisecondsSinceEpoch}',
       type: type,
-      priority: priority,
       title: title ?? '샘플 메시지',
       preview: content?.substring(0, 50) ?? '샘플 메시지 미리보기입니다.',
       content: content ?? '이것은 테스트용 샘플 메시지입니다.\n\n개발 및 테스트 목적으로 생성되었습니다.',

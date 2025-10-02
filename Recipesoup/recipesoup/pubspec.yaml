@@ -53,7 +53,7 @@ dependencies:
   # 이미지 처리
   image_picker: ^1.1.2
   image: ^4.2.0
-  path_provider: ^2.1.4
+  path_provider: 2.0.15  # iOS Platform Channel 안정 버전 (^2.1.4에서 다운그레이드)
 
   # 메시지 시스템 (로컬 읽음 상태 저장)
   shared_preferences: ^2.3.2
@@ -137,15 +137,15 @@ flutter:
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/app_icon.webp"
   min_sdk_android: 21 # Android 최소 SDK 버전
   remove_alpha_ios: true # iOS App Store 정책 준수
   web:
     generate: true
-    image_path: "assets/images/app_icon.png"
+    image_path: "assets/images/app_icon.webp"
   windows:
     generate: true
-    image_path: "assets/images/app_icon.png"
+    image_path: "assets/images/app_icon.webp"
   macos:
     generate: true
-    image_path: "assets/images/app_icon.png"
+    image_path: "assets/images/app_icon.webp"

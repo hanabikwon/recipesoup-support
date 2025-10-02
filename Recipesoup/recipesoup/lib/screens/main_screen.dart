@@ -146,16 +146,22 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   /// 글로벌 마일스톤 알림 체크 (앱 전역에서 팝업 표시)
   Future<void> _checkGlobalNotifications() async {
     if (!mounted) return;
+
+    // Provider가 준비되지 않았을 수 있으므로 try-catch로 보호
+    try {
+      final burrowProvider = context.read<BurrowProvider>();
     
-    final burrowProvider = context.read<BurrowProvider>();
-    
-    while (burrowProvider.pendingNotificationCount > 0) {
-      final notification = burrowProvider.getNextNotification();
-      if (notification != null && mounted) {
-        await _showGlobalAchievementDialog(notification);
-      } else {
-        break;
+      while (burrowProvider.pendingNotificationCount > 0) {
+        final notification = burrowProvider.getNextNotification();
+        if (notification != null && mounted) {
+          await _showGlobalAchievementDialog(notification);
+        } else {
+          break;
+        }
       }
+    } catch (e) {
+      // Provider가 아직 준비되지 않았을 때 무시 (정상 상황)
+      debugPrint('⚠️ Provider not ready yet during _checkGlobalNotifications: $e');
     }
   }
 

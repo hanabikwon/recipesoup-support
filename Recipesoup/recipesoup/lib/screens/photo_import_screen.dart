@@ -472,6 +472,110 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
     );
   }
 
+  /// Rate Limit 전용 다이얼로그 표시
+  void _showRateLimitDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.hourglass_empty,
+              color: AppTheme.accentOrange,
+              size: 28,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              '잠시만 기다려주세요 🐰',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '시간당 AI 분석 요청 한도를 초과했습니다.',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 15,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryLight.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: AppTheme.accentOrange,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '시간당 최대 50회까지 분석 가능합니다',
+                      style: TextStyle(
+                        color: AppTheme.textSecondary,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '잠시 후 다시 시도해주세요.\n조금만 기다리면 다시 사용하실 수 있습니다.',
+              style: TextStyle(
+                color: AppTheme.textSecondary,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              backgroundColor: AppTheme.accentOrange,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppTheme.borderRadiusSmall),
+              ),
+            ),
+            child: const Text(
+              '확인',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+        actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        actionsAlignment: MainAxisAlignment.end,
+      ),
+    );
+  }
+
   Widget _buildSourceButton({
     required VoidCallback onPressed,
     required IconData icon,
@@ -607,7 +711,15 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
       } else if (errorStr.contains('api key') || errorStr.contains('unauthorized') || errorStr.contains('401')) {
         errorMessage = 'AI 분석 서비스에 연결할 수 없습니다.\n잠시 후 다시 시도해주세요.';
       } else if (errorStr.contains('rate limit') || errorStr.contains('429') || errorStr.contains('quota')) {
-        errorMessage = 'AI 분석 요청이 많습니다.\n1분 후 다시 시도해주세요.';
+        // Rate Limit 전용 다이얼로그 표시
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _currentLoadingMessage = '';
+          });
+          _showRateLimitDialog();
+        }
+        return;
       } else if (errorStr.contains('network') || errorStr.contains('timeout') || errorStr.contains('connection')) {
         errorMessage = '네트워크 연결을 확인해주세요.\n인터넷 연결 상태를 점검해보세요.';
       } else if (errorStr.contains('food') || errorStr.contains('음식') || errorStr.contains('not food') ||

@@ -9,7 +9,7 @@
     "servings": "3-4인분",
     "main_ingredients": ["미역", "쇠고기", "참기름", "국간장", "다진마늘"],
     "cooking_tip": "미역은 찬물에 충분히 불린 후 적당한 크기로 썰어주세요. 쇠고기는 참기름에 볶아 감칠맛을 더해주는 것이 포인트입니다.",
-    "image_path": "assets/images/challenges/emotional_001.jpg",
+    "image_path": "assets/images/challenges/emotional_001.webp",
     "tags": ["#엄마음식", "#생일", "#미역국", "#따뜻한국물"],
     "points": 15,
     "is_active": true
@@ -24,7 +24,7 @@
     "servings": "1인분",
     "main_ingredients": ["밥", "계란", "파", "간장", "참기름"],
     "cooking_tip": "찬밥을 사용하면 더 맛있어요. 계란은 반숙으로 스크램블해서 부드러움을 살려주세요.",
-    "image_path": "assets/images/challenges/emotional_002.jpg",
+    "image_path": "assets/images/challenges/emotional_002.webp",
     "tags": ["#혼밥", "#간편식", "#계란볶음밥", "#나혼자"],
     "points": 10,
     "is_active": true
@@ -39,7 +39,7 @@
     "servings": "2-3인분",
     "main_ingredients": ["닭", "쌀", "대파", "마늘", "생강"],
     "cooking_tip": "닭은 충분히 삶아서 육수를 우려내고, 쌀은 미리 불려두면 더 빨리 끓일 수 있어요.",
-    "image_path": "assets/images/challenges/emotional_003.jpg",
+    "image_path": "assets/images/challenges/emotional_003.webp",
     "tags": ["#위로음식", "#죽", "#몸보신", "#따뜻함"],
     "points": 20,
     "is_active": true
@@ -54,7 +54,7 @@
     "servings": "3-4인분",
     "main_ingredients": ["묵은지", "돼지고기", "두부", "양파", "고춧가루"],
     "cooking_tip": "묵은지를 참기름에 충분히 볶아야 감칠맛이 나요. 돼지고기는 삼겹살을 사용하면 더 맛있습니다.",
-    "image_path": "assets/images/challenges/emotional_004.jpg",
+    "image_path": "assets/images/challenges/emotional_004.webp",
     "tags": ["#할머니음식", "#김치찌개", "#추억", "#집밥"],
     "points": 15,
     "is_active": true
@@ -69,7 +69,7 @@
     "servings": "1인분",
     "main_ingredients": ["밥", "계란말이", "불고기", "시금치나물", "단무지"],
     "cooking_tip": "각 반찬의 간을 적절히 맞추고, 색깔별로 배치하면 보기에도 예뻐요.",
-    "image_path": "assets/images/challenges/emotional_005.jpg",
+    "image_path": "assets/images/challenges/emotional_005.webp",
     "tags": ["#도시락", "#사랑", "#정성", "#도시락반찬"],
     "points": 25,
     "is_active": true
@@ -84,7 +84,7 @@
     "servings": "2인분",
     "main_ingredients": ["스파게티면", "베이컨", "달걀노른자", "파르메산치즈", "후추"],
     "cooking_tip": "달걀이 익지 않도록 불을 끄고 여열로 저어주는 것이 포인트예요.",
-    "image_path": "assets/images/challenges/world_001.jpg",
+    "image_path": "assets/images/challenges/world_001.webp",
     "tags": ["#이탈리아", "#파스타", "#까르보나라", "#정통레시피"],
     "points": 20,
     "is_active": true
@@ -99,7 +99,7 @@
     "servings": "2인분",
     "main_ingredients": ["돼지고기 등심", "밥", "양파", "계란", "돈가스소스"],
     "cooking_tip": "돈가스는 완전히 익힌 후 계란물을 부어 반숙으로 마무리하세요.",
-    "image_path": "assets/images/challenges/world_002.jpg",
+    "image_path": "assets/images/challenges/world_002.webp",
     "tags": ["#일본요리", "#가츠동", "#덮밥", "#돈가스"],
     "points": 25,
     "is_active": true
@@ -114,7 +114,7 @@
     "servings": "2-3인분",
     "main_ingredients": ["두부", "돼지다진고기", "두반장", "고추기름", "산초가루"],
     "cooking_tip": "두반장을 기름에 볶아 향을 내고, 산초가루는 마지막에 뿌려주세요.",
-    "image_path": "assets/images/challenges/world_003.jpg",
+    "image_path": "assets/images/challenges/world_003.webp",
     "tags": ["#중국요리", "#마파두부", "#사천요리", "#매운맛"],
     "points": 18,
     "is_active": true
@@ -129,7 +129,7 @@
     "servings": "1인분",
     "main_ingredients": ["달걀", "버터", "소금", "허브", "생크림"],
     "cooking_tip": "약한 불에서 계속 젓가락으로 저으면서 천천히 익혀주는 것이 핵심이에요.",
-    "image_path": "assets/images/challenges/world_004.jpg",
+    "image_path": "assets/images/challenges/world_004.webp",
     "tags": ["#프랑스요리", "#오믈렛", "#계란요리", "#우아함"],
     "points": 20,
     "is_active": true
@@ -144,7 +144,7 @@
     "servings": "3-4인분",
     "main_ingredients": ["닭고기", "양파", "토마토", "코코넛밀크", "커리가루"],
     "cooking_tip": "양파를 충분히 볶아 단맛을 내고, 향신료는 기름에 볶아 향을 살려주세요.",
-    "image_path": "assets/images/challenges/world_005.jpg",
+    "image_path": "assets/images/challenges/world_005.webp",
     "tags": ["#인도요리", "#커리", "#향신료", "#이국적"],
     "points": 22,
     "is_active": true
@@ -159,7 +159,7 @@
     "servings": "1-2인분",
     "main_ingredients": ["유기농 믹스그린", "방울토마토", "올리브오일", "발사믹식초", "소금"],
     "cooking_tip": "드레싱은 먹기 직전에 뿌려 채소가 눅눅해지지 않도록 하세요.",
-    "image_path": "assets/images/challenges/healthy_natural_001.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_001.webp",
     "tags": ["#유기농", "#샐러드", "#자연식품", "#건강식"],
     "points": 10,
     "is_active": true
@@ -174,7 +174,7 @@
     "servings": "3-4인분",
     "main_ingredients": ["유기농 브로콜리", "유기농 당근", "유기농 양파", "올리브오일", "천연 허브"],
     "cooking_tip": "야채를 너무 오래 끓이지 말고 영양소가 파괴되지 않도록 주의하세요.",
-    "image_path": "assets/images/challenges/healthy_natural_002.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_002.webp",
     "tags": ["#무농약", "#야채스프", "#유기농", "#자연식품"],
     "points": 15,
     "is_active": true
@@ -189,7 +189,7 @@
     "servings": "2-3인분",
     "main_ingredients": ["유기농 현미", "검은콩", "견과류", "물", "천일염"],
     "cooking_tip": "현미는 충분히 불려서 사용하면 더 부드럽게 지어져요.",
-    "image_path": "assets/images/challenges/healthy_natural_003.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_003.webp",
     "tags": ["#현미", "#유기농", "#견과류", "#완전식품"],
     "points": 12,
     "is_active": true
@@ -204,7 +204,7 @@
     "servings": "2개",
     "main_ingredients": ["콩패티", "아보카도", "토마토", "양상추", "통밀번"],
     "cooking_tip": "콩패티는 중약불에서 바삭하게 구워 식감을 살려주세요.",
-    "image_path": "assets/images/challenges/healthy_natural_004.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_004.webp",
     "tags": ["#비건", "#플랜트베이스", "#콩패티", "#채식"],
     "points": 18,
     "is_active": true
@@ -219,7 +219,7 @@
     "servings": "2인분",
     "main_ingredients": ["단단한 두부", "간장", "마늘", "생강", "참기름"],
     "cooking_tip": "두부는 키친타월로 물기를 제거한 후 구워야 바삭해져요.",
-    "image_path": "assets/images/challenges/healthy_natural_005.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_005.webp",
     "tags": ["#두부", "#식물성단백질", "#간장소스", "#채식"],
     "points": 15,
     "is_active": true
@@ -234,7 +234,7 @@
     "servings": "2인분",
     "main_ingredients": ["아몬드", "호두", "믹스그린", "올리브오일", "레몬즙"],
     "cooking_tip": "견과류는 살짝 볶아서 고소한 맛을 더해주세요.",
-    "image_path": "assets/images/challenges/healthy_natural_006.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_006.webp",
     "tags": ["#견과류", "#오메가3", "#자연식품", "#샐러드"],
     "points": 12,
     "is_active": true
@@ -249,7 +249,7 @@
     "servings": "2인분",
     "main_ingredients": ["유기농 토마토", "통밀파스타", "바질", "마늘", "올리브오일"],
     "cooking_tip": "토마토는 껍질을 벗기고 사용하면 더 부드러운 소스가 만들어져요.",
-    "image_path": "assets/images/challenges/healthy_natural_007.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_007.webp",
     "tags": ["#유기농토마토", "#통밀파스타", "#바질", "#이탈리아식"],
     "points": 16,
     "is_active": true
@@ -264,7 +264,7 @@
     "servings": "2-3인분",
     "main_ingredients": ["파프리카", "호박", "가지", "양파", "올리브오일"],
     "cooking_tip": "채소는 크기를 균일하게 썰어야 골고루 익어요.",
-    "image_path": "assets/images/challenges/healthy_natural_008.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_008.webp",
     "tags": ["#채소볶음", "#무지개채소", "#유기농", "#큐브컷"],
     "points": 14,
     "is_active": true
@@ -279,7 +279,7 @@
     "servings": "5-6인분",
     "main_ingredients": ["유기농 배추", "천일염", "고춧가루", "마늘", "생강"],
     "cooking_tip": "소금은 천일염을 사용하고, 충분한 발효시간을 가져야 맛있어져요.",
-    "image_path": "assets/images/challenges/healthy_natural_009.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_009.webp",
     "tags": ["#자연발효", "#전통김치", "#유익균", "#무첨가"],
     "points": 25,
     "is_active": true
@@ -294,7 +294,7 @@
     "servings": "2인분",
     "main_ingredients": ["유기농 버섯", "현미", "치즈", "양파", "화이트와인"],
     "cooking_tip": "리조또는 계속 저어가며 천천히 끓여야 크리미한 식감이 나와요.",
-    "image_path": "assets/images/challenges/healthy_natural_010.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_010.webp",
     "tags": ["#유기농버섯", "#리조또", "#현미", "#이탈리아"],
     "points": 20,
     "is_active": true
@@ -309,7 +309,7 @@
     "servings": "1잔",
     "main_ingredients": ["바나나", "딸기", "블루베리", "물", "꿀"],
     "cooking_tip": "얼린 과일을 사용하면 더 시원하고 진한 맛이 나요.",
-    "image_path": "assets/images/challenges/healthy_natural_011.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_011.webp",
     "tags": ["#자연단맛", "#무설탕", "#과일스무디", "#건강음료"],
     "points": 10,
     "is_active": true
@@ -324,7 +324,7 @@
     "servings": "2잔",
     "main_ingredients": ["유기농 민트", "레몬밤", "카모마일", "뜨거운 물", "꿀"],
     "cooking_tip": "허브는 3-5분 정도만 우려내야 쓴맛이 나지 않아요.",
-    "image_path": "assets/images/challenges/healthy_natural_012.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_012.webp",
     "tags": ["#허브티", "#유기농", "#카페인프리", "#천연차"],
     "points": 8,
     "is_active": true
@@ -339,7 +339,7 @@
     "servings": "1인분",
     "main_ingredients": ["시금치", "바나나", "사과", "레몬", "물"],
     "cooking_tip": "얼린 바나나를 사용하면 더 시원하고 크리미해져요.",
-    "image_path": "assets/images/challenges/healthy_energy_001.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_001.webp",
     "tags": ["#건강식", "#스무디", "#비타민", "#아침식사"],
     "points": 12,
     "is_active": true
@@ -354,7 +354,7 @@
     "servings": "2인분",
     "main_ingredients": ["오이", "토마토", "페타치즈", "올리브", "올리브오일"],
     "cooking_tip": "야채는 큼직하게 썰고, 드레싱은 먹기 직전에 뿌려주세요.",
-    "image_path": "assets/images/challenges/healthy_energy_002.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_002.webp",
     "tags": ["#건강식", "#샐러드", "#지중해식", "#단백질"],
     "points": 15,
     "is_active": true
@@ -369,7 +369,7 @@
     "servings": "1인분",
     "main_ingredients": ["블루베리", "딸기", "그래놀라", "요거트", "꿀"],
     "cooking_tip": "층층이 쌓아 올려 시각적인 즐거움도 함께 만들어보세요.",
-    "image_path": "assets/images/challenges/healthy_energy_003.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_003.webp",
     "tags": ["#건강식", "#베리", "#항산화", "#디저트"],
     "points": 14,
     "is_active": true
@@ -384,7 +384,7 @@
     "servings": "1인분",
     "main_ingredients": ["닭가슴살", "퀴노아", "아보카도", "방울토마토", "올리브오일"],
     "cooking_tip": "닭가슴살은 너무 오래 익히지 말고 촉촉하게 조리하세요.",
-    "image_path": "assets/images/challenges/healthy_energy_004.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_004.webp",
     "tags": ["#고단백질", "#슈퍼푸드", "#운동식단", "#퀴노아"],
     "points": 18,
     "is_active": true
@@ -399,7 +399,7 @@
     "servings": "2인분",
     "main_ingredients": ["연어", "레몬", "딜", "올리브오일", "소금"],
     "cooking_tip": "연어는 겉질부터 구워서 바삭함과 촉촉함을 동시에 살려주세요.",
-    "image_path": "assets/images/challenges/healthy_energy_005.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_005.webp",
     "tags": ["#오메가3", "#연어", "#두뇌음식", "#구이"],
     "points": 20,
     "is_active": true
@@ -414,7 +414,7 @@
     "servings": "1인분",
     "main_ingredients": ["계란", "우유", "버터", "소금", "후추"],
     "cooking_tip": "각각의 계란 요리는 불조절이 중요해요. 약한 불에서 천천히 조리하세요.",
-    "image_path": "assets/images/challenges/healthy_energy_006.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_006.webp",
     "tags": ["#완전식품", "#계란요리", "#단백질", "#3종세트"],
     "points": 15,
     "is_active": true
@@ -429,7 +429,7 @@
     "servings": "2인분",
     "main_ingredients": ["방울토마토", "당근", "옥수수", "브로콜리", "적양배추"],
     "cooking_tip": "각 색깔별 영양소가 다르니 골고루 넣어 영양의 균형을 맞춰주세요.",
-    "image_path": "assets/images/challenges/healthy_energy_007.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_007.webp",
     "tags": ["#7가지색깔", "#무지개샐러드", "#영양균형", "#비타민"],
     "points": 16,
     "is_active": true
@@ -444,7 +444,7 @@
     "servings": "10개",
     "main_ingredients": ["아몬드", "호두", "대추", "단백질파우더", "코코넛오일"],
     "cooking_tip": "냉장고에서 30분 정도 굳혀야 모양이 잘 잡혀요.",
-    "image_path": "assets/images/challenges/healthy_energy_008.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_008.webp",
     "tags": ["#단백질파워", "#에너지볼", "#운동간식", "#견과류"],
     "points": 16,
     "is_active": true
@@ -459,7 +459,7 @@
     "servings": "1잔",
     "main_ingredients": ["녹차", "바나나", "단백질파우더", "아몬드우유", "꿀"],
     "cooking_tip": "녹차는 미리 우려서 식힌 후 사용하세요.",
-    "image_path": "assets/images/challenges/healthy_energy_009.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_009.webp",
     "tags": ["#녹차", "#단백질스무디", "#항산화", "#운동음료"],
     "points": 14,
     "is_active": true
@@ -474,7 +474,7 @@
     "servings": "1인분",
     "main_ingredients": ["참치캔", "아보카도", "현미밥", "오이", "김"],
     "cooking_tip": "아보카도는 먹기 직전에 썰어야 색이 변하지 않아요.",
-    "image_path": "assets/images/challenges/healthy_energy_010.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_010.webp",
     "tags": ["#참치", "#아보카도", "#오메가3", "#보울요리"],
     "points": 16,
     "is_active": true
@@ -489,7 +489,7 @@
     "servings": "1인분",
     "main_ingredients": ["닭가슴살", "로메인상추", "방울토마토", "오이", "발사믹드레싱"],
     "cooking_tip": "닭가슴살은 소금물에 재워두면 더 부드럽게 조리돼요.",
-    "image_path": "assets/images/challenges/healthy_energy_011.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_011.webp",
     "tags": ["#저지방", "#고단백질", "#다이어트", "#치킨샐러드"],
     "points": 17,
     "is_active": true
@@ -504,7 +504,7 @@
     "servings": "1잔",
     "main_ingredients": ["바나나", "스피룰리나", "치아시드", "코코넛워터", "꿀"],
     "cooking_tip": "치아시드는 미리 불려두면 더 부드러운 식감이 나요.",
-    "image_path": "assets/images/challenges/healthy_energy_012.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_012.webp",
     "tags": ["#에너지부스터", "#스피룰리나", "#치아시드", "#아침활력"],
     "points": 15,
     "is_active": true
@@ -519,7 +519,7 @@
     "servings": "2-3인분",
     "main_ingredients": ["닭고기", "로즈마리", "타임", "마늘", "올리브오일"],
     "cooking_tip": "허브는 미리 마리네이드해야 향이 더 잘 배어요.",
-    "image_path": "assets/images/challenges/healthy_care_001.jpg",
+    "image_path": "assets/images/challenges/healthy_care_001.webp",
     "tags": ["#저염", "#허브", "#고혈압", "#건강관리"],
     "points": 20,
     "is_active": true
@@ -534,7 +534,7 @@
     "servings": "2인분",
     "main_ingredients": ["연어", "레몬", "딜", "후추", "올리브오일"],
     "cooking_tip": "레몬즙은 구우면서 뿌려야 생선 비린내가 없어져요.",
-    "image_path": "assets/images/challenges/healthy_care_002.jpg",
+    "image_path": "assets/images/challenges/healthy_care_002.webp",
     "tags": ["#저염", "#오메가3", "#심혈관", "#레몬"],
     "points": 18,
     "is_active": true
@@ -549,7 +549,7 @@
     "servings": "2인분",
     "main_ingredients": ["현미", "곤약쌀", "물", "소금"],
     "cooking_tip": "곤약쌀은 미리 데쳐서 냄새를 제거한 후 사용하세요.",
-    "image_path": "assets/images/challenges/healthy_care_003.jpg",
+    "image_path": "assets/images/challenges/healthy_care_003.webp",
     "tags": ["#낮은GI", "#당뇨친화", "#포만감", "#곤약"],
     "points": 15,
     "is_active": true
@@ -564,7 +564,7 @@
     "servings": "4개",
     "main_ingredients": ["아몬드가루", "스테비아", "계란", "바닐라", "베이킹파우더"],
     "cooking_tip": "스테비아는 설탕보다 단맛이 강하니 조금씩 넣어가며 조절하세요.",
-    "image_path": "assets/images/challenges/healthy_care_004.jpg",
+    "image_path": "assets/images/challenges/healthy_care_004.webp",
     "tags": ["#저당", "#당뇨친화", "#스테비아", "#건강디저트"],
     "points": 20,
     "is_active": true
@@ -579,7 +579,7 @@
     "servings": "1-2인분",
     "main_ingredients": ["바나나", "감자", "시금치", "올리브오일", "마늘"],
     "cooking_tip": "감자는 껍질째 조리하면 칼륨이 더 많이 보존돼요.",
-    "image_path": "assets/images/challenges/healthy_care_005.jpg",
+    "image_path": "assets/images/challenges/healthy_care_005.webp",
     "tags": ["#칼륨", "#고혈압", "#부종완화", "#바나나"],
     "points": 16,
     "is_active": true
@@ -594,7 +594,7 @@
     "servings": "2인분",
     "main_ingredients": ["고등어", "연어", "견과류", "올리브오일", "레몬"],
     "cooking_tip": "생선은 너무 오래 구우면 오메가3가 파괴되니 적당히 익혀주세요.",
-    "image_path": "assets/images/challenges/healthy_care_006.jpg",
+    "image_path": "assets/images/challenges/healthy_care_006.webp",
     "tags": ["#오메가3", "#심혈관", "#콜레스테롤", "#생선요리"],
     "points": 22,
     "is_active": true
@@ -609,7 +609,7 @@
     "servings": "3-4인분",
     "main_ingredients": ["양배추", "당근", "양파", "셀러리", "허브"],
     "cooking_tip": "야채를 오래 끓이면 자연스러운 단맛이 나와요.",
-    "image_path": "assets/images/challenges/healthy_care_007.jpg",
+    "image_path": "assets/images/challenges/healthy_care_007.webp",
     "tags": ["#무염", "#저나트륨", "#야채스프", "#자연단맛"],
     "points": 18,
     "is_active": true
@@ -624,7 +624,7 @@
     "servings": "2인분",
     "main_ingredients": ["브로콜리", "오이", "아보카도", "견과류", "올리브오일"],
     "cooking_tip": "드레싱에 설탕 대신 레몬즙을 사용해 상큼함을 더하세요.",
-    "image_path": "assets/images/challenges/healthy_care_008.jpg",
+    "image_path": "assets/images/challenges/healthy_care_008.webp",
     "tags": ["#혈당조절", "#당뇨친화", "#저GI", "#채소샐러드"],
     "points": 14,
     "is_active": true
@@ -639,7 +639,7 @@
     "servings": "1인분",
     "main_ingredients": ["닭가슴살", "허브", "마늘", "후추", "레몬"],
     "cooking_tip": "닭가슴살은 너무 오래 익히면 퍽퍽해지니 주의하세요.",
-    "image_path": "assets/images/challenges/healthy_care_009.jpg",
+    "image_path": "assets/images/challenges/healthy_care_009.webp",
     "tags": ["#저지방", "#고단백", "#다이어트", "#근육형성"],
     "points": 16,
     "is_active": true
@@ -654,7 +654,7 @@
     "servings": "2인분",
     "main_ingredients": ["오트밀", "견과류", "베리류", "아몬드우유", "계피"],
     "cooking_tip": "오트밀은 천천히 끓여야 크리미한 식감이 나와요.",
-    "image_path": "assets/images/challenges/healthy_care_010.jpg",
+    "image_path": "assets/images/challenges/healthy_care_010.webp",
     "tags": ["#콜레스테롤", "#심혈관", "#오트밀", "#견과류"],
     "points": 18,
     "is_active": true
@@ -669,7 +669,7 @@
     "servings": "2-3인분",
     "main_ingredients": ["강황", "생강", "닭고기", "양파", "마늘"],
     "cooking_tip": "강황은 후추와 함께 사용하면 흡수율이 높아져요.",
-    "image_path": "assets/images/challenges/healthy_care_011.jpg",
+    "image_path": "assets/images/challenges/healthy_care_011.webp",
     "tags": ["#항염", "#강황", "#생강", "#염증관리"],
     "points": 20,
     "is_active": true
@@ -684,7 +684,7 @@
     "servings": "2잔",
     "main_ingredients": ["레몬", "오이", "민트", "물", "얼음"],
     "cooking_tip": "재료들을 우려낸 후 2-3시간 후에 마시면 더 깊은 맛이 나요.",
-    "image_path": "assets/images/challenges/healthy_healing_001.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_001.webp",
     "tags": ["#디톡스", "#해독", "#레몬워터", "#수분보충"],
     "points": 8,
     "is_active": true
@@ -699,7 +699,7 @@
     "servings": "1잔",
     "main_ingredients": ["케일", "시금치", "사과", "생강", "레몬"],
     "cooking_tip": "생강은 너무 많이 넣으면 맵기 때문에 조금씩 조절하세요.",
-    "image_path": "assets/images/challenges/healthy_healing_002.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_002.webp",
     "tags": ["#그린주스", "#간해독", "#혈액정화", "#디톡스"],
     "points": 12,
     "is_active": true
@@ -714,7 +714,7 @@
     "servings": "3-4인분",
     "main_ingredients": ["브로콜리", "양배추", "셀러리", "양파", "마늘"],
     "cooking_tip": "야채는 너무 익히지 말고 아삭한 식감을 살려주세요.",
-    "image_path": "assets/images/challenges/healthy_healing_003.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_003.webp",
     "tags": ["#디톡스수프", "#야채", "#위장건강", "#따뜻한수프"],
     "points": 15,
     "is_active": true
@@ -729,7 +729,7 @@
     "servings": "2-3인분",
     "main_ingredients": ["닭고기", "쌀", "대파", "생강", "소금"],
     "cooking_tip": "쌀은 미리 불려두면 더 빨리 부드럽게 끓일 수 있어요.",
-    "image_path": "assets/images/challenges/healthy_healing_004.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_004.webp",
     "tags": ["#닭죽", "#회복음식", "#소화", "#부드러운"],
     "points": 18,
     "is_active": true
@@ -744,7 +744,7 @@
     "servings": "2인분",
     "main_ingredients": ["계란", "우유", "소금", "파", "새우젓"],
     "cooking_tip": "계란물을 체에 거르면 더 부드러운 계란찜이 만들어져요.",
-    "image_path": "assets/images/challenges/healthy_healing_005.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_005.webp",
     "tags": ["#계란찜", "#부드러운", "#소화", "#환자식"],
     "points": 12,
     "is_active": true
@@ -759,7 +759,7 @@
     "servings": "2잔",
     "main_ingredients": ["생강", "꿀", "레몬", "물"],
     "cooking_tip": "생강은 얇게 썰어 10분 정도 우려내야 진한 맛이 나요.",
-    "image_path": "assets/images/challenges/healthy_healing_006.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_006.webp",
     "tags": ["#생강차", "#소화촉진", "#면역력", "#감기"],
     "points": 10,
     "is_active": true
@@ -774,7 +774,7 @@
     "servings": "2잔",
     "main_ingredients": ["캐모마일", "꿀", "뜨거운물"],
     "cooking_tip": "캐모마일은 3-5분 정도만 우려내야 쓴맛이 나지 않아요.",
-    "image_path": "assets/images/challenges/healthy_healing_007.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_007.webp",
     "tags": ["#캐모마일", "#스트레스완화", "#숙면", "#힐링"],
     "points": 8,
     "is_active": true
@@ -789,7 +789,7 @@
     "servings": "1잔",
     "main_ingredients": ["무첨가 두유", "꿀", "계피", "바닐라"],
     "cooking_tip": "두유는 끓이지 말고 따뜻하게만 데워주세요.",
-    "image_path": "assets/images/challenges/healthy_healing_008.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_008.webp",
     "tags": ["#두유", "#식물성단백질", "#유당불내증", "#따뜻한음료"],
     "points": 8,
     "is_active": true
@@ -804,7 +804,7 @@
     "servings": "2잔",
     "main_ingredients": ["페퍼민트", "꿀", "레몬", "뜨거운물"],
     "cooking_tip": "신선한 페퍼민트를 사용하면 향이 더 진해요.",
-    "image_path": "assets/images/challenges/healthy_healing_009.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_009.webp",
     "tags": ["#페퍼민트", "#소화불량", "#복부팽만", "#상쾌함"],
     "points": 8,
     "is_active": true
@@ -819,7 +819,7 @@
     "servings": "2인분",
     "main_ingredients": ["쌀", "물", "소금"],
     "cooking_tip": "쌀을 충분히 불려서 오랜 시간 끓여야 부드러워져요.",
-    "image_path": "assets/images/challenges/healthy_healing_010.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_010.webp",
     "tags": ["#물죽", "#회복식", "#위장보호", "#기본죽"],
     "points": 10,
     "is_active": true
@@ -834,7 +834,7 @@
     "servings": "2인분",
     "main_ingredients": ["우유", "요거트균", "꿀", "베리류"],
     "cooking_tip": "발효 온도를 40도 정도로 유지해야 좋은 균이 잘 자라요.",
-    "image_path": "assets/images/challenges/healthy_healing_011.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_011.webp",
     "tags": ["#프로바이오틱스", "#장건강", "#유익균", "#면역력"],
     "points": 15,
     "is_active": true
@@ -849,7 +849,7 @@
     "servings": "1잔",
     "main_ingredients": ["꿀", "따뜻한물", "레몬즙"],
     "cooking_tip": "꿀은 너무 뜨거운 물에 타면 영양이 파괴되니 미지근한 물에 타세요.",
-    "image_path": "assets/images/challenges/healthy_healing_012.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_012.webp",
     "tags": ["#꿀물", "#항균작용", "#목아픔", "#기침"],
     "points": 6,
     "is_active": true

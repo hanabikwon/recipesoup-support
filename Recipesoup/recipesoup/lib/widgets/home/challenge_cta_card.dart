@@ -364,7 +364,7 @@ class ChallengeCTACard extends StatelessWidget {
                   child: SizedBox(
                     height: 100,
                     child: Image.asset(
-                      'assets/images/main_challenge.png',
+                      'assets/images/main_challenge.webp',
                       fit: BoxFit.cover,
                     ),
                   ),

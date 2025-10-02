@@ -544,7 +544,7 @@ class _BurrowScreenState extends State<BurrowScreen> with TickerProviderStateMix
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // 한 줄에 2개
-                childAspectRatio: 1.0, // 5.1px 오버플로우 완전 해결을 위해 1:1 비율로 조정
+                childAspectRatio: 0.85, // 카드 그리드 1 이하일수록 세로 길어짐. 1:1은 정사각형
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),
@@ -552,7 +552,7 @@ class _BurrowScreenState extends State<BurrowScreen> with TickerProviderStateMix
               itemBuilder: (context, index) {
                 final milestone = allRooms[index];
                 return _buildCompactSpecialRoomCard(
-                  milestone, 
+                  milestone,
                   burrowProvider,
                 );
               },
@@ -583,7 +583,10 @@ class _BurrowScreenState extends State<BurrowScreen> with TickerProviderStateMix
                 ),
               ),
             ),
-          
+
+          // 그리드 하단 여백 추가 (상단 여백 20과 동일)
+          const SizedBox(height: 20),
+
           // 모든 공간이 언락된 경우
           if (unlockedRooms.length >= 5 && lockedRooms.isEmpty) ...[
             Container(
@@ -839,37 +842,39 @@ class _BurrowScreenState extends State<BurrowScreen> with TickerProviderStateMix
               children: [
                 // 썸네일 이미지
                 _buildSpecialRoomThumbnail(milestone),
-                
+
                 const SizedBox(height: 12),
-                
+
                 // 제목
                 Text(
                   isUnlocked ? _getCompactDescription(milestone) : '???',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: isUnlocked 
+                    color: isUnlocked
                         ? const Color(0xFF2E3D1F)
                         : const Color(0xFF757575),
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
+
                 const SizedBox(height: 4),
-                
+
                 // 설명
                 Text(
-                  isUnlocked 
-                      ? '특별한 공간이 열렸어요!'
+                  isUnlocked
+                      ? '특별한 공간 오픈!'
                       : _getCompactHint(milestone),
                   style: TextStyle(
-                    color: isUnlocked 
+                    color: isUnlocked
                         ? const Color(0xFF7A9B5C)
                         : const Color(0xFF757575),
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,
                 ),
+
+                const SizedBox(height: 8), // 디스크립션 하단 여백 추가
               ],
             ),
           ),
@@ -906,7 +911,7 @@ class _BurrowScreenState extends State<BurrowScreen> with TickerProviderStateMix
                 fit: BoxFit.cover,
               )
             : Image.asset(
-                'assets/images/burrow/special_rooms/burrow_locked.png',
+                'assets/images/burrow/special_rooms/burrow_locked.webp',
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,

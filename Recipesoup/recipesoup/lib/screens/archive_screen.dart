@@ -278,9 +278,9 @@ class _ArchiveScreenState extends State<ArchiveScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(updatedRecipe.isFavorite 
-                ? 'Added to favorites' 
-                : 'Removed from favorites'),
+            content: Text(updatedRecipe.isFavorite
+                ? '즐겨찾기에 추가했어요'
+                : '즐겨찾기에서 제거했어요'),
             backgroundColor: AppTheme.successColor,
           ),
         );
@@ -289,7 +289,7 @@ class _ArchiveScreenState extends State<ArchiveScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Favorite error occurred: $e'),
+            content: Text('즐겨찾기 오류가 발생했어요: $e'),
             backgroundColor: AppTheme.errorColor,
           ),
         );

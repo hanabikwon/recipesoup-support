@@ -115,20 +115,11 @@ class MessageProvider extends ChangeNotifier {
     }
   }
 
-  /// 우선순위별 메시지 정렬
-  List<AppMessage> get messagesSortedByPriority {
+  /// 날짜별 메시지 정렬 (최신순)
+  List<AppMessage> get messagesSortedByDate {
     final sortedMessages = List<AppMessage>.from(_messages);
     sortedMessages.sort((a, b) {
-      // 우선순위: high > medium > low
-      final priorityOrder = {'high': 0, 'medium': 1, 'low': 2};
-      final aPriority = priorityOrder[a.priority] ?? 1;
-      final bPriority = priorityOrder[b.priority] ?? 1;
-
-      if (aPriority != bPriority) {
-        return aPriority.compareTo(bPriority);
-      }
-
-      // 우선순위가 같으면 날짜 기준 내림차순 (최신순)
+      // 날짜 기준 내림차순 (최신순)
       return DateTime.parse(b.date).compareTo(DateTime.parse(a.date));
     });
     return sortedMessages;

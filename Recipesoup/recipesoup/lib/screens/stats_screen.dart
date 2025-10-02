@@ -4,6 +4,10 @@ import 'package:provider/provider.dart';
 import '../config/theme.dart';
 import '../providers/recipe_provider.dart';
 import '../models/mood.dart';
+import '../models/recipe.dart';
+import '../services/hive_service.dart';
+import '../widgets/recipe/recipe_card.dart';
+import 'detail_screen.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -13,6 +17,8 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
+  int? _selectedMonth; // 선택된 월 (1~12, null이면 미선택)
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +61,8 @@ class _StatsScreenState extends State<StatsScreen> {
                         _buildEmotionDistributionCard(provider),
                         const SizedBox(height: AppTheme.spacing16),
                         _buildMostUsedTagsCard(provider),
+                        const SizedBox(height: AppTheme.spacing16),
+                        _buildMonthlyRecipesCard(provider),
                         const SizedBox(height: AppTheme.spacing16),
                         _buildCookingPatternCard(provider),
                       ],
@@ -384,6 +392,172 @@ class _StatsScreenState extends State<StatsScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildMonthlyRecipesCard(RecipeProvider provider) {
+    final now = DateTime.now();
+    final currentYear = now.year;
+
+    return Card(
+      elevation: 4,
+      color: AppTheme.cardColor,
+      child: Padding(
+        padding: const EdgeInsets.all(AppTheme.spacing16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.calendar_month,
+                  color: AppTheme.primaryColor,
+                  size: 24,
+                ),
+                const SizedBox(width: AppTheme.spacing8),
+                Text(
+                  '월별 레시피',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppTheme.spacing16),
+            Text(
+              '$currentYear년',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppTheme.textSecondary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spacing12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: List.generate(12, (index) {
+                final month = index + 1;
+                final isSelected = _selectedMonth == month;
+
+                return ChoiceChip(
+                  label: Text('$month월'),
+                  selected: isSelected,
+                  selectedColor: AppTheme.primaryColor,
+                  backgroundColor: AppTheme.backgroundColor,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : AppTheme.textPrimary,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                  ),
+                  onSelected: (selected) {
+                    setState(() {
+                      _selectedMonth = selected ? month : null;
+                    });
+                  },
+                );
+              }),
+            ),
+            if (_selectedMonth != null) ...[
+              const SizedBox(height: AppTheme.spacing16),
+              const Divider(color: AppTheme.dividerColor),
+              const SizedBox(height: AppTheme.spacing16),
+              _buildSelectedMonthRecipes(currentYear),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSelectedMonthRecipes(int year) {
+    return FutureBuilder<List<Recipe>>(
+      future: _getRecipesByMonth(_selectedMonth!, year),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(AppTheme.spacing16),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              '오류가 발생했습니다',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppTheme.errorColor,
+              ),
+            ),
+          );
+        }
+
+        final recipes = snapshot.data ?? [];
+
+        if (recipes.isEmpty) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(AppTheme.spacing16),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.no_meals,
+                    size: 48,
+                    color: AppTheme.textTertiary.withValues(alpha: 128),
+                  ),
+                  const SizedBox(height: AppTheme.spacing8),
+                  Text(
+                    '$year년 $_selectedMonth월에는\n레시피가 없습니다',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$year년 $_selectedMonth월 (${recipes.length}개)',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppTheme.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spacing12),
+            ...recipes.map((recipe) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: AppTheme.spacing8),
+                child: RecipeCard(
+                  recipe: recipe,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailScreen(recipe: recipe),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<List<Recipe>> _getRecipesByMonth(int month, int year) async {
+    final startDate = DateTime(year, month, 1);
+    final endDate = DateTime(year, month + 1, 0, 23, 59, 59);
+
+    final hiveService = HiveService();
+    return await hiveService.getRecipesByDateRange(startDate, endDate);
   }
 
   Widget _buildCookingPatternCard(RecipeProvider provider) {

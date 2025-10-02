@@ -102,7 +102,7 @@ class _MessageBottomSheetState extends State<MessageBottomSheet> {
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               ),
               child: const Text(
-                '모두 읽음',
+                '모두 읽음 처리',
                 style: TextStyle(fontSize: 12),
               ),
             ),
@@ -195,8 +195,8 @@ class _MessageBottomSheetState extends State<MessageBottomSheet> {
       );
     }
 
-    // 우선순위별로 정렬된 메시지 리스트
-    final sortedMessages = messageProvider.messagesSortedByPriority;
+    // 날짜별로 정렬된 메시지 리스트 (최신순)
+    final sortedMessages = messageProvider.messagesSortedByDate;
 
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

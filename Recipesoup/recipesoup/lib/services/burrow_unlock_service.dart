@@ -523,10 +523,10 @@ class BurrowUnlockService {
       debugPrint('🔥 DEBUG: Recipe list type: ${allRecipes.runtimeType}');
       debugPrint('🔥 DEBUG: Is list empty: ${allRecipes.isEmpty}');
       
-      // 🔥 ULTRA THINK: HiveService를 완전히 우회하여 직접 Hive.box() 접근
+      // 🔥 TEST 18: Box 타입을 dynamic으로 변경 (Type mismatch 방지)
       debugPrint('🔥 ULTRA DEBUG: Bypassing HiveService, accessing Hive.box directly...');
       try {
-        final directBox = Hive.box<Map<String, dynamic>>('recipes');
+        final directBox = Hive.box<dynamic>('recipes');
         debugPrint('🔥 DIRECT ACCESS: Direct box hashCode: ${directBox.hashCode}');
         debugPrint('🔥 DIRECT ACCESS: Direct box isOpen: ${directBox.isOpen}');
         debugPrint('🔥 DIRECT ACCESS: Direct box length: ${directBox.length}');

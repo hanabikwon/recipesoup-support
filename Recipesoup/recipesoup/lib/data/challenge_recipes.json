@@ -24,7 +24,7 @@
       "다진마늘"
     ],
     "cooking_tip": "미역은 찬물에 충분히 불린 후 적당한 크기로 썰어주세요. 쇠고기는 참기름에 볶아 감칠맛을 더해주는 것이 포인트입니다.",
-    "image_path": "assets/images/challenges/emotional_001.jpg",
+    "image_path": "assets/images/challenges/emotional_001.webp",
     "tags": [
       "#엄마음식",
       "#생일",
@@ -52,7 +52,7 @@
       "참기름"
     ],
     "cooking_tip": "찬밥을 사용하면 더 맛있어요. 계란은 반숙으로 스크램블해서 부드러움을 살려주세요.",
-    "image_path": "assets/images/challenges/emotional_002.jpg",
+    "image_path": "assets/images/challenges/emotional_002.webp",
     "tags": [
       "#혼밥",
       "#간편식",
@@ -89,7 +89,7 @@
       "생강"
     ],
     "cooking_tip": "닭은 충분히 삶아서 육수를 우려내고, 쌀은 미리 불려두면 더 빨리 끓일 수 있어요.",
-    "image_path": "assets/images/challenges/emotional_003.jpg",
+    "image_path": "assets/images/challenges/emotional_003.webp",
     "tags": [
       "#위로음식",
       "#죽",
@@ -126,7 +126,7 @@
       "고춧가루"
     ],
     "cooking_tip": "묵은지를 참기름에 충분히 볶아야 감칠맛이 나요. 돼지고기는 삼겹살을 사용하면 더 맛있습니다.",
-    "image_path": "assets/images/challenges/emotional_004.jpg",
+    "image_path": "assets/images/challenges/emotional_004.webp",
     "tags": [
       "#할머니음식",
       "#김치찌개",
@@ -163,7 +163,7 @@
       "단무지"
     ],
     "cooking_tip": "각 반찬의 간을 적절히 맞추고, 색깔별로 배치하면 보기에도 예뻐요.",
-    "image_path": "assets/images/challenges/emotional_005.jpg",
+    "image_path": "assets/images/challenges/emotional_005.webp",
     "tags": [
       "#도시락",
       "#사랑",
@@ -199,7 +199,7 @@
       "후추"
     ],
     "cooking_tip": "달걀이 익지 않도록 불을 끄고 여열로 저어주는 것이 포인트예요.",
-    "image_path": "assets/images/challenges/world_001.jpg",
+    "image_path": "assets/images/challenges/world_001.webp",
     "tags": [
       "#이탈리아",
       "#파스타",
@@ -236,7 +236,7 @@
       "돈가스소스"
     ],
     "cooking_tip": "돈가스는 완전히 익힌 후 계란물을 부어 반숙으로 마무리하세요.",
-    "image_path": "assets/images/challenges/world_002.jpg",
+    "image_path": "assets/images/challenges/world_002.webp",
     "tags": [
       "#일본요리",
       "#가츠동",
@@ -272,7 +272,7 @@
       "산초가루"
     ],
     "cooking_tip": "두반장을 기름에 볶아 향을 내고, 산초가루는 마지막에 뿌려주세요.",
-    "image_path": "assets/images/challenges/world_003.jpg",
+    "image_path": "assets/images/challenges/world_003.webp",
     "tags": [
       "#중국요리",
       "#마파두부",
@@ -308,7 +308,7 @@
       "생크림"
     ],
     "cooking_tip": "약한 불에서 계속 젓가락으로 저으면서 천천히 익혀주는 것이 핵심이에요.",
-    "image_path": "assets/images/challenges/world_004.jpg",
+    "image_path": "assets/images/challenges/world_004.webp",
     "tags": [
       "#프랑스요리",
       "#오믈렛",
@@ -345,7 +345,7 @@
       "커리가루"
     ],
     "cooking_tip": "양파를 충분히 볶아 단맛을 내고, 향신료는 기름에 볶아 향을 살려주세요.",
-    "image_path": "assets/images/challenges/world_005.jpg",
+    "image_path": "assets/images/challenges/world_005.webp",
     "tags": [
       "#인도요리",
       "#커리",
@@ -381,7 +381,7 @@
       "물"
     ],
     "cooking_tip": "얼린 바나나를 사용하면 더 시원하고 크리미해져요.",
-    "image_path": "assets/images/challenges/healthy_001.jpg",
+    "image_path": "assets/images/challenges/healthy_001.webp",
     "tags": [
       "#건강식",
       "#스무디",
@@ -417,7 +417,7 @@
       "올리브오일"
     ],
     "cooking_tip": "야채는 큼직하게 썰고, 드레싱은 먹기 직전에 뿌려주세요.",
-    "image_path": "assets/images/challenges/healthy_002.jpg",
+    "image_path": "assets/images/challenges/healthy_002.webp",
     "tags": [
       "#건강식",
       "#샐러드",
@@ -454,7 +454,7 @@
       "올리브오일"
     ],
     "cooking_tip": "퀴노아는 씻어서 물기를 제거한 후 볶아주면 고소한 맛이 더해져요.",
-    "image_path": "assets/images/challenges/healthy_003.jpg",
+    "image_path": "assets/images/challenges/healthy_003.webp",
     "tags": [
       "#건강식",
       "#퀴노아",
@@ -491,7 +491,7 @@
       "마늘"
     ],
     "cooking_tip": "야채를 천천히 우려내어 깊은 맛을 내는 것이 중요해요.",
-    "image_path": "assets/images/challenges/healthy_004.jpg",
+    "image_path": "assets/images/challenges/healthy_004.webp",
     "tags": [
       "#건강식",
       "#디톡스",
@@ -528,7 +528,7 @@
       "꿀"
     ],
     "cooking_tip": "층층이 쌓아 올려 시각적인 즐거움도 함께 만들어보세요.",
-    "image_path": "assets/images/challenges/healthy_005.jpg",
+    "image_path": "assets/images/challenges/healthy_005.webp",
     "tags": [
       "#건강식",
       "#베리",
@@ -565,7 +565,7 @@
       "올리브오일"
     ],
     "cooking_tip": "유기농 채소는 물로만 가볍게 씻어 자연의 맛을 살려주세요.",
-    "image_path": "assets/images/challenges/healthy_natural_001.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_001.webp",
     "tags": [
       "#유기농",
       "#자연식품",
@@ -602,7 +602,7 @@
       "고사리"
     ],
     "cooking_tip": "나물은 각각 따로 무쳐 고유의 맛을 살려주세요.",
-    "image_path": "assets/images/challenges/healthy_natural_002.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_002.webp",
     "tags": [
       "#현미",
       "#나물",
@@ -638,7 +638,7 @@
       "마늘"
     ],
     "cooking_tip": "배추는 소금에 절여 물기를 충분히 빼고, 양념은 자연재료만 사용하세요.",
-    "image_path": "assets/images/challenges/healthy_natural_003.jpg",
+    "image_path": "assets/images/challenges/healthy_natural_003.webp",
     "tags": [
       "#김치",
       "#발효식품",
@@ -675,7 +675,7 @@
       "견과류"
     ],
     "cooking_tip": "닭가슴살은 촉촉하게 조리하고, 아보카도는 먹기 직전에 넣어주세요.",
-    "image_path": "assets/images/challenges/healthy_energy_001.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_001.webp",
     "tags": [
       "#단백질",
       "#운동식단",
@@ -711,7 +711,7 @@
       "꿀"
     ],
     "cooking_tip": "얼린 바나나를 사용하면 더 진하고 시원한 스무디를 만들 수 있어요.",
-    "image_path": "assets/images/challenges/healthy_energy_002.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_002.webp",
     "tags": [
       "#에너지",
       "#스무디",
@@ -748,7 +748,7 @@
       "김"
     ],
     "cooking_tip": "회는 신선한 것을 사용하고, 간장소스는 달지 않게 만들어주세요.",
-    "image_path": "assets/images/challenges/healthy_energy_003.jpg",
+    "image_path": "assets/images/challenges/healthy_energy_003.webp",
     "tags": [
       "#포케볼",
       "#오메가3",
@@ -784,7 +784,7 @@
       "생강"
     ],
     "cooking_tip": "비트는 생으로 사용하고, 생강은 조금만 넣어 매운맛을 조절하세요.",
-    "image_path": "assets/images/challenges/healthy_care_001.jpg",
+    "image_path": "assets/images/challenges/healthy_care_001.webp",
     "tags": [
       "#해독",
       "#간건강",
@@ -821,7 +821,7 @@
       "허브"
     ],
     "cooking_tip": "마늘은 통째로 구워서 단맛을 내고, 블렌더로 부드럽게 갈아주세요.",
-    "image_path": "assets/images/challenges/healthy_care_002.jpg",
+    "image_path": "assets/images/challenges/healthy_care_002.webp",
     "tags": [
       "#마늘",
       "#혈관건강",
@@ -858,7 +858,7 @@
       "계피"
     ],
     "cooking_tip": "귀리는 물에 불려 부드럽게 끓이고, 견과류는 토핑으로 올려주세요.",
-    "image_path": "assets/images/challenges/healthy_care_003.jpg",
+    "image_path": "assets/images/challenges/healthy_care_003.webp",
     "tags": [
       "#오트밀",
       "#콜레스테롤",
@@ -895,7 +895,7 @@
       "라벤더"
     ],
     "cooking_tip": "캐모마일은 끓는 물에 5분간 우려내고, 꿀은 미지근할 때 넣어주세요.",
-    "image_path": "assets/images/challenges/healthy_healing_001.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_001.webp",
     "tags": [
       "#캐모마일",
       "#진정",
@@ -932,7 +932,7 @@
       "대추"
     ],
     "cooking_tip": "생강은 얇게 썰어 오래 끓이고, 꿀과 레몬은 마지막에 넣어주세요.",
-    "image_path": "assets/images/challenges/healthy_healing_002.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_002.webp",
     "tags": [
       "#생강",
       "#면역력",
@@ -969,7 +969,7 @@
       "너트맥"
     ],
     "cooking_tip": "양상추는 살짝 볶아 쓴맛을 제거하고, 우유는 끓지 않게 주의하세요.",
-    "image_path": "assets/images/challenges/healthy_healing_003.jpg",
+    "image_path": "assets/images/challenges/healthy_healing_003.webp",
     "tags": [
       "#숙면",
       "#불면증",
@@ -1006,7 +1006,7 @@
       "고춧가루"
     ],
     "cooking_tip": "등뼈는 찬물부터 넣고 끓여 잡내를 제거하고, 들깨는 곱게 갈아 진한 국물을 만드세요.",
-    "image_path": "assets/images/challenges/emotional_comfort_001.jpg",
+    "image_path": "assets/images/challenges/emotional_comfort_001.webp",
     "tags": [
       "#위로음식",
       "#감자탕",
@@ -1043,7 +1043,7 @@
       "이스트"
     ],
     "cooking_tip": "반죽은 따뜻한 곳에서 충분히 발효시키고, 속재료는 미리 섞어두면 만들기 쉬워요.",
-    "image_path": "assets/images/challenges/emotional_comfort_002.jpg",
+    "image_path": "assets/images/challenges/emotional_comfort_002.webp",
     "tags": [
       "#호떡",
       "#달콤함",
@@ -1080,7 +1080,7 @@
       "소금"
     ],
     "cooking_tip": "단호박은 푹 삶아서 으깨고, 우유를 넣을 때는 끓지 않도록 주의하세요.",
-    "image_path": "assets/images/challenges/emotional_comfort_003.jpg",
+    "image_path": "assets/images/challenges/emotional_comfort_003.webp",
     "tags": [
       "#단호박죽",
       "#부드러운",
@@ -1117,7 +1117,7 @@
       "파슬리"
     ],
     "cooking_tip": "크림소스는 약한 불에서 천천히 끓여야 분리되지 않고, 새우는 과도하게 익히지 마세요.",
-    "image_path": "assets/images/challenges/emotional_celebration_001.jpg",
+    "image_path": "assets/images/challenges/emotional_celebration_001.webp",
     "tags": [
       "#축하",
       "#크림파스타",
@@ -1154,7 +1154,7 @@
       "생크림"
     ],
     "cooking_tip": "계란과 버터는 실온에 두었다가 사용하고, 오븐 온도를 정확히 맞춰야 스펀지가 잘 부풀어요.",
-    "image_path": "assets/images/challenges/emotional_celebration_002.jpg",
+    "image_path": "assets/images/challenges/emotional_celebration_002.webp",
     "tags": [
       "#케이크",
       "#기념일",
@@ -1191,7 +1191,7 @@
       "적포도주"
     ],
     "cooking_tip": "고기는 상온에 두었다가 구우고, 휴지(resting) 시간을 충분히 줘야 육즙이 유지돼요.",
-    "image_path": "assets/images/challenges/emotional_celebration_003.jpg",
+    "image_path": "assets/images/challenges/emotional_celebration_003.webp",
     "tags": [
       "#스테이크",
       "#축하",
@@ -1228,7 +1228,7 @@
       "감자"
     ],
     "cooking_tip": "된장은 체에 거르고, 야채는 익는 시간을 고려해 순서대로 넣어주세요.",
-    "image_path": "assets/images/challenges/emotional_nostalgia_001.jpg",
+    "image_path": "assets/images/challenges/emotional_nostalgia_001.webp",
     "tags": [
       "#어머니음식",
       "#된장찌개",
@@ -1265,7 +1265,7 @@
       "간장"
     ],
     "cooking_tip": "당면은 뜨거운 물에 불리고, 각 재료는 따로따로 볶아서 마지막에 합쳐주세요.",
-    "image_path": "assets/images/challenges/emotional_nostalgia_002.jpg",
+    "image_path": "assets/images/challenges/emotional_nostalgia_002.webp",
     "tags": [
       "#잡채",
       "#학교급식",
@@ -1302,7 +1302,7 @@
       "식용유"
     ],
     "cooking_tip": "호박은 얇게 썰어야 속까지 잘 익고, 기름은 넉넉히 두르고 중약불에서 천천히 구워주세요.",
-    "image_path": "assets/images/challenges/emotional_nostalgia_003.jpg",
+    "image_path": "assets/images/challenges/emotional_nostalgia_003.webp",
     "tags": [
       "#호박전",
       "#할머니",
@@ -1339,7 +1339,7 @@
       "마늘"
     ],
     "cooking_tip": "찹쌀은 미리 불려두고, 약한 불에서 오래 끓여야 진국이 우러나와요.",
-    "image_path": "assets/images/challenges/emotional_healing_001.jpg",
+    "image_path": "assets/images/challenges/emotional_healing_001.webp",
     "tags": [
       "#삼계탕",
       "#보양식",
@@ -1376,7 +1376,7 @@
       "레몬"
     ],
     "cooking_tip": "허브는 85도 정도의 물에 5분 정도 우리고, 꿀은 미지근할 때 넣어주세요.",
-    "image_path": "assets/images/challenges/emotional_healing_002.jpg",
+    "image_path": "assets/images/challenges/emotional_healing_002.webp",
     "tags": [
       "#허브차",
       "#스트레스해소",
@@ -1413,7 +1413,7 @@
       "김"
     ],
     "cooking_tip": "쌀은 30분 정도 불린 후 약한 불에서 천천히 끓이고, 중간중간 저어줘야 눌지 않아요.",
-    "image_path": "assets/images/challenges/emotional_healing_003.jpg",
+    "image_path": "assets/images/challenges/emotional_healing_003.webp",
     "tags": [
       "#흰죽",
       "#평화",
@@ -1450,7 +1450,7 @@
       "땅콩"
     ],
     "cooking_tip": "쌀국수는 미리 불려두고, 강한 불에서 빠르게 볶아야 쫄깃한 식감을 유지할 수 있어요.",
-    "image_path": "assets/images/challenges/world_asian_001.jpg",
+    "image_path": "assets/images/challenges/world_asian_001.webp",
     "tags": [
       "#태국요리",
       "#팟타이",
@@ -1486,7 +1486,7 @@
       "정향"
     ],
     "cooking_tip": "소뼈는 오래 끓여 진국을 내고, 향신료는 볶아서 향을 낸 후 우려내세요.",
-    "image_path": "assets/images/challenges/world_asian_002.jpg",
+    "image_path": "assets/images/challenges/world_asian_002.webp",
     "tags": [
       "#베트남요리",
       "#쌀국수",
@@ -1523,7 +1523,7 @@
       "설탕"
     ],
     "cooking_tip": "소고기는 얇게 썰고, 양파와 함께 달콤하게 조려야 제맛이 나요.",
-    "image_path": "assets/images/challenges/world_asian_003.jpg",
+    "image_path": "assets/images/challenges/world_asian_003.webp",
     "tags": [
       "#일본요리",
       "#규동",
@@ -1560,7 +1560,7 @@
       "파프리카"
     ],
     "cooking_tip": "사프란은 뜨거운 육수에 우려내고, 쌀은 볶아서 고슬고슬하게 만드세요.",
-    "image_path": "assets/images/challenges/world_european_001.jpg",
+    "image_path": "assets/images/challenges/world_european_001.webp",
     "tags": [
       "#스페인요리",
       "#파에야",
@@ -1596,7 +1596,7 @@
       "레몬"
     ],
     "cooking_tip": "고기는 얇게 편 후 밀가루-달걀-빵가루 순으로 옷을 입혀 바삭하게 튀기세요.",
-    "image_path": "assets/images/challenges/world_european_002.jpg",
+    "image_path": "assets/images/challenges/world_european_002.webp",
     "tags": [
       "#독일요리",
       "#슈니첼",
@@ -1632,7 +1632,7 @@
       "치즈"
     ],
     "cooking_tip": "가지는 미리 구워 물기를 빼고, 층층이 쌓아 오븐에서 충분히 구워주세요.",
-    "image_path": "assets/images/challenges/world_european_003.jpg",
+    "image_path": "assets/images/challenges/world_european_003.webp",
     "tags": [
       "#그리스요리",
       "#무사카",
@@ -1668,7 +1668,7 @@
       "할라피뇨"
     ],
     "cooking_tip": "치즈가 녹을 때까지 약한 불에서 천천히 구우고, 양면을 골고루 구워주세요.",
-    "image_path": "assets/images/challenges/world_american_001.jpg",
+    "image_path": "assets/images/challenges/world_american_001.webp",
     "tags": [
       "#멕시코요리",
       "#퀘사디아",
@@ -1704,7 +1704,7 @@
       "마늘"
     ],
     "cooking_tip": "콩은 하루 전에 불리고, 고기는 종류별로 익는 시간을 고려해 넣어주세요.",
-    "image_path": "assets/images/challenges/world_american_002.jpg",
+    "image_path": "assets/images/challenges/world_american_002.webp",
     "tags": [
       "#브라질요리",
       "#페이조아다",
@@ -1741,7 +1741,7 @@
       "마늘"
     ],
     "cooking_tip": "립은 오븐에서 저온으로 오래 구우고, 마지막에 바비큐 소스를 발라 마무리하세요.",
-    "image_path": "assets/images/challenges/world_american_003.jpg",
+    "image_path": "assets/images/challenges/world_american_003.webp",
     "tags": [
       "#미국요리",
       "#바비큐립",
@@ -1778,7 +1778,7 @@
       "치즈"
     ],
     "cooking_tip": "김치볶음밥은 간을 살짝 세게 하고, 번에 올릴 때 모양을 예쁘게 만들어주세요.",
-    "image_path": "assets/images/challenges/world_fusion_001.jpg",
+    "image_path": "assets/images/challenges/world_fusion_001.webp",
     "tags": [
       "#퓨전요리",
       "#김치볶음밥",
@@ -1814,7 +1814,7 @@
       "후추"
     ],
     "cooking_tip": "달걀노른자는 마지막에 넣어 부드럽게 섞고, 치즈는 아직 뜨거울 때 넣어주세요.",
-    "image_path": "assets/images/challenges/world_fusion_002.jpg",
+    "image_path": "assets/images/challenges/world_fusion_002.webp",
     "tags": [
       "#퓨전요리",
       "#라면",
@@ -1851,7 +1851,7 @@
       "상추"
     ],
     "cooking_tip": "불고기는 달콤하게 양념하고, 타코쉘은 따뜻하게 데워서 바삭함을 살리세요.",
-    "image_path": "assets/images/challenges/world_fusion_003.jpg",
+    "image_path": "assets/images/challenges/world_fusion_003.webp",
     "tags": [
       "#퓨전요리",
       "#불고기타코",

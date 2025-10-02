@@ -106,7 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               child: ClipOval(
                 child: Image.asset(
-                  'assets/images/profile_rabbit.png', // 사용자가 추가한 토끼 프로필 이미지
+                  'assets/images/profile_rabbit.webp', // 사용자가 추가한 토끼 프로필 이미지
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,
@@ -726,9 +726,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('백업 정보: ${backupData.summary}'),
-              const SizedBox(height: 8),
-              Text('복원할 레시피: ${backupData.totalRecipes}개'),
+              Text('백업: ${backupData.summary}'),
               const SizedBox(height: 8),
               Text('복원 방식: $optionText'),
               const SizedBox(height: 16),
@@ -796,8 +794,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
       // 백업 데이터의 레시피들을 추가
       int restoredCount = 0;
       for (final recipe in backupData.recipes) {
-        await recipeProvider.addRecipe(recipe);
-        restoredCount++;
+        if (option == RestoreOption.merge) {
+          // 병합 모드: ID 충돌 체크
+          final existingIds = recipeProvider.recipes.map((r) => r.id).toSet();
+
+          if (existingIds.contains(recipe.id)) {
+            // ID 충돌 발생 - 새로운 숫자 ID 생성하여 복원
+            // 기존 ID가 숫자형이므로 새 ID도 숫자형으로 생성 (타입 일관성)
+            final newId = DateTime.now().millisecondsSinceEpoch.toString();
+            final newRecipe = recipe.copyWith(id: newId);
+            await recipeProvider.addRecipe(newRecipe);
+            restoredCount++;
+
+            print('🔄 ID 충돌 해결: ${recipe.id} → $newId');
+          } else {
+            // ID 충돌 없음 - 원본 그대로 저장
+            await recipeProvider.addRecipe(recipe);
+            restoredCount++;
+          }
+        } else {
+          // 덮어쓰기 모드: 그대로 추가
+          await recipeProvider.addRecipe(recipe);
+          restoredCount++;
+        }
       }
 
       if (mounted) {
@@ -936,7 +955,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _contactDeveloper() async {
     final emailUri = Uri(
       scheme: 'mailto',
-      path: 'recipesoup.team@gmail.com',
+      path: 'flow.planet.io@gmail.com',
       query: Uri.encodeComponent(
         'subject=Recipesoup 앱 문의&'
         'body=안녕하세요, Recipesoup 팀입니다.\n\n'
@@ -958,7 +977,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SnackBar(
             content: Text(
               '이메일 앱을 열 수 없습니다.\n'
-              'recipesoup.team@gmail.com으로 직접 연락주세요.',
+              'flow.planet.io@gmail.com으로 직접 연락주세요.',
             ),
             backgroundColor: AppTheme.primaryColor,
             duration: Duration(seconds: 4),
@@ -976,7 +995,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _showPrivacyPolicy() async {
-    const privacyPolicyUrl = 'https://melancholia-planet.com/tech-briefing-september-05-2025/';
+    const privacyPolicyUrl = 'https://hanabikwon.github.io/recipesoup-privacy/';
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     try {

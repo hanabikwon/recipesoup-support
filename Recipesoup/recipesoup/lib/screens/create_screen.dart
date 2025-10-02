@@ -83,11 +83,6 @@ class _CreateScreenState extends State<CreateScreen> {
       
       // 출처 URL 설정
       _sourceUrlController.text = recipe.sourceUrl ?? '';
-      
-      // 이미지 경로 설정 (편집 모드일 때만)
-      if (_isEditMode) {
-        _currentImagePath = recipe.localImagePath;
-      }
     }
     // 새로운 프리필 데이터 처리 (기존 editingRecipe가 없을 때만)
     else if (widget.prefilledTitle != null ||
@@ -216,7 +211,7 @@ class _CreateScreenState extends State<CreateScreen> {
     } else {
       icon = Icons.restaurant_menu;
       title = '감정과 함께하는 레시피 작성';
-      subtitle = '오늘 만든 요리의 이야기를 감정과 함께 기록해보세요';
+      subtitle = '오늘의 요리 이야기를 감정과 함께 기록해보세요';
     }
 
     return Container(
@@ -575,9 +570,6 @@ class _CreateScreenState extends State<CreateScreen> {
     });
 
     try {
-      // 기존 이미지 경로 유지
-      String? savedImagePath = _currentImagePath;
-      
       final recipe = Recipe(
         id: _isEditMode ? widget.editingRecipe!.id : DateTime.now().millisecondsSinceEpoch.toString(),
         title: _titleController.text.trim(),
@@ -589,8 +581,6 @@ class _CreateScreenState extends State<CreateScreen> {
         createdAt: _isEditMode ? widget.editingRecipe!.createdAt : DateTime.now(),
         mood: _selectedMood,
         rating: _rating,
-        localImagePath: savedImagePath,
-        reminderDate: _isEditMode ? widget.editingRecipe!.reminderDate : null,
         isFavorite: _isEditMode ? widget.editingRecipe!.isFavorite : false,
         sourceUrl: _sourceUrlController.text.trim().isEmpty ? null : _sourceUrlController.text.trim(),
       );

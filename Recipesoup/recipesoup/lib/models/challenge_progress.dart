@@ -21,10 +21,7 @@ class ChallengeProgress {
   
   /// 사용자 평점 (1-5점)
   final int? userRating;
-  
-  /// 획득한 포인트
-  final int earnedPoints;
-  
+
   /// 챌린지 시도 횟수
   final int attemptCount;
   
@@ -39,7 +36,6 @@ class ChallengeProgress {
     this.userNote,
     this.userImagePath,
     this.userRating,
-    this.earnedPoints = 0,
     this.attemptCount = 0,
     this.currentStep,
   });
@@ -49,7 +45,7 @@ class ChallengeProgress {
     return ChallengeProgress(
       challengeId: json['challenge_id'] as String,
       status: ChallengeStatus.fromString(json['status'] as String? ?? 'not_started'),
-      startedAt: json['started_at'] != null 
+      startedAt: json['started_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(json['started_at'] as int)
           : null,
       completedAt: json['completed_at'] != null
@@ -58,7 +54,6 @@ class ChallengeProgress {
       userNote: json['user_note'] as String?,
       userImagePath: json['user_image_path'] as String?,
       userRating: json['user_rating'] as int?,
-      earnedPoints: json['earned_points'] as int? ?? 0,
       attemptCount: json['attempt_count'] as int? ?? 0,
       currentStep: json['current_step'] as int?,
     );
@@ -74,7 +69,6 @@ class ChallengeProgress {
       'user_note': userNote,
       'user_image_path': userImagePath,
       'user_rating': userRating,
-      'earned_points': earnedPoints,
       'attempt_count': attemptCount,
       'current_step': currentStep,
     };
@@ -94,7 +88,6 @@ class ChallengeProgress {
     String? userNote,
     String? userImagePath,
     int? userRating,
-    int points = 10,
   }) {
     return copyWith(
       status: ChallengeStatus.completed,
@@ -102,7 +95,6 @@ class ChallengeProgress {
       userNote: userNote,
       userImagePath: userImagePath,
       userRating: userRating,
-      earnedPoints: earnedPoints + points,
     );
   }
 
@@ -154,7 +146,6 @@ class ChallengeProgress {
     String? userNote,
     String? userImagePath,
     int? userRating,
-    int? earnedPoints,
     int? attemptCount,
     int? currentStep,
   }) {
@@ -166,7 +157,6 @@ class ChallengeProgress {
       userNote: userNote ?? this.userNote,
       userImagePath: userImagePath ?? this.userImagePath,
       userRating: userRating ?? this.userRating,
-      earnedPoints: earnedPoints ?? this.earnedPoints,
       attemptCount: attemptCount ?? this.attemptCount,
       currentStep: currentStep ?? this.currentStep,
     );

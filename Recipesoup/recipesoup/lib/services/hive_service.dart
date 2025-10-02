@@ -8,14 +8,43 @@ import '../models/mood.dart';
 
 /// Hive JSON-based local storage service (싱글톤)
 class HiveService {
+
+  /// 🔥 CRITICAL FIX: 재귀적으로 Map<dynamic, dynamic>를 Map<String, dynamic>로 변환
+  /// Test 16: 완전한 타입 안전성 보장
+  static Map<String, dynamic> _convertMapRecursively(dynamic data) {
+    if (data is Map) {
+      return data.map((key, value) {
+        // 키는 항상 String으로 변환
+        final stringKey = key.toString();
+
+        // 값이 Map이면 재귀적으로 변환
+        if (value is Map) {
+          return MapEntry(stringKey, _convertMapRecursively(value));
+        }
+        // 값이 List이면 각 요소 변환
+        else if (value is List) {
+          return MapEntry(stringKey, value.map((item) {
+            if (item is Map) {
+              return _convertMapRecursively(item);
+            }
+            return item;
+          }).toList());
+        }
+        // 기본 타입은 그대로
+        return MapEntry(stringKey, value);
+      });
+    }
+    return {};
+  }
   static final HiveService _instance = HiveService._internal();
   factory HiveService({String? boxName}) => _instance;
   
   HiveService._internal() : _recipeBoxName = 'recipes';
   
   final String _recipeBoxName;
-  
-  Box<Map<String, dynamic>>? _recipeBox;
+
+  // 🔥 TEST 17: Box 타입을 dynamic으로 변경
+  Box<dynamic>? _recipeBox;
   
   // 🔥 CRITICAL FIX: 동기화를 위한 뮤텍스
   final Completer<void> _initCompleter = Completer<void>();
@@ -28,23 +57,30 @@ class HiveService {
       await _initCompleter.future;
       return;
     }
-    
+
+    // ✅ DATA PERSISTENCE FIX: 박스가 이미 열려있으면 절대 닫지 않고 재사용
     if (_isInitialized && _recipeBox != null && _recipeBox!.isOpen) {
-      developer.log('📦 SINGLETON: Box already initialized and open (${_instance.hashCode})', name: 'Hive Service');
+      developer.log('📦 SINGLETON: Box already initialized and open - reusing existing box (${_instance.hashCode})', name: 'Hive Service');
       return;
     }
-    
+
     _isInitializing = true;
-    
+
     try {
-      // 🔥 CRITICAL FIX: 기존 박스가 있으면 먼저 닫기
+      // ✅ DATA PERSISTENCE FIX: 박스가 이미 열려있으면 재사용 (절대 닫지 않음)
       if (_recipeBox != null && _recipeBox!.isOpen) {
-        await _recipeBox!.close();
-        developer.log('📦 SINGLETON: Closed existing box', name: 'Hive Service');
+        developer.log('📦 Box already open - reusing existing instance', name: 'Hive Service');
+        _isInitialized = true;
+        _isInitializing = false;
+        if (!_initCompleter.isCompleted) {
+          _initCompleter.complete();
+        }
+        return;
       }
-      
-      // 🔥 CRITICAL FIX: 완전히 새로운 박스 인스턴스 생성
-      _recipeBox = await Hive.openBox<Map<String, dynamic>>(_recipeBoxName);
+
+      // 박스가 닫혀있거나 없을 때만 새로 열기
+      // 🔥 TEST 17: Box 타입을 dynamic으로 변경하여 자동 타입 캐스팅 방지
+      _recipeBox = await Hive.openBox<dynamic>(_recipeBoxName);
       
       developer.log('📦 SINGLETON: Recipe Box initialized successfully (instance: ${_instance.hashCode}, box: ${_recipeBox.hashCode}, length: ${_recipeBox!.length})', name: 'Hive Service');
       
@@ -65,7 +101,7 @@ class HiveService {
     }
   }
 
-  Future<Box<Map<String, dynamic>>> get _box async {
+  Future<Box<dynamic>> get _box async {
     // 🔥 CRITICAL FIX: 안전한 박스 접근 보장
     if (!_isInitialized || _recipeBox == null || !_recipeBox!.isOpen) {
       await _initializeBox();
@@ -84,41 +120,72 @@ class HiveService {
     try {
       final box = await _box;
       
-      // 🔥 ULTRA DEBUG: Box 상태 상세 로깅
-      if (kDebugMode) {
-        debugPrint('🔥 SAVE DEBUG: HiveService instance: ${_instance.hashCode}');
-        debugPrint('🔥 SAVE DEBUG: Box hashCode: ${box.hashCode}');
-        debugPrint('🔥 SAVE DEBUG: Box isOpen: ${box.isOpen}');
-        debugPrint('🔥 SAVE DEBUG: Box length BEFORE save: ${box.length}');
-        debugPrint('🔥 SAVE DEBUG: Box name: ${box.name}');
-        debugPrint('🔥 SAVE DEBUG: Box path: ${box.path}');
-      }
+      // 🔥 ULTRA DEBUG: Box 상태 상세 로깅 (RELEASE 모드에서도 출력)
+      print('🔥 SAVE DEBUG: HiveService instance: ${_instance.hashCode}');
+      print('🔥 SAVE DEBUG: Box hashCode: ${box.hashCode}');
+      print('🔥 SAVE DEBUG: Box isOpen: ${box.isOpen}');
+      print('🔥 SAVE DEBUG: Box length BEFORE save: ${box.length}');
+      print('🔥 SAVE DEBUG: Box name: ${box.name}');
+      print('🔥 SAVE DEBUG: Box path: ${box.path}');
       
       // 🔥 CRITICAL FIX: 데이터 저장
       await box.put(recipe.id, recipe.toJson());
-      
-      if (kDebugMode) {
-        debugPrint('🔥 SAVE DEBUG: Box length AFTER save: ${box.length}');
-      }
-      
+
+      print('🔥 SAVE DEBUG: Box length AFTER save: ${box.length}');
+
       // 🔥 CRITICAL FIX: 명시적 디스크 동기화 (이것이 핵심!)
       await box.flush(); // 메모리에서 디스크로 강제 쓰기
-      await box.compact(); // 데이터 압축 및 디스크 반영 보장
-      
-      if (kDebugMode) {
-        debugPrint('🔥 SAVE DEBUG: Box length AFTER flush/compact: ${box.length}');
-      }
-      
+      print('✅ FLUSH #1 completed');
+
+      // ✅ DATA PERSISTENCE FIX: compact() 제거 - 매번 호출 시 데이터 손상 위험
+      // await box.compact(); // 제거됨 - iOS 백그라운드 전환 시 중단되어 데이터 손상 유발
+
+      // 🔥 ULTRA FIX: OS 파일 시스템 캐시가 디스크에 쓸 시간 확보
+      await Future.delayed(Duration(milliseconds: 100));
+      print('✅ OS cache delay (100ms) completed');
+
+      print('🔥 SAVE DEBUG: Box length AFTER flush/compact: ${box.length}');
+
       // 🔥 CRITICAL FIX: 저장 후 데이터 존재 확인
       final savedData = box.get(recipe.id);
       if (savedData == null) {
         throw Exception('Recipe was not saved properly to Hive');
       }
-      
-      if (kDebugMode) {
-        debugPrint('🔥 SAVE SUCCESS: Recipe ${recipe.id} saved to box ${box.hashCode}');
+      print('✅ Data verification passed');
+
+      // 🔥 ULTRA FIX: 한 번 더 flush (2중 안전장치)
+      await box.flush();
+      print('✅ FLUSH #2 (double safety) completed');
+
+      // 🔥🔥 TEST 13: Box close/reopen으로 디스크 쓰기 강제
+      print('🔥 TEST 13: Closing box to force disk write...');
+      await box.close();
+      print('✅ Box closed successfully');
+
+      // 박스 재오픈 - 🔥 TEST 17: dynamic 타입으로 변경
+      _recipeBox = await Hive.openBox<dynamic>(_recipeBoxName);
+      print('✅ Box reopened successfully');
+      print('🔥 VERIFY: Box length after reopen: ${_recipeBox!.length}');
+
+      // 재오픈 후 데이터 재확인
+      final verifyData = _recipeBox!.get(recipe.id);
+      if (verifyData == null) {
+        throw Exception('Recipe lost after box reopen!');
       }
-      developer.log('📦 SINGLETON: Recipe saved and verified: ${recipe.id} (instance: ${_instance.hashCode}, box: ${box.hashCode}, size: ${box.length})', name: 'Hive Service');
+
+      // 🔥 FIX: Map<dynamic, dynamic>을 Map<String, dynamic>으로 안전하게 변환
+      final Map<String, dynamic> safeData = Map<String, dynamic>.from(verifyData);
+
+      // 변환된 데이터로 Recipe 객체 생성 가능한지 검증
+      try {
+        Recipe.fromJson(safeData);
+        print('✅ VERIFY: Recipe ${recipe.id} exists after reopen and is valid');
+      } catch (parseError) {
+        throw Exception('Recipe data corrupted: $parseError');
+      }
+
+      print('🔥 SAVE SUCCESS: Recipe ${recipe.id} saved to box ${box.hashCode}');
+      developer.log('📦 SINGLETON: Recipe saved and verified: ${recipe.id} (instance: ${_instance.hashCode}, box: ${_recipeBox.hashCode}, size: ${_recipeBox!.length})', name: 'Hive Service');
       
     } catch (e) {
       developer.log('Failed to save recipe: $e', name: 'Hive Service');
@@ -131,7 +198,10 @@ class HiveService {
       final box = await _box;
       final jsonData = box.get(id);
       if (jsonData == null) return null;
-      return Recipe.fromJson(jsonData);
+
+      // 🔥 FIX: Map<dynamic, dynamic>을 Map<String, dynamic>으로 안전하게 변환
+      final Map<String, dynamic> safeData = Map<String, dynamic>.from(jsonData);
+      return Recipe.fromJson(safeData);
     } catch (e) {
       developer.log('Failed to get recipe: $e', name: 'Hive Service');
       return null;
@@ -143,10 +213,10 @@ class HiveService {
       final box = await _box;
       
       await box.put(recipe.id, recipe.toJson());
-      
+
       // 🔥 CRITICAL FIX: 데이터 동기화
       await box.flush();
-      await box.compact();
+      // ✅ DATA PERSISTENCE FIX: compact() 제거
       
       developer.log('Recipe updated and flushed: ${recipe.id}', name: 'Hive Service');
     } catch (e) {
@@ -207,43 +277,26 @@ class HiveService {
             continue;
           }
 
-          // 🔥 ULTRA THINK: Ultra defensive JSON handling with multiple fallbacks
+          // 🔥 TEST 16: 재귀적 타입 변환으로 완전한 안전성 보장
           Map<String, dynamic> safeJsonData;
           try {
-            // First attempt: Standard JSON approach
-            safeJsonData = Map<String, dynamic>.from(
-              json.decode(json.encode(rawData))
-            );
+            // 🔥 NEW APPROACH: 재귀적으로 모든 nested Map 변환
+            safeJsonData = _convertMapRecursively(rawData);
             if (kDebugMode) {
-              debugPrint('✅ JSON SUCCESS: Standard JSON conversion for key $key');
+              debugPrint('✅ RECURSIVE CONVERSION SUCCESS for key $key');
             }
-          } catch (jsonError) {
+          } catch (conversionError) {
             if (kDebugMode) {
-              debugPrint('❌ JSON SERIALIZATION ERROR for key $key: $jsonError');
+              debugPrint('❌ RECURSIVE CONVERSION ERROR for key $key: $conversionError');
             }
-            try {
-              // Second attempt: Direct casting if it's already a map
-              if (rawData is Map) {
-                safeJsonData = Map<String, dynamic>.from(rawData);
-                if (kDebugMode) {
-                  debugPrint('✅ DIRECT CAST SUCCESS: Direct map conversion for key $key');
-                }
-              } else {
-                throw Exception('Data is not a Map: ${rawData.runtimeType}');
-              }
-            } catch (castError) {
-              if (kDebugMode) {
-                debugPrint('❌ DIRECT CAST ERROR for key $key: $castError');
-              }
-              
-              // 🔥 ULTRA THINK: If all conversion attempts fail, mark as corrupted
-              if (kDebugMode) {
-                debugPrint('🚨 MARKING AS CORRUPTED: Key $key (type: ${rawData.runtimeType})');
-              }
-              corruptedKeys.add(key);
-              parseErrors++;
-              continue;
+
+            // 🔥 ULTRA THINK: If conversion fails, mark as corrupted
+            if (kDebugMode) {
+              debugPrint('🚨 MARKING AS CORRUPTED: Key $key (type: ${rawData.runtimeType})');
             }
+            corruptedKeys.add(key);
+            parseErrors++;
+            continue;
           }
 
           // 🔥 ULTRA THINK: Try to create Recipe from processed data
@@ -307,7 +360,7 @@ class HiveService {
           }
           
           await box.flush();
-          await box.compact();
+          // ✅ DATA PERSISTENCE FIX: compact() 제거
           
           int boxLengthAfter = box.length;
           if (kDebugMode) {
@@ -334,7 +387,7 @@ class HiveService {
           int boxLengthBefore = box.length;
           await box.clear();
           await box.flush();
-          await box.compact();
+          // ✅ DATA PERSISTENCE FIX: compact() 제거
           if (kDebugMode) {
             debugPrint('✅ ULTIMATE RECOVERY: Successfully cleared all $boxLengthBefore corrupted entries');
           }
@@ -364,7 +417,7 @@ class HiveService {
           }
           await box.clear();
           await box.flush();
-          await box.compact();
+          // ✅ DATA PERSISTENCE FIX: compact() 제거
           if (kDebugMode) {
             debugPrint('✅ EMERGENCY RECOVERY (CATCH): Successfully cleared all corrupted entries');
           }
@@ -389,7 +442,7 @@ class HiveService {
       
       // 🔥 CRITICAL FIX: 일괄 저장 후 동기화
       await box.flush();
-      await box.compact();
+      // ✅ DATA PERSISTENCE FIX: compact() 제거
       
       developer.log('${recipes.length} recipes saved in batch and flushed', name: 'Hive Service');
     } catch (e) {
@@ -424,22 +477,6 @@ class HiveService {
     }
   }
 
-  Future<List<Recipe>> getPastTodayRecipes(DateTime today) async {
-    try {
-      final allRecipes = await getAllRecipes();
-      
-      return allRecipes.where((recipe) {
-        final recipeDate = recipe.createdAt;
-        return recipeDate.month == today.month &&
-               recipeDate.day == today.day &&
-               recipeDate.year != today.year;
-      }).toList();
-    } catch (e) {
-      developer.log('Failed to get past today recipes: $e', name: 'Hive Service');
-      return [];
-    }
-  }
-
   // Mood-based functionality
   Future<List<Recipe>> getRecipesByMood(Mood mood) async {
     try {
@@ -451,87 +488,22 @@ class HiveService {
     }
   }
 
-  Future<Map<Mood, int>> getMoodDistribution() async {
-    try {
-      final allRecipes = await getAllRecipes();
-      final distribution = <Mood, int>{};
-      
-      for (final recipe in allRecipes) {
-        distribution[recipe.mood] = (distribution[recipe.mood] ?? 0) + 1;
-      }
-      
-      return distribution;
-    } catch (e) {
-      developer.log('Failed to get mood distribution: $e', name: 'Hive Service');
-      return {};
-    }
-  }
+  // Note: 감정 분포는 StatsScreen._buildEmotionDistributionCard()에서 RecipeProvider 데이터로 직접 계산합니다.
+  // RecipeProvider를 사용하면 async 오버헤드 없이 in-memory 데이터로 더 빠르게 처리할 수 있습니다.
 
-  // Tag-based search
-  Future<List<Recipe>> searchRecipesByTag(String tag) async {
-    try {
-      final allRecipes = await getAllRecipes();
-      return allRecipes.where((recipe) => recipe.tags.contains(tag)).toList();
-    } catch (e) {
-      developer.log('Failed to search recipes by tag: $e', name: 'Hive Service');
-      return [];
-    }
-  }
+  // Note: 태그 검색은 다음 위치에서 더 유연하게 구현되어 있습니다:
+  // - RecipeProvider.searchByTag() (contains 검색 지원)
+  // - ArchiveScreen._performSearch() (tags.any 사용으로 부분 일치 지원)
+  // RecipeProvider를 사용하면 더 강력한 태그 검색 기능을 제공합니다.
 
-  Future<List<Recipe>> searchRecipesByTags(List<String> tags) async {
-    try {
-      final allRecipes = await getAllRecipes();
-      return allRecipes.where((recipe) {
-        return tags.every((tag) => recipe.tags.contains(tag));
-      }).toList();
-    } catch (e) {
-      developer.log('Failed to search recipes by tags: $e', name: 'Hive Service');
-      return [];
-    }
-  }
-
-  Future<Map<String, int>> getTagFrequency() async {
-    try {
-      final allRecipes = await getAllRecipes();
-      final frequency = <String, int>{};
-      
-      for (final recipe in allRecipes) {
-        for (final tag in recipe.tags) {
-          frequency[tag] = (frequency[tag] ?? 0) + 1;
-        }
-      }
-      
-      return frequency;
-    } catch (e) {
-      developer.log('Failed to get tag frequency: $e', name: 'Hive Service');
-      return {};
-    }
-  }
+  // Note: 태그 빈도는 다음 위치에서 RecipeProvider 데이터로 직접 계산합니다:
+  // - StatsScreen._buildMostUsedTagsCard() (통계 화면)
+  // - ArchiveScreen._getRecommendedTags() (보관함 화면)
+  // RecipeProvider를 사용하면 async 오버헤드 없이 in-memory 데이터로 더 빠르게 처리할 수 있습니다.
 
   // Search and filtering
-  Future<List<Recipe>> searchRecipesByTitle(String keyword) async {
-    try {
-      final allRecipes = await getAllRecipes();
-      return allRecipes.where((recipe) {
-        return recipe.title.toLowerCase().contains(keyword.toLowerCase());
-      }).toList();
-    } catch (e) {
-      developer.log('Failed to search recipes by title: $e', name: 'Hive Service');
-      return [];
-    }
-  }
-
-  Future<List<Recipe>> searchRecipesByEmotionalStory(String keyword) async {
-    try {
-      final allRecipes = await getAllRecipes();
-      return allRecipes.where((recipe) {
-        return recipe.emotionalStory.toLowerCase().contains(keyword.toLowerCase());
-      }).toList();
-    } catch (e) {
-      developer.log('Failed to search recipes by emotional story: $e', name: 'Hive Service');
-      return [];
-    }
-  }
+  // Note: 제목/감정 이야기 검색은 RecipeProvider.searchRecipes()를 사용하세요.
+  // RecipeProvider가 더 강력한 통합 검색 기능을 제공합니다.
 
   Future<List<Recipe>> getFavoriteRecipes() async {
     try {
@@ -587,7 +559,7 @@ class HiveService {
       };
       await box.put('burrow_milestones', dataToStore);
       await box.flush();
-      await box.compact();
+      // ✅ DATA PERSISTENCE FIX: compact() 제거
       developer.log('Burrow milestones saved: ${milestones.length}', name: 'Hive Service');
     } catch (e) {
       developer.log('Failed to save burrow milestones: $e', name: 'Hive Service');
@@ -611,7 +583,7 @@ class HiveService {
       final box = await _box;
       await box.put(key, value);
       await box.flush();
-      await box.compact();
+      // ✅ DATA PERSISTENCE FIX: compact() 제거
       developer.log('Value saved for key $key', name: 'Hive Service');
     } catch (e) {
       developer.log('Failed to save value for key $key: $e', name: 'Hive Service');
@@ -621,12 +593,17 @@ class HiveService {
 
   Future<void> dispose() async {
     try {
+      // 🔥 DATA PERSISTENCE FIX: 박스를 절대 닫지 않음
+      // 이유: flush()만으로도 데이터가 디스크에 저장되므로
+      // 박스를 열린 채로 두면 앱 재시작 시 데이터 접근이 더 안정적임
       if (_recipeBox != null && _recipeBox!.isOpen) {
-        await _recipeBox!.close();
-        developer.log('Recipe Box closed', name: 'Hive Service');
+        // 마지막 flush로 모든 데이터 디스크 반영
+        await _recipeBox!.flush();
+        developer.log('Recipe Box flushed (kept open for data persistence)', name: 'Hive Service');
+        // await _recipeBox!.close(); // 박스 닫기 제거 - 데이터 지속성 강화
       }
     } catch (e) {
-      developer.log('Failed to close Recipe Box: $e', name: 'Hive Service');
+      developer.log('Failed to flush Recipe Box: $e', name: 'Hive Service');
     }
   }
 }

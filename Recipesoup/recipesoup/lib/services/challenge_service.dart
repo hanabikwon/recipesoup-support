@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart'; // 🔥 CRITICAL FIX: Hive persistence 추가
 import '../models/challenge_models.dart';
 
 /// 깡총 챌린지 시스템 서비스
@@ -12,16 +13,44 @@ class ChallengeService {
   factory ChallengeService() => _instance;
   ChallengeService._internal();
 
+  // 🔥 CRITICAL FIX: Hive Box for challenge progress persistence
+  Box<dynamic>? _progressBox;
+  final String _progressBoxName = 'challenge_progress';
+  bool _isProgressBoxInitialized = false;
+
   // 캐싱 변수들
   static List<Challenge>? _cachedChallenges;
-  static List<ChallengeBadge>? _cachedBadges;
   static Map<String, ChallengeProgress>? _cachedProgress;
-  static Map<String, UserBadge>? _cachedUserBadges;
   static Map<String, Map<String, dynamic>>? _cachedCookingMethods; // 🔥 조리법 캐싱 추가
   static DateTime? _lastLoadTime;
 
   // 캐시 유효 시간 (30분)
   static const Duration _cacheValidDuration = Duration(minutes: 30);
+
+  /// 🔥 CRITICAL FIX: Hive Box 초기화 (HiveService 패턴 따름)
+  Future<void> _initializeProgressBox() async {
+    if (_progressBox != null && _progressBox!.isOpen) {
+      return;
+    }
+
+    if (_isProgressBoxInitialized) {
+      return;
+    }
+
+    try {
+      _progressBox = await Hive.openBox<dynamic>(_progressBoxName);
+      _isProgressBoxInitialized = true;
+
+      if (kDebugMode) {
+        debugPrint('💾 Challenge Progress Box initialized: ${_progressBox!.length} records');
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('❌ Failed to initialize Challenge Progress Box: $e');
+      }
+      rethrow;
+    }
+  }
 
   /// 모든 챌린지 데이터 로드 (JSON에서 134개)
   Future<List<Challenge>> loadAllChallenges() async {
@@ -117,19 +146,44 @@ class ChallengeService {
     return recommendations.take(limit).toList();
   }
 
-  /// 사용자 진행 상황 로드 (로컬 저장소에서)
+  /// 사용자 진행 상황 로드 (Hive Box에서)
   Future<Map<String, ChallengeProgress>> loadUserProgress() async {
     try {
+      // 🔥 CRITICAL FIX: Hive Box 초기화
+      await _initializeProgressBox();
+
+      // 메모리 캐시가 있으면 바로 반환
       if (_cachedProgress != null) {
         return _cachedProgress!;
       }
 
-      // 실제 구현에서는 Hive나 SharedPreferences 사용
-      // 현재는 임시로 빈 Map 반환
-      _cachedProgress = <String, ChallengeProgress>{};
-      
+      // 🔥 CRITICAL FIX: Hive Box에서 로드
+      final box = _progressBox!;
+      final progressMap = <String, ChallengeProgress>{};
+
+      for (var key in box.keys) {
+        try {
+          final data = box.get(key);
+          if (data == null) continue;
+
+          // 타입 안전성 확보
+          final jsonData = data is Map<String, dynamic>
+              ? data
+              : Map<String, dynamic>.from(data as Map);
+
+          final progress = ChallengeProgress.fromJson(jsonData);
+          progressMap[key.toString()] = progress;
+        } catch (e) {
+          if (kDebugMode) {
+            debugPrint('⚠️ Failed to load progress for key $key: $e');
+          }
+        }
+      }
+
+      _cachedProgress = progressMap;
+
       if (kDebugMode) {
-        debugPrint('📈 Loaded user progress: ${_cachedProgress!.length} records');
+        debugPrint('📈 Loaded user progress from Hive: ${_cachedProgress!.length} records');
       }
 
       return _cachedProgress!;
@@ -137,31 +191,39 @@ class ChallengeService {
       if (kDebugMode) {
         debugPrint('❌ Failed to load user progress: $e');
       }
+      // 에러 발생 시에도 빈 Map 반환 (앱 크래시 방지)
+      _cachedProgress = <String, ChallengeProgress>{};
       return <String, ChallengeProgress>{};
     }
   }
 
-  /// 사용자 진행 상황 저장
+  /// 사용자 진행 상황 저장 (Hive Box에)
   Future<void> saveUserProgress(ChallengeProgress progress) async {
     try {
+      // 🔥 CRITICAL FIX: Hive Box 초기화
+      await _initializeProgressBox();
+
       final currentProgress = await loadUserProgress();
       currentProgress[progress.challengeId] = progress;
-      
-      // 실제 구현에서는 Hive나 SharedPreferences에 저장
-      // 현재는 캐시에만 저장
+
+      // 🔥 CRITICAL FIX: Hive Box에 저장 (HiveService 패턴 따름)
+      await _progressBox!.put(progress.challengeId, progress.toJson());
+      await _progressBox!.flush(); // 디스크 동기화 강제
+
+      // 🔥 ULTRA FIX: OS 파일 시스템 캐시가 디스크에 쓸 시간 확보
+      await Future.delayed(Duration(milliseconds: 100));
+
+      // 메모리 캐시 업데이트
       _cachedProgress = currentProgress;
 
       if (kDebugMode) {
-        debugPrint('💾 Saved progress for challenge: ${progress.challengeId} (${progress.status.displayName})');
+        debugPrint('💾 Saved progress to Hive for challenge: ${progress.challengeId} (${progress.status.displayName})');
       }
-
-      // 뱃지 체크 (백그라운드)
-      _checkAndAwardBadges();
     } catch (e) {
       if (kDebugMode) {
         debugPrint('❌ Failed to save user progress: $e');
       }
-      throw Exception('챌린지 진행 상황 저장 실패');
+      throw Exception('챌린지 진행 상황 저장 실패: $e');
     }
   }
 
@@ -211,7 +273,6 @@ class ChallengeService {
       userNote: userNote,
       userImagePath: userImagePath,
       userRating: userRating,
-      points: 0, // 포인트 시스템 제거
     );
 
     await saveUserProgress(completedProgress);
@@ -223,69 +284,40 @@ class ChallengeService {
     return completedProgress;
   }
 
-  /// 뱃지 시스템 로드
-  Future<List<ChallengeBadge>> loadAllBadges() async {
-    try {
-      if (_cachedBadges != null) {
-        return _cachedBadges!;
-      }
-
-      // JSON 파일에서 뱃지 데이터 로드
-      final jsonString = await rootBundle.loadString('lib/data/challenge_badges.json');
-      final badgeList = json.decode(jsonString) as List<dynamic>;
-      
-      final badges = badgeList
-          .map((badgeJson) => ChallengeBadge.fromJson(badgeJson as Map<String, dynamic>))
-          .where((badge) => badge.isActive)
-          .toList();
-
-      _cachedBadges = badges;
-
-      if (kDebugMode) {
-        debugPrint('🏅 Loaded ${badges.length} badges');
-      }
-
-      return badges;
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('❌ Failed to load badges: $e');
-      }
-      return [];
-    }
-  }
-
-  /// 사용자 획득 뱃지 조회
-  Future<List<UserBadge>> getUserBadges() async {
-    try {
-      if (_cachedUserBadges != null) {
-        return _cachedUserBadges!.values.toList();
-      }
-
-      // 실제 구현에서는 로컬 저장소에서 로드
-      _cachedUserBadges = <String, UserBadge>{};
-
-      return [];
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('❌ Failed to load user badges: $e');
-      }
-      return [];
-    }
-  }
 
   /// 통계 정보 조회
   Future<ChallengeStatistics> getStatistics() async {
     final allChallenges = await loadAllChallenges();
     final userProgress = await loadUserProgress();
-    final userBadges = await getUserBadges();
 
     final completedCount = userProgress.values
         .where((progress) => progress.isCompleted)
         .length;
 
-    final totalPoints = userProgress.values
-        .where((progress) => progress.isCompleted)
-        .fold(0, (sum, progress) => sum + progress.earnedPoints);
+    final inProgressCount = userProgress.values
+        .where((progress) => progress.isStarted && !progress.isCompleted)
+        .length;
+
+    // 🔥 DEBUG: 실제 카운트 값 로깅
+    if (kDebugMode) {
+      debugPrint('📊 ChallengeService.getStatistics() 호출됨');
+      debugPrint('   총 userProgress 개수: ${userProgress.length}');
+      debugPrint('   완료된 챌린지: $completedCount개');
+      debugPrint('   진행중인 챌린지: $inProgressCount개');
+
+      // 각 progress의 상태 출력
+      debugPrint('   === 모든 챌린지 상태 ===');
+      for (var entry in userProgress.entries) {
+        final progress = entry.value;
+        final isStartedValue = progress.isStarted;
+        final isCompletedValue = progress.isCompleted;
+        final matchesFilter = isStartedValue && !isCompletedValue;
+        debugPrint('   ${entry.key}:');
+        debugPrint('      status=${progress.status.displayName}');
+        debugPrint('      isStarted=$isStartedValue, isCompleted=$isCompletedValue');
+        debugPrint('      진행중 필터 통과=$matchesFilter');
+      }
+    }
 
     // 카테고리별 완료 현황
     final categoryStats = <ChallengeCategory, int>{};
@@ -297,159 +329,21 @@ class ChallengeService {
             return progress != null && progress.isCompleted;
           })
           .length;
-      
+
       categoryStats[category] = categoryCompleted;
     }
 
     return ChallengeStatistics(
       totalChallenges: allChallenges.length,
       completedChallenges: completedCount,
-      totalPoints: totalPoints,
-      badgesEarned: userBadges.length,
+      inProgressChallenges: inProgressCount,
       categoryStats: categoryStats,
-      completionRate: allChallenges.isNotEmpty 
-          ? (completedCount / allChallenges.length * 100) 
+      completionRate: allChallenges.isNotEmpty
+          ? (completedCount / allChallenges.length * 100)
           : 0.0,
     );
   }
 
-  /// 뱃지 획득 조건 체크 및 수여 (백그라운드)
-  Future<void> _checkAndAwardBadges() async {
-    try {
-      final allBadges = await loadAllBadges();
-      final userProgress = await loadUserProgress();
-      final currentUserBadges = await getUserBadges();
-      final currentBadgeIds = currentUserBadges.map((b) => b.badgeId).toSet();
-
-      for (var badge in allBadges) {
-        // 이미 획득한 뱃지는 스킵
-        if (currentBadgeIds.contains(badge.id)) continue;
-
-        // 뱃지 조건 체크 로직 (카테고리별로 구현)
-        bool shouldAwardBadge = false;
-        
-        switch (badge.category) {
-          case BadgeCategory.completion:
-            // 완료형: N개 챌린지 완료
-            final completedCount = userProgress.values
-                .where((p) => p.isCompleted)
-                .length;
-            shouldAwardBadge = _checkCompletionBadge(badge, completedCount);
-            break;
-            
-          case BadgeCategory.streak:
-            // 연속형: N일 연속 챌린지 완료
-            shouldAwardBadge = _checkStreakBadge(badge, userProgress);
-            break;
-            
-          case BadgeCategory.mastery:
-            // 숙련형: 특정 카테고리 마스터
-            shouldAwardBadge = _checkMasteryBadge(badge, userProgress);
-            break;
-            
-          case BadgeCategory.exploration:
-            // 탐험형: 다양한 카테고리 도전
-            shouldAwardBadge = _checkExplorationBadge(badge, userProgress);
-            break;
-            
-          default:
-            break;
-        }
-
-        if (shouldAwardBadge) {
-          await _awardBadge(badge);
-        }
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        debugPrint('❌ Failed to check badges: $e');
-      }
-    }
-  }
-
-  /// 뱃지 수여
-  Future<void> _awardBadge(ChallengeBadge badge) async {
-    final userBadge = UserBadge(
-      badgeId: badge.id,
-      earnedAt: DateTime.now(),
-      earnedPoints: badge.rewardPoints,
-    );
-
-    _cachedUserBadges ??= <String, UserBadge>{};
-    _cachedUserBadges![badge.id] = userBadge;
-
-    if (kDebugMode) {
-      debugPrint('🏆 Badge awarded: ${badge.name} (+${badge.rewardPoints} points)');
-    }
-  }
-
-  /// 완료형 뱃지 조건 체크
-  bool _checkCompletionBadge(ChallengeBadge badge, int completedCount) {
-    // 예시: "5개 챌린지 완료" 뱃지
-    if (badge.id == 'completion_beginner' && completedCount >= 5) return true;
-    if (badge.id == 'completion_intermediate' && completedCount >= 15) return true;
-    if (badge.id == 'completion_advanced' && completedCount >= 30) return true;
-    if (badge.id == 'completion_master' && completedCount >= 50) return true;
-    
-    return false;
-  }
-
-  /// 연속형 뱃지 조건 체크
-  bool _checkStreakBadge(ChallengeBadge badge, Map<String, ChallengeProgress> userProgress) {
-    // 연속 완료 일수 계산 로직
-    final completedDates = userProgress.values
-        .where((p) => p.isCompleted && p.completedAt != null)
-        .map((p) => p.completedAt!)
-        .toList()
-      ..sort();
-
-    if (completedDates.isEmpty) return false;
-
-    int currentStreak = 1;
-    int maxStreak = 1;
-
-    for (int i = 1; i < completedDates.length; i++) {
-      final prevDate = DateTime(
-        completedDates[i-1].year, 
-        completedDates[i-1].month, 
-        completedDates[i-1].day
-      );
-      final currentDate = DateTime(
-        completedDates[i].year,
-        completedDates[i].month, 
-        completedDates[i].day
-      );
-
-      if (currentDate.difference(prevDate).inDays == 1) {
-        currentStreak++;
-      } else {
-        currentStreak = 1;
-      }
-
-      maxStreak = currentStreak > maxStreak ? currentStreak : maxStreak;
-    }
-
-    // 뱃지별 조건
-    if (badge.id == 'streak_3days' && maxStreak >= 3) return true;
-    if (badge.id == 'streak_7days' && maxStreak >= 7) return true;
-    if (badge.id == 'streak_30days' && maxStreak >= 30) return true;
-
-    return false;
-  }
-
-  /// 숙련형 뱃지 조건 체크
-  bool _checkMasteryBadge(ChallengeBadge badge, Map<String, ChallengeProgress> userProgress) {
-    // 카테고리별 완료 현황 체크
-    // 구체적 로직은 실제 뱃지 설계에 따라 구현
-    return false;
-  }
-
-  /// 탐험형 뱃지 조건 체크
-  bool _checkExplorationBadge(ChallengeBadge badge, Map<String, ChallengeProgress> userProgress) {
-    // 다양한 카테고리 도전 여부 체크
-    // 구체적 로직은 실제 뱃지 설계에 따라 구현
-    return false;
-  }
 
   /// 캐시 유효성 확인
   bool _isCacheValid() {
@@ -549,12 +443,10 @@ class ChallengeService {
   /// 캐시 클리어
   void clearCache() {
     _cachedChallenges = null;
-    _cachedBadges = null;
     _cachedProgress = null;
-    _cachedUserBadges = null;
     _cachedCookingMethods = null; // 🔥 조리법 캐시도 클리어
     _lastLoadTime = null;
-    
+
     if (kDebugMode) {
       debugPrint('🗑️ Challenge service cache cleared');
     }
@@ -564,9 +456,7 @@ class ChallengeService {
   Map<String, dynamic> getServiceStatus() {
     return {
       'challenges_cached': _cachedChallenges?.length ?? 0,
-      'badges_cached': _cachedBadges?.length ?? 0,
       'user_progress_cached': _cachedProgress?.length ?? 0,
-      'user_badges_cached': _cachedUserBadges?.length ?? 0,
       'cache_valid': _isCacheValid(),
       'last_load_time': _lastLoadTime?.toIso8601String(),
     };
@@ -577,22 +467,20 @@ class ChallengeService {
 class ChallengeStatistics {
   final int totalChallenges;
   final int completedChallenges;
-  final int totalPoints;
-  final int badgesEarned;
+  final int inProgressChallenges;
   final Map<ChallengeCategory, int> categoryStats;
   final double completionRate;
 
   ChallengeStatistics({
     required this.totalChallenges,
     required this.completedChallenges,
-    required this.totalPoints,
-    required this.badgesEarned,
+    required this.inProgressChallenges,
     required this.categoryStats,
     required this.completionRate,
   });
 
   @override
   String toString() {
-    return 'ChallengeStats{total: $totalChallenges, completed: $completedChallenges, points: $totalPoints, badges: $badgesEarned, rate: ${completionRate.toStringAsFixed(1)}%}';
+    return 'ChallengeStats{total: $totalChallenges, completed: $completedChallenges, inProgress: $inProgressChallenges, rate: ${completionRate.toStringAsFixed(1)}%}';
   }
 }

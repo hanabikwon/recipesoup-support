@@ -63,6 +63,161 @@ class _ChallengeHubScreenState extends State<ChallengeHubScreen> {
     _showCompletedChallengesDialog(completedChallenges);
   }
 
+  /// 진행중인 챌린지 보기 화면으로 이동
+  void _navigateToInProgressChallenges() {
+    final challengeProvider = Provider.of<ChallengeProvider>(context, listen: false);
+    final inProgressChallenges = challengeProvider.allChallenges
+        .where((challenge) {
+          final progress = challengeProvider.userProgress[challenge.id];
+          return progress != null && progress.isStarted && !progress.isCompleted;
+        })
+        .toList();
+
+    // 진행중인 챌린지가 없다면 안내 메시지 표시
+    if (inProgressChallenges.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('진행중인 챌린지가 없어요. 새로운 챌린지를 시작해보세요!'),
+          backgroundColor: AppTheme.primaryColor,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    // 진행중인 챌린지 리스트를 다이얼로그로 표시
+    _showInProgressChallengesDialog(inProgressChallenges);
+  }
+
+  /// 진행중인 챌린지 리스트 다이얼로그 표시
+  void _showInProgressChallengesDialog(List<Challenge> inProgressChallenges) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: AppTheme.backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.7,
+              maxWidth: MediaQuery.of(context).size.width * 0.9,
+            ),
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 헤더
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '진행중인 챌린지',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.textPrimary,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.close,
+                        color: AppTheme.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                // 진행중인 챌린지 리스트
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: inProgressChallenges.length,
+                    separatorBuilder: (context, index) => SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final challenge = inProgressChallenges[index];
+                      return _buildInProgressChallengeCard(challenge);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// 진행중인 챌린지 카드
+  Widget _buildInProgressChallengeCard(Challenge challenge) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pop(); // 다이얼로그 닫기
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ChallengeDetailScreen(challenge: challenge),
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppTheme.primaryColor.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppTheme.primaryColor.withValues(alpha: 0.3),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            // 진행중 아이콘
+            Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.hourglass_empty,
+                color: Colors.white,
+                size: 16,
+              ),
+            ),
+            SizedBox(width: 12),
+            // 챌린지 정보
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    challenge.title,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.textPrimary,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            // 화살표 아이콘
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: AppTheme.textSecondary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// 완료한 챌린지 리스트 다이얼로그 표시
   void _showCompletedChallengesDialog(List<Challenge> completedChallenges) {
     showDialog(
@@ -215,7 +370,6 @@ class _ChallengeHubScreenState extends State<ChallengeHubScreen> {
                 _buildMoodEntry(),
                 _buildUserProgress(provider),
                 _buildCategoryHubs(provider),
-                _buildRecentChallenges(provider),
                 _buildFooterSpacing(),
               ],
             );
@@ -408,10 +562,11 @@ class _ChallengeHubScreenState extends State<ChallengeHubScreen> {
                 ),
                 SizedBox(width: 12),
                 _buildProgressCard(
-                  iconData: Icons.military_tech,
-                  title: '획득한 뱃지',
-                  value: '${provider.userBadges.length}개',
-                  color: AppTheme.primaryDark,
+                  iconData: Icons.hourglass_empty,
+                  title: '진행중인 레시피',
+                  value: '${stats.inProgressChallenges}개',
+                  color: AppTheme.primaryColor,
+                  onTap: _navigateToInProgressChallenges,
                 ),
               ],
             ),
@@ -921,124 +1076,6 @@ class _ChallengeHubScreenState extends State<ChallengeHubScreen> {
             ),
           ),
       ],
-    );
-  }
-
-  /// 최근 챌린지 섹션
-  Widget _buildRecentChallenges(ChallengeProvider provider) {
-    // 진행중이거나 최근 시작할 만한 챌린지들
-    final recentChallenges = provider.allChallenges
-        .where((c) => c.isActive && 
-                     (provider.userProgress[c.id]?.isStarted ?? false) &&
-                     !(provider.userProgress[c.id]?.isCompleted ?? false))
-        .take(3)
-        .toList();
-
-    if (recentChallenges.isEmpty) {
-      return SliverToBoxAdapter(child: SizedBox.shrink());
-    }
-
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '진행중인 챌린지',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.textPrimary,
-              ),
-            ),
-            SizedBox(height: 16),
-            ...recentChallenges.map((challenge) => _buildRecentChallengeCard(challenge, provider)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// 최근 챌린지 카드
-  Widget _buildRecentChallengeCard(Challenge challenge, ChallengeProvider provider) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ChallengeDetailScreen(challenge: challenge),
-            ),
-          );
-        },
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.grey.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: AppTheme.vintageShadow,
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: _getCategoryColor(challenge.category).withValues(alpha: 0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  _getCategoryIcon(challenge.category),
-                  color: _getCategoryColor(challenge.category),
-                  size: 20,
-                ),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      challenge.title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.textPrimary,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      '${challenge.estimatedMinutes}분 • ${challenge.difficultyText}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppTheme.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.8),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '계속하기',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 

@@ -76,9 +76,7 @@ class RecipeAnalysis {
   Recipe toRecipe({
     required String emotionalStory, // 사용자가 추가한 감정 메모
     required Mood mood, // 사용자가 선택한 감정 상태
-    String? localImagePath, // 저장된 이미지 경로
     int? rating, // 사용자 평점
-    DateTime? reminderDate, // 리마인더 설정
     List<String>? additionalTags, // 사용자 추가 태그
   }) {
     // 기본 태그와 사용자 추가 태그 병합
@@ -94,10 +92,8 @@ class RecipeAnalysis {
       ingredients: toIngredients(),
       sauce: sauce,
       instructions: instructions,
-      localImagePath: localImagePath,
       tags: allTags,
       rating: rating,
-      reminderDate: reminderDate,
       // OCR 관련 정보 포함
       isScreenshot: isScreenshot,
       extractedText: extractedText,
