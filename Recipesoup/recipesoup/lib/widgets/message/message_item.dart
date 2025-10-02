@@ -61,18 +61,26 @@ class MessageItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // 제목
-                      Text(
-                        message.title,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: isRead
-                              ? FontWeight.w500
-                              : FontWeight.w600,
-                          color: const Color(0xFF2E3D1F), // 다크 올리브
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      // 제목 + 타입 뱃지
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              message.title,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: isRead
+                                    ? FontWeight.w500
+                                    : FontWeight.w600,
+                                color: const Color(0xFF2E3D1F), // 다크 올리브
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          _buildTypeBadge(),
+                        ],
                       ),
                       const SizedBox(height: 6),
                       // 미리보기 텍스트
@@ -107,6 +115,57 @@ class MessageItem extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  /// 메시지 타입 뱃지 위젯
+  Widget _buildTypeBadge() {
+    // MessageType enum으로 변환
+    final messageType = MessageType.fromString(message.type);
+
+    // 타입별 설정
+    String label;
+    Color backgroundColor;
+    Color textColor;
+
+    switch (messageType) {
+      case MessageType.announcement:
+        label = '공지';
+        backgroundColor = const Color(0xFFD2A45B); // 빈티지 오렌지
+        textColor = Colors.white;
+        break;
+      case MessageType.feature:
+        label = '기능';
+        backgroundColor = const Color(0xFF8B9A6B); // 연한 올리브
+        textColor = Colors.white;
+        break;
+      case MessageType.improvement:
+        label = '개선';
+        backgroundColor = const Color(0xFF5A6B49); // 미드 올리브
+        textColor = Colors.white;
+        break;
+      case MessageType.guide:
+        label = '가이드';
+        backgroundColor = const Color(0xFFA0826D); // 빈티지 브라운
+        textColor = Colors.white;
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: textColor,
+          height: 1.0,
         ),
       ),
     );
