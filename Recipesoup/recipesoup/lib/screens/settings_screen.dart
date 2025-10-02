@@ -297,7 +297,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       subtitle: Text(
         subtitle,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
           color: AppTheme.textSecondary,
         ),
       ),
@@ -806,7 +806,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             await recipeProvider.addRecipe(newRecipe);
             restoredCount++;
 
-            print('🔄 ID 충돌 해결: ${recipe.id} → $newId');
+            debugPrint('🔄 ID 충돌 해결: ${recipe.id} → $newId');
           } else {
             // ID 충돌 없음 - 원본 그대로 저장
             await recipeProvider.addRecipe(recipe);
@@ -1135,7 +1135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 await _clearBurrowData(context);
               },
               style: TextButton.styleFrom(
-                foregroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.red,
               ),
               child: const Text('초기화'),
             ),

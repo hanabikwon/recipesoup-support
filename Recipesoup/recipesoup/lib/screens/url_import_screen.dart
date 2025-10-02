@@ -100,7 +100,7 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
           const SizedBox(width: AppTheme.spacing12),
           Expanded(
             child: Text(
-              '블로그나 웹사이트의 레시피 URL을 입력하면 Ai가 자동으로 재료와 조리법을 추출해드려요.',
+              '블로그나 웹사이트의 레시피 URL을 입력하면 재료와 조리법을 추출해드려요.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppTheme.textSecondary,
               ),
