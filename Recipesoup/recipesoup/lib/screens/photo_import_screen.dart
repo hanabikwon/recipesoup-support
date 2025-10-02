@@ -87,7 +87,7 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
           const SizedBox(width: AppTheme.spacing12),
           Expanded(
             child: Text(
-              '음식 사진 또는 레시피 스크린샷을 찍거나 선택하면 Ai가 자동으로 재료와 조리법을 분석해드려요.',
+              '음식 사진 또는 레시피 스크린샷을 찍거나 선택하면 재료와 조리법을 분석해드려요.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppTheme.textSecondary,
               ),

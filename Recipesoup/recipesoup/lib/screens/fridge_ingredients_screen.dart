@@ -494,7 +494,7 @@ class _FridgeIngredientsScreenState extends State<FridgeIngredientsScreen> {
                           ),
                           const SizedBox(height: 8),
                           const Text(
-                            '집에 있는 재료들을 입력하면 Ai가 레시피를 추천해드려요',
+                            '집에 있는 재료를 입력하면 레시피를 추천해드려요',
                             // "다른 레시피 추천" 버튼으로 추가 레시피 요청 가능
                             style: TextStyle(
                               fontSize: 14,

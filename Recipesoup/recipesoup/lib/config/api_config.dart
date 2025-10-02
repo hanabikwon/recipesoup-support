@@ -8,7 +8,7 @@ import 'constants.dart';
 class ApiConfig {
   // Vercel 프록시 서버 설정 (OpenAI API 보안 강화)
   static const String baseUrl = 'https://recipesoup-proxy-n3crx7b51-hanabikwons-projects.vercel.app';
-  static const String chatCompletionsEndpoint = '/api/chat';
+  static const String chatCompletionsEndpoint = '/api/chat/completions';
   static const String model = AppConstants.openAiModel; // gpt-4o-mini
 
   // Vercel 프록시 인증 토큰 (x-app-token 헤더용)
@@ -679,14 +679,10 @@ ${recipeData.toString()}
     }
   }
   
-  /// API 키 유효성 검증
+  /// Vercel 프록시 토큰 유효성 검증 (로컬 API 키 불필요)
   static bool validateApiKey() {
-    try {
-      final key = openAiApiKey;
-      return key != null && key.isNotEmpty && key.startsWith('sk-');
-    } catch (e) {
-      return false;
-    }
+    // Vercel 프록시 방식에서는 프록시 토큰만 확인
+    return proxyToken.isNotEmpty;
   }
   
   /// 디버그/릴리즈 모드 확인
