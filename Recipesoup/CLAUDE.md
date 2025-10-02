@@ -88,16 +88,25 @@ baseUrl: https://recipesoup-proxy-*.vercel.app
 proxyToken: [See ARCHITECTURE.md for proxy token details]
 ```
 
-## 보안 체크리스트
-- [o] OpenAI API 키는 Vercel 서버리스 환경변수에서만 관리
-- [o] 클라이언트에는 프록시 토큰만 포함 (API 키 노출 방지)
-- [o] x-app-token 헤더 기반 앱 전용 접근 제어
-- [o] 민감한 정보는 로그에 남기지 않기
+## 보안 체크리스트 (2025-10-02 업데이트)
+- [✅] OpenAI API 키는 Vercel 서버리스 환경변수에서만 관리
+- [✅] 클라이언트에는 프록시 토큰만 포함 (API 키 노출 방지)
+- [✅] x-app-token 헤더 기반 앱 전용 접근 제어
+- [✅] 민감한 정보는 로그에 남기지 않기
+- [✅] `.env.production` 파일 생성 완료 (프로덕션 환경변수)
+- [✅] `.gitignore`에 `.env.*` 패턴으로 모든 환경변수 파일 보호
+- [✅] OPENAI_API_KEY를 `.env.production`에서 의도적으로 생략 (Vercel 프록시 전용)
 
 ### 환경 설정
 - Vercel 프록시 서버 연동 확인 (ApiConfig.dart)
 - iOS/Android 권한 설정
 - 앱 아이콘 및 스플래시 스크린
+- **프로덕션 환경변수 (`env.production`):**
+  - API_MODEL=gpt-4o-mini
+  - DEBUG_MODE=false
+  - REQUIRE_HTTPS=true
+  - API_TIMEOUT_SECONDS=60
+  - API_RETRY_ATTEMPTS=2
 
 ---
 

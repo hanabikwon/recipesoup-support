@@ -259,7 +259,7 @@ flutter build ios --release
 - 사용자가 직접 백업/복원 기능으로 데이터 관리
 
 ## 4. 연락처
-- 이메일: recipesoup.team@gmail.com
+- 이메일: flow.planet.io@gmail.com
 - 앱 관련 문의나 개인정보 처리 관련 질문 연락 가능
 
 효력 발생일: 2025년 [배포월]

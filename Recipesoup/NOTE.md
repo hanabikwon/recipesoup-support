@@ -46,6 +46,11 @@
     };
   }
   ```
+- **프로덕션 환경변수 설정 (2025-10-02 추가)**:
+  - **✅ `.env.production` 파일 필수**: release 모드에서 ApiConfig.initialize()가 로드 시도
+  - **✅ OPENAI_API_KEY 의도적 생략**: Vercel 프록시 아키텍처로 불필요 (주석으로 설명)
+  - **✅ 필수 설정 항목**: API_MODEL, DEBUG_MODE, REQUIRE_HTTPS, API_TIMEOUT_SECONDS
+  - **✅ `.gitignore` 보호**: `.env.*` 패턴으로 모든 환경변수 파일 보호됨 검증 완료
 - **체크포인트**: 커밋 전 반드시 `grep -r "sk-proj" . --exclude-dir=.git` 실행
 
 ### 3. UI 구조 변경 시 Side Effect (네비게이션 오류 방지!)

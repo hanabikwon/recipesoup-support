@@ -922,7 +922,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: InkWell(
                         onTap: () => _contactDeveloper(),
                         child: const Text(
-                          'recipesoup.team@gmail.com',
+                          'flow.planet.io@gmail.com',
                           style: TextStyle(
                             color: AppTheme.primaryColor,
                             decoration: TextDecoration.underline,

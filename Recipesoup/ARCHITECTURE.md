@@ -1630,12 +1630,26 @@ try {
 - **자동 HTTPS**: SSL/TLS 인증서 자동 관리
 - **Unicode 안전성**: 모든 API 요청 정리 및 검증 시스템
 
+### 프로덕션 환경 보안 설정 (2025-10-02 업데이트)
+- **✅ `.env.production` 파일 생성 완료**: 프로덕션 환경변수 베스트 프랙티스 적용
+- **✅ OPENAI_API_KEY 의도적 생략**: Vercel 프록시 아키텍처로 클라이언트 비포함
+- **✅ `.gitignore` 보호**: `.env.*` 패턴으로 모든 환경변수 파일 보호
+- **✅ 프로덕션 설정 완비**:
+  - API_MODEL=gpt-4o-mini
+  - DEBUG_MODE=false
+  - REQUIRE_HTTPS=true
+  - API_TIMEOUT_SECONDS=60
+  - API_RETRY_ATTEMPTS=2
+  - MAX_CONCURRENT_REQUESTS=3
+- **✅ Apple App Store 심사 준비**: 보안 체크리스트 완료
+
 ### iOS 앱스토어 배포 아키텍처
 - **배포 준비 완료**: Apple Developer Program ($99/년), Bundle ID, 앱 아이콘, 권한 설정
 - **메타데이터 시스템**: App Store Connect 연동 준비 (카테고리: Food & Drink)
 - **스크린샷 요구사항**: 6.7", 6.5", 5.5" 디바이스별 대응
 - **연령 등급**: 4+ (모든 연령) - 안전한 요리 콘텐츠
 - **개인정보 보호**: GitHub Pages 개인정보처리방침, 오프라인 우선 아키텍처
+- **프로덕션 빌드**: `flutter build ipa --release` (환경변수 자동 로드)
 
 ## 성능 최적화
 
