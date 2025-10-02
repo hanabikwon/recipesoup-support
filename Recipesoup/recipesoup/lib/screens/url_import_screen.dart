@@ -7,6 +7,7 @@ import '../models/recipe_analysis.dart';
 import '../services/url_scraper_service.dart';
 import '../services/openai_service.dart';
 import '../widgets/common/required_badge.dart';
+import '../widgets/common/vintage_info_card.dart';
 import 'create_screen.dart';
 
 /// URL에서 레시피를 가져와서 분석하는 화면
@@ -192,45 +193,12 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
   }
 
   Widget _buildErrorCard() {
-    return Container(
-      padding: const EdgeInsets.all(AppTheme.paddingMedium),
-      decoration: BoxDecoration(
-        color: AppTheme.errorColor.withValues(alpha: 26),
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-        border: Border.all(color: AppTheme.errorColor.withValues(alpha: 77)),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.error_outline,
-            color: AppTheme.errorColor,
-            size: 24,
-          ),
-          const SizedBox(width: AppTheme.spacing12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '오류가 발생했습니다',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.errorColor,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _error!,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.errorColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    if (_error == null) return Container();
+
+    // VintageInfoCard 컴포넌트 사용
+    return VintageInfoCard(
+      title: '잠시만 기다려주세요 🐰',
+      message: _error!,
     );
   }
 
@@ -495,8 +463,12 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
       await Future.delayed(Duration(milliseconds: 400));
 
     } catch (e) {
-      // Rate Limit 에러 감지 및 전용 다이얼로그 표시
+      // 에러 메시지 구체화
+      String errorMessage;
       final errorStr = e.toString().toLowerCase();
+      final url = _urlController.text.trim().toLowerCase();
+
+      // Rate Limit 에러 감지 및 전용 다이얼로그 표시
       if (errorStr.contains('rate limit') || errorStr.contains('429') || errorStr.contains('quota')) {
         if (mounted) {
           setState(() {
@@ -508,8 +480,20 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
         return;
       }
 
+      // 영상 링크 감지 (YouTube, TikTok, Instagram 등)
+      if (url.contains('youtube.com') || url.contains('youtu.be') ||
+          url.contains('tiktok.com') || url.contains('instagram.com') ||
+          url.contains('reels') || url.contains('shorts')) {
+        errorMessage = '영상 링크 분석은 준비중이에요.\n블로그나 웹사이트의 레시피 글 링크를 사용해주세요.';
+      } else if (errorStr.contains('network') || errorStr.contains('timeout') || errorStr.contains('connection')) {
+        errorMessage = '네트워크 연결을 확인해주세요.\n인터넷 연결 상태를 점검해보세요.';
+      } else {
+        // 기본 에러 메시지
+        errorMessage = '레시피를 가져올 수 없습니다.\n다른 URL을 시도해주세요.';
+      }
+
       setState(() {
-        _error = e.toString();
+        _error = errorMessage;
         _isLoading = false;
         _currentLoadingMessage = '';
       });

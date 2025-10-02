@@ -9,6 +9,7 @@ import '../models/recipe.dart';
 import '../models/ingredient.dart';
 import '../models/mood.dart';
 import '../utils/cooking_steps_analyzer.dart';
+import '../widgets/common/vintage_info_card.dart';
 import 'challenge_progress_screen.dart';
 import 'create_screen.dart';
 
@@ -828,25 +829,9 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
         if (snapshot.hasError) {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.error_outline, color: Colors.red, size: 20),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      '조리법을 불러오는 중 오류가 발생했습니다.',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-                ],
-              ),
+            child: VintageInfoCard(
+              title: '잠시만 기다려주세요 🐰',
+              message: '조리법을 불러오는 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.',
             ),
           );
         }
@@ -1035,17 +1020,9 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
                   ),
                 ),
                 SizedBox(height: 12),
-                Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
-                  ),
-                  child: Text(
-                    '조리법을 불러오는 중 오류가 발생했습니다.',
-                    style: TextStyle(color: Colors.red),
-                  ),
+                VintageInfoCard(
+                  title: '잠시만 기다려주세요 🐰',
+                  message: '조리법을 불러오는 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.',
                 ),
               ],
             ),

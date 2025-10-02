@@ -5,6 +5,7 @@ import '../config/theme.dart';
 import '../providers/challenge_provider.dart';
 import '../models/challenge_models.dart';
 import '../widgets/vintage_loading_widget.dart';
+import '../widgets/common/vintage_info_card.dart';
 import 'challenge_detail_screen.dart';
 
 /// 카테고리별 챌린지 목록 화면 (간단한 wireframe 기반)
@@ -272,59 +273,36 @@ class _ChallengeCategoryScreenState extends State<ChallengeCategoryScreen> {
     );
   }
 
-  /// 간단한 에러 뷰
+  /// 간단한 에러 뷰 (VintageInfoCard 사용)
   Widget _buildErrorView(String error) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: AppTheme.errorColor.withValues(alpha: 0.2),
-              shape: BoxShape.circle,
+      child: Padding(
+        padding: const EdgeInsets.all(AppTheme.paddingMedium),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            VintageInfoCard(
+              title: '잠시만 기다려주세요 🐰',
+              message: '챌린지를 불러오는데 실패했어요.\n잠시 후 다시 시도해주세요.',
             ),
-            child: Icon(
-              Icons.error_outline,
-              color: AppTheme.errorColor,
-              size: 48,
-            ),
-          ),
-          SizedBox(height: 16),
-          Text(
-            '챌린지를 불러오는데 실패했어요',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: AppTheme.textPrimary,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            '잠시 후 다시 시도해주세요',
-            style: TextStyle(
-              fontSize: 14,
-              color: AppTheme.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () {
-              final provider = Provider.of<ChallengeProvider>(context, listen: false);
-              provider.refresh();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.primaryColor,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                final provider = Provider.of<ChallengeProvider>(context, listen: false);
+                provider.refresh();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
+              child: Text('다시 시도'),
             ),
-            child: Text('다시 시도'),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

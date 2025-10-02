@@ -9,6 +9,7 @@ import '../models/recipe_analysis.dart';
 import '../services/openai_service.dart';
 import '../services/image_service.dart';
 import '../widgets/common/vintage_info_dialog.dart';
+import '../widgets/common/vintage_info_card.dart';
 import 'create_screen.dart';
 
 /// 사진으로 레시피를 가져와서 분석하는 화면
@@ -231,52 +232,10 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
       return Container(); // 빈 에러 메시지인 경우 카드 숨김
     }
 
-    return Container(
-      padding: const EdgeInsets.all(AppTheme.paddingMedium),
-      decoration: BoxDecoration(
-        color: AppTheme.errorColor.withValues(alpha: 26),
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-        border: Border.all(color: AppTheme.errorColor.withValues(alpha: 77)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start, // 아이콘과 텍스트 상단 정렬
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 2), // 아이콘을 살짝 아래로
-            child: Icon(
-              Icons.info_outline,
-              color: AppTheme.errorColor,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: AppTheme.spacing12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '안내',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.errorColor,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  errorText,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.errorColor,
-                    height: 1.4, // 줄간격 개선
-                  ),
-                  softWrap: true, // 자동 줄바꿈
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    // VintageInfoCard 컴포넌트 사용
+    return VintageInfoCard(
+      title: '잠시만 기다려주세요 🐰',
+      message: errorText,
     );
   }
 
@@ -630,9 +589,9 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
         errorMessage = '네트워크 연결을 확인해주세요.\n인터넷 연결 상태를 점검해보세요.';
       } else if (errorStr.contains('food') || errorStr.contains('음식') || errorStr.contains('not food') ||
                  errorStr.contains('no food') || errorStr.contains('recipe') || errorStr.contains('cooking')) {
-        errorMessage = '음식 사진이 아닌 것 같습니다.\n요리나 음식이 포함된 사진을 촬영해주세요.';
+        errorMessage = '음식이나 요리가 보이지 않습니다.\n맛있는 음식 사진으로 다시 시도해주세요!';
       } else if (errorStr.isEmpty || errorStr.trim().isEmpty || errorStr == 'null') {
-        errorMessage = '사진 분석 중 문제가 발생했습니다.\n음식이 포함된 다른 사진으로 시도해주세요.';
+        errorMessage = '음식이나 요리가 보이지 않습니다.\n맛있는 음식 사진으로 다시 시도해주세요!';
       } else {
         // 기본 fallback: 음식이 아닌 모든 사진에 대한 안내 (MacBook, 풍경 등)
         errorMessage = '음식이나 요리가 보이지 않습니다.\n맛있는 음식 사진으로 다시 시도해주세요!';
