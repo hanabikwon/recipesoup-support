@@ -29,11 +29,40 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
   ScrapedContent? _scrapedContent;
   RecipeAnalysis? _analysisResult;
   String _currentLoadingMessage = '';
+  String? _videoUrlWarning; // 비디오 URL 경고 메시지
 
   @override
   void dispose() {
     _urlController.dispose();
     super.dispose();
+  }
+
+  /// 비디오 URL인지 실시간으로 감지하는 메서드
+  void _checkVideoUrl(String url) {
+    if (url.isEmpty) {
+      setState(() {
+        _videoUrlWarning = null;
+      });
+      return;
+    }
+
+    final lowercaseUrl = url.toLowerCase();
+
+    // 비디오 URL 패턴 감지
+    final isVideoUrl = lowercaseUrl.contains('youtube.com') ||
+                       lowercaseUrl.contains('youtu.be') ||
+                       lowercaseUrl.contains('tiktok.com') ||
+                       lowercaseUrl.contains('instagram.com') ||
+                       lowercaseUrl.contains('reels') ||
+                       lowercaseUrl.contains('shorts');
+
+    setState(() {
+      if (isVideoUrl) {
+        _videoUrlWarning = '영상 링크 분석은 준비중이에요.\n텍스트 레시피 링크를 사용해주세요.';
+      } else {
+        _videoUrlWarning = null;
+      }
+    });
   }
 
   @override
@@ -136,8 +165,19 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
             }
             return null;
           },
+          onChanged: _checkVideoUrl, // 실시간 비디오 URL 감지
           onFieldSubmitted: (_) => _processUrl(),
         ),
+        // 비디오 URL 경고 표시
+        if (_videoUrlWarning != null) ...[
+          const SizedBox(height: AppTheme.spacing12),
+          VintageInfoCard(
+            title: '잠시만 기다려주세요 🐰',
+            message: _videoUrlWarning!,
+            titleIcon: Icons.warning_amber_outlined,
+            iconColor: AppTheme.warningColor,
+          ),
+        ],
         // 지원 사이트 안내 문구 제거됨
       ],
     );
@@ -380,6 +420,11 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
 
   Future<void> _processUrl() async {
     if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    // 비디오 URL인 경우 조기 리턴 (안전 장치)
+    if (_videoUrlWarning != null) {
       return;
     }
 
