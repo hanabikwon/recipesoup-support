@@ -484,7 +484,7 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
       if (url.contains('youtube.com') || url.contains('youtu.be') ||
           url.contains('tiktok.com') || url.contains('instagram.com') ||
           url.contains('reels') || url.contains('shorts')) {
-        errorMessage = '영상 링크 분석은 준비중이에요.\n블로그나 웹사이트의 레시피 글 링크를 사용해주세요.';
+        errorMessage = '영상 링크 분석은 준비중이에요.\n텍스트 레시피 링크를 사용해주세요.';
       } else if (errorStr.contains('network') || errorStr.contains('timeout') || errorStr.contains('connection')) {
         errorMessage = '네트워크 연결을 확인해주세요.\n인터넷 연결 상태를 점검해보세요.';
       } else {
