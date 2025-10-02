@@ -79,7 +79,7 @@ class _AchievementDialogState extends State<AchievementDialog>
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: AppTheme.shadowColor.withOpacity(0.3),
+                  color: AppTheme.shadowColor.withValues(alpha: 0.3),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -107,7 +107,7 @@ class _AchievementDialogState extends State<AchievementDialog>
         gradient: LinearGradient(
           colors: [
             AppTheme.primaryColor,
-            AppTheme.primaryColor.withOpacity(0.8),
+            AppTheme.primaryColor.withValues(alpha: 0.8),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -147,10 +147,10 @@ class _AchievementDialogState extends State<AchievementDialog>
             width: double.infinity,
             padding: const EdgeInsets.all(AppTheme.paddingMedium),
             decoration: BoxDecoration(
-              color: AppTheme.primaryLight.withOpacity(0.1),
+              color: AppTheme.primaryLight.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
               border: Border.all(
-                color: AppTheme.primaryLight.withOpacity(0.3),
+                color: AppTheme.primaryLight.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
@@ -190,10 +190,10 @@ class _AchievementDialogState extends State<AchievementDialog>
       width: double.infinity,
       padding: const EdgeInsets.all(AppTheme.paddingMedium),
       decoration: BoxDecoration(
-        color: AppTheme.accentOrange.withOpacity(0.1),
+        color: AppTheme.accentOrange.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
         border: Border.all(
-          color: AppTheme.accentOrange.withOpacity(0.3),
+          color: AppTheme.accentOrange.withValues(alpha: 0.3),
           width: 1,
         ),
       ),

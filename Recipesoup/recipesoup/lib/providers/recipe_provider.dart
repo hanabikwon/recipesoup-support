@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:recipesoup/models/recipe.dart';
 import 'package:recipesoup/models/mood.dart';
 import 'package:recipesoup/services/hive_service.dart';
@@ -15,6 +14,9 @@ class RecipeProvider extends ChangeNotifier {
   Recipe? _selectedRecipe;
   bool _isLoading = false;
   String? _error;
+
+  // 성능 최적화를 위한 캐시 변수들
+  List<Recipe>? _cachedRecentRecipes;
   
   // 버로우 시스템 콜백 (순환 참조 방지)
   Function(Recipe)? _onRecipeAdded;
@@ -22,11 +24,12 @@ class RecipeProvider extends ChangeNotifier {
   Function(String)? _onRecipeDeleted;
   
   // 생성자 - DI를 위한 HiveService 주입
-  RecipeProvider({HiveService? hiveService}) 
+  RecipeProvider({HiveService? hiveService})
       : _hiveService = hiveService ?? HiveService() {
-    // 🔥 CRITICAL DEBUG: HiveService 인스턴스 상태 로깅
-    debugPrint('🔥 RECIPE PROVIDER DEBUG: Using HiveService instance: ${_hiveService.hashCode}');
-    developer.log('🔥 RecipeProvider initialized with HiveService: ${_hiveService.hashCode}', name: 'RecipeProvider');
+    // 개발 모드에서만 디버깅 로그
+    if (kDebugMode) {
+      developer.log('RecipeProvider initialized with HiveService: ${_hiveService.hashCode}', name: 'RecipeProvider');
+    }
   }
   
   // Getters
@@ -34,21 +37,22 @@ class RecipeProvider extends ChangeNotifier {
   Recipe? get selectedRecipe => _selectedRecipe;
   bool get isLoading => _isLoading;
   String? get error => _error;
-  
-  /// "과거 오늘" 기능 - 같은 월/일, 다른 년도 레시피들
-  List<Recipe> get todayMemories {
-    final today = DateTime.now();
-    return _recipes.where((recipe) {
-      final recipeDate = recipe.createdAt;
-      return recipeDate.month == today.month && 
-             recipeDate.day == today.day &&
-             recipeDate.year != today.year;
-    }).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+  /// 캐시 무효화 (레시피 변경시 호출)
+  void _invalidateCache() {
+    _cachedRecentRecipes = null;
   }
   
-  /// 최근 레시피들 (최신순 정렬)
+  /// 최근 레시피들 (최신순 정렬, 캐싱 최적화)
   List<Recipe> get recentRecipes {
-    return List.from(_recipes)..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    // 캐시가 유효한지 확인
+    if (_cachedRecentRecipes != null && _cachedRecentRecipes!.length == _recipes.length) {
+      return _cachedRecentRecipes!;
+    }
+
+    // 캐시 갱신 (정렬된 복사본 생성)
+    _cachedRecentRecipes = List.from(_recipes)..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return _cachedRecentRecipes!;
   }
   
   // === 버로우 시스템 통합 (콜백 기반) ===
@@ -62,32 +66,42 @@ class RecipeProvider extends ChangeNotifier {
     _onRecipeAdded = onRecipeAdded;
     _onRecipeUpdated = onRecipeUpdated;
     _onRecipeDeleted = onRecipeDeleted;
-    developer.log('Burrow callbacks configured', name: 'RecipeProvider');
+    if (kDebugMode) {
+      developer.log('Burrow callbacks configured', name: 'RecipeProvider');
+    }
   }
   
   /// 모든 레시피 로딩 (안전한 로딩 - 기존 데이터 보존)
   Future<void> loadRecipes() async {
+    print('🔥 LOAD START: RecipeProvider.loadRecipes() called');
     _setLoading(true);
-    
+
     try {
+      print('🔥 LOAD: Calling HiveService.getAllRecipes()...');
       final loadedRecipes = await _hiveService.getAllRecipes();
-      
-      // 🔥 CRITICAL FIX: 로드된 데이터가 유효할 때만 교체
+      print('🔥 LOAD: HiveService returned ${loadedRecipes.length} recipes');
+
+      // 로드된 데이터가 유효할 때만 교체
       if (loadedRecipes.isNotEmpty || _recipes.isEmpty) {
         _recipes = loadedRecipes;
         _recipes.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // 최신순 정렬
+        _invalidateCache(); // 캐시 무효화
         _clearError();
+        print('✅ LOAD SUCCESS: Loaded ${_recipes.length} recipes');
         developer.log('Successfully loaded ${_recipes.length} recipes', name: 'RecipeProvider');
       } else {
         // 로드된 데이터가 비어있고 기존 데이터가 있으면 기존 데이터 유지
+        print('⚠️ LOAD: No new recipes, keeping existing ${_recipes.length} recipes');
         developer.log('No recipes loaded, keeping existing ${_recipes.length} recipes', name: 'RecipeProvider');
       }
     } catch (e) {
+      print('❌ LOAD ERROR: $e');
       _setError('Failed to load recipes: $e');
       developer.log('Failed to load recipes, keeping existing ${_recipes.length} recipes: $e', name: 'RecipeProvider');
       // 🔥 CRITICAL FIX: 에러 발생시 기존 _recipes 데이터 유지 (덮어쓰지 않음)
     } finally {
       _setLoading(false);
+      print('🔥 LOAD END: Loading process completed');
     }
   }
   
@@ -98,55 +112,41 @@ class RecipeProvider extends ChangeNotifier {
       
       // 로컬 상태 업데이트 (최신순으로 맨 앞에 추가)
       _recipes.insert(0, recipe);
+      _invalidateCache(); // 캐시 무효화
       _clearError();
       notifyListeners();
       
-      // 🔥 CRITICAL FIX: 버로우 시스템 알림 (데이터 확인 후 호출)
+      // 버로우 시스템 알림 (성능 최적화)
       try {
-        debugPrint('🔥🔥🔥 RECIPE DEBUG: Starting burrow callback for recipe: ${recipe.title}');
-        debugPrint('🔥🔥🔥 RECIPE DEBUG: Burrow callback is ${_onRecipeAdded != null ? "SET" : "NULL"}');
-        
-        // 🔥 CRITICAL FIX: 데이터 저장 확인 및 재시도 메커니즘
-        bool dataVerified = false;
-        for (int attempt = 1; attempt <= 5; attempt++) {
-          debugPrint('🔥 VERIFICATION ATTEMPT $attempt: Checking if recipe is saved...');
-          
-          // 더 긴 지연 (박스 동기화 완료 보장)
-          await Future.delayed(Duration(milliseconds: 200 * attempt));
-          
-          try {
-            // HiveService를 통해 직접 데이터 확인
-            final savedRecipe = await _hiveService.getRecipe(recipe.id);
-            if (savedRecipe != null) {
-              debugPrint('🔥 SUCCESS: Recipe verified in Hive on attempt $attempt');
-              dataVerified = true;
-              break;
-            } else {
-              debugPrint('🔥 RETRY: Recipe not found in Hive, attempt $attempt/5');
-            }
-          } catch (e) {
-            debugPrint('🔥 ERROR in verification attempt $attempt: $e');
+        if (kDebugMode) {
+          // 개발 모드에서만 데이터 검증 수행
+          await Future.delayed(Duration(milliseconds: 50)); // 최소 지연만 적용
+          final savedRecipe = await _hiveService.getRecipe(recipe.id);
+          if (savedRecipe == null) {
+            developer.log('Warning: Recipe not immediately verified in Hive', name: 'RecipeProvider');
           }
         }
-        
-        if (!dataVerified) {
-          debugPrint('🔥 CRITICAL ERROR: Recipe not verified after 5 attempts, calling callback anyway');
-          developer.log('CRITICAL: Recipe not verified in Hive after 5 attempts', name: 'RecipeProvider');
-        }
-        
-        // 🔥 CRITICAL FIX: 데이터 확인 후 콜백 호출
+
+        // 버로우 시스템 콜백 호출
         _onRecipeAdded?.call(recipe);
-        
-        developer.log('🔥 RECIPE DEBUG: Burrow callback completed (data verified: $dataVerified)', name: 'RecipeProvider');
+
+        if (kDebugMode) {
+          developer.log('Burrow callback completed for recipe: ${recipe.title}', name: 'RecipeProvider');
+        }
       } catch (burrowError) {
-        developer.log('🔥 BURROW ERROR: $burrowError (레시피 저장은 성공)', name: 'RecipeProvider');
-        debugPrint('🔥 BURROW ERROR: $burrowError (레시피 저장은 성공)');
+        if (kDebugMode) {
+          developer.log('Burrow system error (non-critical): $burrowError', name: 'RecipeProvider');
+        }
       }
       
-      developer.log('🔥 RECIPE ADDED SUCCESSFULLY: ${recipe.title} (ID: ${recipe.id})', name: 'RecipeProvider');
+      if (kDebugMode) {
+        developer.log('Recipe added successfully: ${recipe.title} (ID: ${recipe.id})', name: 'RecipeProvider');
+      }
     } catch (e) {
       _setError('Failed to add recipe: $e');
-      developer.log('🔥 FAILED TO ADD RECIPE: $e', name: 'RecipeProvider');
+      if (kDebugMode) {
+        developer.log('Failed to add recipe: $e', name: 'RecipeProvider');
+      }
       // 로컬 상태 롯백 (에러 발생시 레시피 추가 실패)
       _recipes.removeWhere((r) => r.id == recipe.id);
       notifyListeners();
@@ -169,6 +169,7 @@ class RecipeProvider extends ChangeNotifier {
           _selectedRecipe = updatedRecipe;
         }
         
+        _invalidateCache(); // 캐시 무효화
         _clearError();
         notifyListeners();
         
@@ -176,15 +177,21 @@ class RecipeProvider extends ChangeNotifier {
         try {
           _onRecipeUpdated?.call(updatedRecipe);
         } catch (burrowError) {
-          developer.log('Burrow system error (non-critical): $burrowError', name: 'RecipeProvider');
+          if (kDebugMode) {
+            developer.log('Burrow system error (non-critical): $burrowError', name: 'RecipeProvider');
+          }
           // 버로우 시스템 에러는 레시피 수정 성공에 영향을 주지 않음
         }
         
-        developer.log('Updated recipe: ${updatedRecipe.title}', name: 'RecipeProvider');
+        if (kDebugMode) {
+          developer.log('Updated recipe: ${updatedRecipe.title}', name: 'RecipeProvider');
+        }
       }
     } catch (e) {
       _setError('Failed to update recipe: $e');
-      developer.log('Failed to update recipe: $e', name: 'RecipeProvider');
+      if (kDebugMode) {
+        developer.log('Failed to update recipe: $e', name: 'RecipeProvider');
+      }
     }
   }
   
@@ -195,12 +202,13 @@ class RecipeProvider extends ChangeNotifier {
       
       // 로컬 상태에서 제거
       _recipes.removeWhere((r) => r.id == recipeId);
-      
+
       // 선택된 레시피가 삭제된 레시피라면 선택 해제
       if (_selectedRecipe?.id == recipeId) {
         _selectedRecipe = null;
       }
-      
+
+      _invalidateCache(); // 캐시 무효화
       _clearError();
       notifyListeners();
       
@@ -208,14 +216,20 @@ class RecipeProvider extends ChangeNotifier {
       try {
         _onRecipeDeleted?.call(recipeId);
       } catch (burrowError) {
-        developer.log('Burrow system error (non-critical): $burrowError', name: 'RecipeProvider');
+        if (kDebugMode) {
+          developer.log('Burrow system error (non-critical): $burrowError', name: 'RecipeProvider');
+        }
         // 버로우 시스템 에러는 레시피 삭제 성공에 영향을 주지 않음
       }
-      
-      developer.log('Deleted recipe: $recipeId', name: 'RecipeProvider');
+
+      if (kDebugMode) {
+        developer.log('Deleted recipe: $recipeId', name: 'RecipeProvider');
+      }
     } catch (e) {
       _setError('Failed to delete recipe: $e');
-      developer.log('Failed to delete recipe: $e', name: 'RecipeProvider');
+      if (kDebugMode) {
+        developer.log('Failed to delete recipe: $e', name: 'RecipeProvider');
+      }
     }
   }
   
@@ -254,14 +268,18 @@ class RecipeProvider extends ChangeNotifier {
   void selectRecipe(Recipe recipe) {
     _selectedRecipe = recipe;
     notifyListeners();
-    developer.log('Selected recipe: ${recipe.title}', name: 'RecipeProvider');
+    if (kDebugMode) {
+      developer.log('Selected recipe: ${recipe.title}', name: 'RecipeProvider');
+    }
   }
   
   /// 선택 해제
   void clearSelection() {
     _selectedRecipe = null;
     notifyListeners();
-    developer.log('Cleared recipe selection', name: 'RecipeProvider');
+    if (kDebugMode) {
+      developer.log('Cleared recipe selection', name: 'RecipeProvider');
+    }
   }
   
   /// 즐겨찾기 토글
@@ -304,12 +322,17 @@ class RecipeProvider extends ChangeNotifier {
       await _hiveService.clearAllRecipes();
       _recipes.clear();
       _selectedRecipe = null;
+      _invalidateCache(); // 캐시 무효화
       _clearError();
       notifyListeners();
-      developer.log('All recipes cleared from provider', name: 'RecipeProvider');
+      if (kDebugMode) {
+        developer.log('All recipes cleared from provider', name: 'RecipeProvider');
+      }
     } catch (e) {
       _setError('Failed to clear all recipes: $e');
-      developer.log('Failed to clear all recipes: $e', name: 'RecipeProvider');
+      if (kDebugMode) {
+        developer.log('Failed to clear all recipes: $e', name: 'RecipeProvider');
+      }
     }
   }
 
@@ -322,7 +345,9 @@ class RecipeProvider extends ChangeNotifier {
   /// Provider 정리
   @override
   void dispose() {
-    developer.log('RecipeProvider disposed', name: 'RecipeProvider');
+    if (kDebugMode) {
+      developer.log('RecipeProvider disposed', name: 'RecipeProvider');
+    }
     super.dispose();
   }
 }

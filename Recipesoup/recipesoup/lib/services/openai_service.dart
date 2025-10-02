@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import '../config/api_config.dart';
 import '../models/recipe_analysis.dart';
+import '../models/recipe_suggestion.dart';
 import '../utils/unicode_sanitizer.dart';
 
 /// AI 분석 로딩 상태 콜백 함수 타입
@@ -31,7 +32,7 @@ class OpenAiService {
   /// 기본 Dio 인스턴스 생성
   static Dio _createDefaultDio() {
     final dio = Dio();
-    
+
     // 기본 설정
     dio.options = BaseOptions(
       baseUrl: ApiConfig.baseUrl,
@@ -56,15 +57,15 @@ class OpenAiService {
   }
 
   /// 음식 사진 분석 (핵심 기능!) - 스크린샷 자동 감지 및 OCR 포함
-  /// 
+  ///
   /// [imageData]: Base64 인코딩된 이미지 데이터
   /// [onProgress]: 로딩 진행상황 콜백 (옵션)
   /// Returns: [RecipeAnalysis] 분석 결과
-  /// 
+  ///
   /// 이미지 타입을 자동으로 감지해서:
   /// - 스크린샷인 경우: OCR로 텍스트 추출 + 음식 분석 동시 수행
   /// - 일반 음식 사진인 경우: 기존 방식으로 음식 분석
-  /// 
+  ///
   /// Throws:
   /// - [InvalidApiKeyException]: API 키가 잘못된 경우
   /// - [RateLimitException]: API 호출 한도 초과
@@ -88,9 +89,9 @@ class OpenAiService {
     LoadingProgressCallback? onProgress,
   }) async {
     try {
-      // API 키 검증
-      if (!ApiConfig.validateApiKey()) {
-        throw const InvalidApiKeyException('OpenAI API key is not configured');
+      // Vercel 프록시 토큰 검증 (로컬 API 키 불필요)
+      if (ApiConfig.proxyToken.isEmpty) {
+        throw const InvalidApiKeyException('Proxy token is not configured');
       }
 
       // Base64 이미지 데이터 유효성 검증
@@ -104,7 +105,7 @@ class OpenAiService {
 
       // 1단계: 스크린샷 여부 빠른 감지 (경량 API 호출)
       final isScreenshot = await _detectScreenshotType(validatedImageData);
-      
+
       if (isScreenshot) {
         // 스크린샷인 경우: 한글 특화 OCR + 음식 분석
         onProgress?.call('스크린샷에서 한글 텍스트 추출중 📱', 0.3);
@@ -118,7 +119,7 @@ class OpenAiService {
     } catch (e) {
       // 감지 실패시 기존 방식으로 fallback (사이드 이펙트 최소화)
       developer.log('Screenshot detection failed, falling back to regular analysis: $e', name: 'OpenAI Service');
-      
+
       if (e is ApiException) {
         // API 관련 오류면 그대로 전파
         rethrow;
@@ -156,7 +157,7 @@ class OpenAiService {
 
       final content = _extractContentFromResponse(response.data!);
       final detectionResult = _parseJsonResponse(content);
-      
+
       return detectionResult['is_screenshot'] == true;
 
     } catch (e) {
@@ -206,7 +207,7 @@ class OpenAiService {
 
       // 결과 검증 및 보완
       final result = RecipeAnalysis.fromApiResponse(analysisData);
-      
+
       // 한글 텍스트 추출 성공 여부 로깅
       if (result.extractedText?.isNotEmpty == true) {
         developer.log('Korean OCR successful: ${result.extractedText?.length} characters extracted', name: 'OpenAI Service');
@@ -224,16 +225,16 @@ class OpenAiService {
       throw _handleDioException(e);
     } catch (e) {
       if (e is ApiException) rethrow;
-      throw ApiException('Unexpected error during Korean screenshot analysis: $e');
+      throw const ApiException('Korean screenshot analysis temporarily unavailable');
     }
   }
 
   /// 텍스트 기반 레시피 분석 (URL 스크래핑 결과 분석) - 로딩 상태 콜백 포함
-  /// 
+  ///
   /// [blogText]: 블로그 등에서 추출한 레시피 텍스트
   /// [onProgress]: 로딩 진행상황 콜백 (옵션)
   /// Returns: [RecipeAnalysis] 분석 결과
-  /// 
+  ///
   /// Throws: 동일한 예외 발생 가능
   Future<RecipeAnalysis> analyzeText(
     String blogText, {
@@ -303,7 +304,91 @@ class OpenAiService {
       throw _handleDioException(e);
     } catch (e) {
       if (e is ApiException) rethrow;
-      throw ApiException('Unexpected error during text analysis: $e');
+      throw const ApiException('Text analysis service temporarily unavailable');
+    }
+  }
+
+  /// 냉장고 재료 기반 단일 레시피 분석 (새로운 기능) - 로딩 상태 콜백 포함
+  ///
+  /// [ingredients]: 냉장고에 있는 재료 목록
+  /// [onProgress]: 로딩 진행상황 콜백 (옵션)
+  /// Returns: [RecipeAnalysis] 단일 레시피 분석 결과 (기존 파싱 로직 호환)
+  ///
+  /// Throws: 동일한 예외 발생 가능
+  Future<RecipeAnalysis> analyzeIngredientsForRecipe(
+    List<String> ingredients, {
+    LoadingProgressCallback? onProgress,
+  }) async {
+    return await _retryOperation(() => _analyzeIngredientsOnce(ingredients, onProgress: onProgress));
+  }
+
+  /// 단일 재료 기반 레시피 분석 수행 (재시도 로직 없이) - 로딩 상태 포함
+  Future<RecipeAnalysis> _analyzeIngredientsOnce(
+    List<String> ingredients, {
+    LoadingProgressCallback? onProgress,
+  }) async {
+    try {
+      // API 키 검증
+      if (!ApiConfig.validateApiKey()) {
+        throw const InvalidApiKeyException('OpenAI API key is not configured');
+      }
+
+      // 재료 목록 검증
+      if (ingredients.isEmpty) {
+        throw const ApiException('재료 목록이 비어있습니다');
+      }
+
+      // 재료명 Unicode 안전성 확보
+      final sanitizedIngredients = ingredients
+          .map((ingredient) => UnicodeSanitizer.sanitize(ingredient))
+          .where((ingredient) => ingredient.isNotEmpty)
+          .toList();
+
+      if (sanitizedIngredients.isEmpty) {
+        throw const ApiException('유효한 재료가 없습니다');
+      }
+
+      // 점진적 진행률 업데이트 - AI로 레시피 분석중
+      await _showProgressiveCookingProgress(onProgress);
+
+      // 요청 데이터 구성 (새로운 API config 방식 사용)
+      final requestData = ApiConfig.createSingleIngredientRecipeRequest(
+        ingredients: sanitizedIngredients,
+        maxTokens: 800,
+      );
+
+      // Unicode 안전성 확보
+      final sanitizedRequest = UnicodeSanitizer.sanitizeApiRequest(requestData);
+
+      // API 호출
+      final response = await _dio.post<Map<String, dynamic>>(
+        ApiConfig.chatCompletionsEndpoint,
+        data: sanitizedRequest,
+        options: Options(
+          headers: ApiConfig.headers,
+        ),
+      );
+
+      // 응답 확인
+      if (response.data == null) {
+        throw const ApiException('Empty response from OpenAI API');
+      }
+
+      // 응답 파싱
+      final content = _extractContentFromResponse(response.data!);
+      final analysisData = _parseJsonResponse(content);
+
+      // 레시피 작성 완료!
+      onProgress?.call(AnalysisStep.completing.message, AnalysisStep.completing.progress);
+      await Future.delayed(Duration(milliseconds: 500)); // 완료 메시지 표시
+
+      return RecipeAnalysis.fromApiResponse(analysisData);
+
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw const ApiException('Ingredient analysis service temporarily unavailable');
     }
   }
 
@@ -316,7 +401,67 @@ class OpenAiService {
       // 1단계: 준비 중
       onProgress?.call(AnalysisStep.preparing.message, AnalysisStep.preparing.progress);
       await Future.delayed(Duration(milliseconds: 300)); // UI 업데이트 대기
-      
+
+      // API 키 검증
+      if (!ApiConfig.validateApiKey()) {
+        throw const InvalidApiKeyException('OpenAI API key is not configured');
+      }
+
+      // 요청 데이터 구성
+      final requestData = ApiConfig.createImageAnalysisRequest(
+        base64Image: imageData,
+        prompt: ApiConfig.foodAnalysisPrompt,
+        maxTokens: 800, // 충분한 토큰 할당
+      );
+
+      // Unicode 안전성 확보
+      final sanitizedRequest = UnicodeSanitizer.sanitizeApiRequest(requestData);
+
+      // 점진적 진행률 업데이트 - AI로 레시피 분석중
+      await _showProgressiveCookingProgress(onProgress);
+
+      // API 호출
+      final response = await _dio.post<Map<String, dynamic>>(
+        ApiConfig.chatCompletionsEndpoint,
+        data: sanitizedRequest,
+        options: Options(
+          headers: ApiConfig.headers,
+        ),
+      );
+
+      // 응답 확인
+      if (response.data == null) {
+        throw const ApiException('Empty response from OpenAI API');
+      }
+
+      // 응답 파싱
+      final content = _extractContentFromResponse(response.data!);
+      final analysisData = _parseJsonResponse(content);
+
+      // 레시피 작성 완료!
+      onProgress?.call(AnalysisStep.completing.message, AnalysisStep.completing.progress);
+      await Future.delayed(Duration(milliseconds: 500)); // 완료 메시지 표시
+
+      return RecipeAnalysis.fromApiResponse(analysisData);
+
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw const ApiException('Image analysis service temporarily unavailable');
+    }
+  }
+
+  /// 음식 이미지 분석 (단일 시도)
+  Future<RecipeAnalysis> _analyzeFoodImageOnce(
+    String imageData, {
+    LoadingProgressCallback? onProgress,
+  }) async {
+    try {
+      // 1단계: 준비 중
+      onProgress?.call(AnalysisStep.preparing.message, AnalysisStep.preparing.progress);
+      await Future.delayed(Duration(milliseconds: 300)); // UI 업데이트 대기
+
       // API 키 검증
       if (!ApiConfig.validateApiKey()) {
         throw const InvalidApiKeyException('OpenAI API key is not configured');
@@ -392,12 +537,12 @@ class OpenAiService {
     }
   }
 
-  /// JSON 응답 파싱
+  /// JSON 응답 파싱 - 보안 강화 (민감한 정보 로그 노출 방지)
   Map<String, dynamic> _parseJsonResponse(String content) {
     try {
       // JSON 코드 블록 정리 (```json ... ``` 형식일 경우 추출)
       String jsonContent = content;
-      
+
       // 코드 블록 패턴
       final codeBlockRegex = RegExp(r'```(?:json)?\s*(.*?)\s*```', dotAll: true);
       final match = codeBlockRegex.firstMatch(content);
@@ -413,12 +558,20 @@ class OpenAiService {
 
       return parsed;
     } catch (e) {
-      developer.log('JSON parsing error: $e\nContent: $content', name: 'OpenAI Service');
-      throw ApiException('Failed to parse JSON response: $e');
+      // 보안: API 응답 내용을 로그에 노출하지 않고, 개발 모드에서만 제한적 로깅
+      if (kDebugMode) {
+        // 개발 환경에서도 민감한 정보는 제한적으로만 로깅
+        final safeContentPreview = content.length > 100 
+            ? '${content.substring(0, 100)}...[TRUNCATED]'
+            : content;
+        developer.log('JSON parsing error: ${e.runtimeType}', name: 'OpenAI Service');
+        developer.log('Content preview: $safeContentPreview', name: 'OpenAI Service');
+      }
+      throw const ApiException('Invalid response format received from API');
     }
   }
 
-  /// Dio 예외 처리
+  /// Dio 예외 처리 - 보안 강화 (내부 정보 노출 방지)
   ApiException _handleDioException(DioException e) {
     // 응답 기반 상태 코드 예외 처리
     final statusCode = e.response?.statusCode;
@@ -430,16 +583,17 @@ class OpenAiService {
       case 429:
         return const RateLimitException('API rate limit exceeded. Please try again later');
       case 400:
-        final message = _extractErrorMessage(errorData) ?? 'Bad request';
+        // 보안: 원본 에러 메시지를 필터링하여 민감한 정보 제거
+        final message = _extractSafeErrorMessage(errorData);
         return InvalidImageException('Invalid request: $message');
       case 500:
       case 502:
       case 503:
       case 504:
-        final message = _extractErrorMessage(errorData) ?? 'Server error';
-        return ServerException('OpenAI server error: $message', statusCode!);
+        // 보안: 서버 에러는 일반적 메시지만 노출
+        return ServerException('OpenAI server temporarily unavailable', statusCode!);
       default:
-        // DioExceptionType 기반 처리
+        // DioExceptionType 기반 처리 - 보안 강화
         switch (e.type) {
           case DioExceptionType.connectionTimeout:
           case DioExceptionType.sendTimeout:
@@ -448,30 +602,59 @@ class OpenAiService {
           case DioExceptionType.connectionError:
             return const NetworkException('Network connection error. Please check your internet connection');
           case DioExceptionType.badResponse:
-            final message = _extractErrorMessage(errorData) ?? e.message ?? 'Unknown error';
-            return ApiException('API error: $message', statusCode: statusCode);
+            // 보안: 원본 DioException 메시지 대신 안전한 메시지 사용
+            return const ApiException('API request failed. Please try again later');
           default:
-            return ApiException('Request failed: ${e.message}', statusCode: statusCode);
+            // 보안: 구체적인 에러 정보 대신 일반적 메시지
+            return const ApiException('Service temporarily unavailable. Please try again later');
         }
     }
   }
 
-  /// 오류 응답에서 메시지 추출
-  String? _extractErrorMessage(dynamic errorData) {
-    if (errorData == null) return null;
-    
+  /// 보안 강화: 안전한 에러 메시지 추출 (민감한 정보 필터링)
+  String _extractSafeErrorMessage(dynamic errorData) {
+    if (errorData == null) return 'Unknown error occurred';
+
     try {
       if (errorData is Map<String, dynamic>) {
         final error = errorData['error'];
         if (error is Map<String, dynamic>) {
-          return error['message'] as String?;
+          final message = error['message'] as String?;
+          if (message != null) {
+            // 보안: 민감한 정보가 포함될 수 있는 패턴들을 필터링
+            return _sanitizeErrorMessage(message);
+          }
         }
       }
     } catch (e) {
-      // 오류 메시지 파싱 실패시 무시
+      // 에러 메시지 파싱 실패시 안전한 기본 메시지 반환
     }
-    
-    return null;
+
+    return 'Service error occurred';
+  }
+
+  /// 에러 메시지에서 민감한 정보 제거
+  String _sanitizeErrorMessage(String message) {
+    // 보안: API 키, 토큰, 경로 등의 민감한 정보 패턴 제거
+    final sensitivePatterns = [
+      RegExp(r'sk-[a-zA-Z0-9]+'), // OpenAI API keys
+      RegExp(r'Bearer [a-zA-Z0-9]+'), // Bearer tokens
+      RegExp(r'/[a-zA-Z0-9/_-]+\.json'), // File paths
+      RegExp(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'), // Email addresses
+      RegExp(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b'), // IP addresses
+    ];
+
+    String sanitizedMessage = message;
+    for (final pattern in sensitivePatterns) {
+      sanitizedMessage = sanitizedMessage.replaceAll(pattern, '[REDACTED]');
+    }
+
+    // 메시지 길이 제한 (너무 긴 스택 트레이스 방지)
+    if (sanitizedMessage.length > 150) {
+      sanitizedMessage = '${sanitizedMessage.substring(0, 150)}...';
+    }
+
+    return sanitizedMessage.isEmpty ? 'Invalid request format' : sanitizedMessage;
   }
 
   /// 재시도 로직이 포함된 작업 수행
@@ -485,8 +668,8 @@ class OpenAiService {
         lastException = e is Exception ? e : Exception(e.toString());
 
         // 재시도하면 안 되는 예외들
-        if (e is InvalidApiKeyException || 
-            e is RateLimitException || 
+        if (e is InvalidApiKeyException ||
+            e is RateLimitException ||
             e is InvalidImageException) {
           rethrow;
         }
@@ -536,7 +719,7 @@ class OpenAiService {
   /// 30% → 40% → 50% → 60% → 70% → 80% → 90% → 100% 점진적 증가
   Future<void> _showProgressiveCookingProgress(LoadingProgressCallback? onProgress) async {
     if (onProgress == null) return;
-    
+
     // 점진적 진행률 단계 정의
     final progressSteps = [
       {'progress': 0.3, 'message': 'AI로 레시피 분석중', 'delay': 200},
@@ -548,8 +731,243 @@ class OpenAiService {
       {'progress': 0.9, 'message': 'AI로 레시피 분석중', 'delay': 200},
       {'progress': 0.95, 'message': '레시피 마무리중', 'delay': 200},
     ];
-    
+
     // 각 단계별로 점진적 업데이트
+    for (final step in progressSteps) {
+      onProgress(
+        step['message'] as String,
+        step['progress'] as double,
+      );
+      await Future.delayed(Duration(milliseconds: step['delay'] as int));
+    }
+  }
+
+  /// 냉장고 재료 기반 레시피 추천 (새로운 기능!)
+  ///
+  /// [ingredients]: 냉장고에 있는 재료 리스트 (예: ['당근', '양상추', '목살대패'])
+  /// [onProgress]: 로딩 진행상황 콜백 (옵션)
+  /// Returns: [RecipeSuggestionResponse] 3개의 추천 레시피
+  ///
+  /// Throws: 기존 analyzeImage와 동일한 예외 발생 가능
+  Future<RecipeSuggestionResponse> suggestRecipesFromIngredients(
+    List<String> ingredients, {
+    LoadingProgressCallback? onProgress,
+  }) async {
+    return await _retryOperation(() => _suggestRecipesOnce(ingredients, onProgress: onProgress));
+  }
+
+  /// 단일 재료 기반 추천 수행 (재시도 로직 없이)
+  Future<RecipeSuggestionResponse> _suggestRecipesOnce(
+    List<String> ingredients, {
+    LoadingProgressCallback? onProgress,
+  }) async {
+    try {
+      // API 키 검증
+      if (!ApiConfig.validateApiKey()) {
+        throw const InvalidApiKeyException('OpenAI API key is not configured');
+      }
+
+      // 재료 입력 검증
+      if (ingredients.isEmpty) {
+        return RecipeSuggestionResponse.empty(ingredients);
+      }
+
+      // 재료 정리 (중복 제거, 공백 제거)
+      final cleanedIngredients = ingredients
+          .map((ingredient) => ingredient.trim())
+          .where((ingredient) => ingredient.isNotEmpty)
+          .toSet()
+          .toList();
+
+      if (cleanedIngredients.length < 2) {
+        throw const InvalidImageException('최소 2개 이상의 재료를 입력해주세요');
+      }
+
+      // 재료 리스트 Unicode 안전성 확보
+      final sanitizedIngredients = cleanedIngredients
+          .map((ingredient) => UnicodeSanitizer.sanitize(ingredient))
+          .toList();
+
+      // 진행률 업데이트
+      onProgress?.call('재료 분석중 🥬', 0.2);
+      await Future.delayed(Duration(milliseconds: 300));
+
+      // 요청 데이터 구성 (ApiConfig 표준 패턴 사용)
+      final requestData = ApiConfig.createIngredientsRecipeRequest(
+        ingredients: sanitizedIngredients,
+        maxTokens: 1000, // 3개 레시피 추천을 위한 충분한 토큰
+      );
+
+      // Unicode 안전성 확보
+      final sanitizedRequest = UnicodeSanitizer.sanitizeApiRequest(requestData);
+
+      // 점진적 진행률 업데이트
+      onProgress?.call('AI가 레시피 3개 추천중 🤖', 0.4);
+      await _showProgressiveRecommendationProgress(onProgress);
+
+      // API 호출
+      final response = await _dio.post<Map<String, dynamic>>(
+        ApiConfig.chatCompletionsEndpoint,
+        data: sanitizedRequest,
+        options: Options(
+          headers: ApiConfig.headers,
+        ),
+      );
+
+      // 응답 확인
+      if (response.data == null) {
+        throw const ApiException('Empty response from OpenAI API');
+      }
+
+      // 응답 파싱
+      final content = _extractContentFromResponse(response.data!);
+      final recommendationData = _parseJsonResponse(content);
+
+      // 추천 완료!
+      onProgress?.call('맛있는 추천 완료! 🍽️', 1.0);
+      await Future.delayed(Duration(milliseconds: 500));
+
+      // RecipeSuggestionResponse 생성
+      return _buildRecipeSuggestionResponse(
+        recommendationData,
+        sanitizedIngredients,
+      );
+
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw const ApiException('Recipe recommendation service temporarily unavailable');
+    }
+  }
+
+  /// 재료 기반 레시피 추천
+  Future<RecipeSuggestionResponse> recommendRecipesFromIngredients(
+    List<String> ingredients, {
+    LoadingProgressCallback? onProgress,
+  }) async {
+    try {
+      // API 키 검증
+      if (!ApiConfig.validateApiKey()) {
+        throw const InvalidApiKeyException('OpenAI API key is not configured');
+      }
+
+      // 재료 입력 검증
+      if (ingredients.isEmpty) {
+        return RecipeSuggestionResponse.empty(ingredients);
+      }
+
+      // 재료 정리 (중복 제거, 공백 제거)
+      final cleanedIngredients = ingredients
+          .map((ingredient) => ingredient.trim())
+          .where((ingredient) => ingredient.isNotEmpty)
+          .toSet()
+          .toList();
+
+      if (cleanedIngredients.length < 2) {
+        throw const InvalidImageException('최소 2개 이상의 재료를 입력해주세요');
+      }
+
+      // 재료 리스트 Unicode 안전성 확보
+      final sanitizedIngredients = cleanedIngredients
+          .map((ingredient) => UnicodeSanitizer.sanitize(ingredient))
+          .toList();
+
+      // 진행률 업데이트
+      onProgress?.call('재료 분석중 🥬', 0.2);
+      await Future.delayed(Duration(milliseconds: 300));
+
+      // 요청 데이터 구성 (ApiConfig 표준 패턴 사용)
+      final requestData = ApiConfig.createIngredientsRecipeRequest(
+        ingredients: sanitizedIngredients,
+        maxTokens: 1000, // 3개 레시피 추천을 위한 충분한 토큰
+      );
+
+      // Unicode 안전성 확보
+      final sanitizedRequest = UnicodeSanitizer.sanitizeApiRequest(requestData);
+
+      // 점진적 진행률 업데이트
+      onProgress?.call('AI가 레시피 3개 추천중 🤖', 0.4);
+      await _showProgressiveRecommendationProgress(onProgress);
+
+      // API 호출
+      final response = await _dio.post<Map<String, dynamic>>(
+        ApiConfig.chatCompletionsEndpoint,
+        data: sanitizedRequest,
+        options: Options(
+          headers: ApiConfig.headers,
+        ),
+      );
+
+      // 응답 확인
+      if (response.data == null) {
+        throw const ApiException('Empty response from OpenAI API');
+      }
+
+      // 응답 파싱
+      final content = _extractContentFromResponse(response.data!);
+      final recommendationData = _parseJsonResponse(content);
+
+      // 추천 완료!
+      onProgress?.call('맛있는 추천 완료! 🍽️', 1.0);
+      await Future.delayed(Duration(milliseconds: 500));
+
+      // RecipeSuggestionResponse 생성
+      return _buildRecipeSuggestionResponse(
+        recommendationData,
+        sanitizedIngredients,
+      );
+
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    } catch (e) {
+      if (e is ApiException) rethrow;
+      throw ApiException('Unexpected error during recipe recommendation: $e');
+    }
+  }
+
+
+  /// 추천 응답 데이터를 RecipeSuggestionResponse로 변환
+  RecipeSuggestionResponse _buildRecipeSuggestionResponse(
+    Map<String, dynamic> responseData,
+    List<String> inputIngredients,
+  ) {
+    try {
+      final recommendations = responseData['recommendations'] as List<dynamic>?;
+      if (recommendations == null || recommendations.isEmpty) {
+        return RecipeSuggestionResponse.empty(inputIngredients);
+      }
+
+      final suggestions = recommendations
+          .cast<Map<String, dynamic>>()
+          .map((data) => RecipeSuggestion.fromJson(data))
+          .toList();
+
+      return RecipeSuggestionResponse(
+        suggestions: suggestions,
+        inputIngredients: inputIngredients,
+        generatedAt: DateTime.now(),
+      );
+
+    } catch (e) {
+      developer.log('Failed to parse recipe suggestions: $e', name: 'OpenAI Service');
+      return RecipeSuggestionResponse.empty(inputIngredients);
+    }
+  }
+
+  /// 점진적 진행률 업데이트 - 레시피 추천 단계
+  Future<void> _showProgressiveRecommendationProgress(LoadingProgressCallback? onProgress) async {
+    if (onProgress == null) return;
+
+    final progressSteps = [
+      {'progress': 0.5, 'message': 'AI가 레시피 3개 추천중 🤖', 'delay': 300},
+      {'progress': 0.6, 'message': '첫 번째 요리 분석중 🥘', 'delay': 400},
+      {'progress': 0.7, 'message': '두 번째 요리 분석중 🍲', 'delay': 400},
+      {'progress': 0.8, 'message': '세 번째 요리 분석중 🍳', 'delay': 400},
+      {'progress': 0.9, 'message': '추천 결과 정리중 📝', 'delay': 300},
+      {'progress': 0.95, 'message': '추천 완료 준비중 ✨', 'delay': 200},
+    ];
+
     for (final step in progressSteps) {
       onProgress(
         step['message'] as String,

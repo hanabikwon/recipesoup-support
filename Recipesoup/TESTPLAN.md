@@ -1,19 +1,22 @@
 # Recipesoup 테스트 계획
 
-## 테스트 전략
-- **TDD (테스트 주도 개발)** 원칙 적용
+> **⚠️ 상태**: 테스트 구조 재설정 중 - 기존 테스트 파일 정리 완료 (2025-09-17)
+> 필요시 TDD 기반으로 새로운 테스트 구조를 재구축할 예정입니다.
+
+## 테스트 전략 (TBD)
+- **TDD (테스트 주도 개발)** 원칙 적용 예정
 - **테스트 피라미드**: 단위 테스트 > 위젯 테스트 > 통합 테스트
 - **감정 기반 아카이빙**의 특성을 반영한 테스트 설계
 - **오프라인 우선** 설계에 맞는 로컬 저장소 중심 테스트
 - **OpenAI API 연동** 및 예외 케이스 완벽 테스트
 
-## 테스트 환경
+## 테스트 환경 설정 (향후 구축 예정)
 - **개발 환경**: Flutter 3.x
 - **테스트 프레임워크**: Flutter Test + integration_test
 - **모킹 라이브러리**: mockito + mocktail
-- **브라우저 테스트**: puppeteer MCP (Chrome에서 Flutter Web 테스트)
+- **브라우저 테스트**: Playwright MCP (Chrome에서 Flutter Web 테스트)
 - **이미지 테스트**: testimg1.jpg, testimg2.jpg, testimg3.jpg
-- **테스트 디바이스**: 
+- **테스트 디바이스**:
   - Flutter Web (Chrome) - 주 테스트 환경
   - iOS 시뮬레이터 (iPhone 14)
   - Android 에뮬레이터 (Pixel 6)
@@ -270,7 +273,7 @@
   - [ ] 레시피 수정 후 상태 유지
   - [ ] 통계 데이터 정확성 유지
 
-## 4. 브라우저 테스트 (Puppeteer MCP)
+## 4. 브라우저 테스트 (Playwright MCP)
 
 ### 4.1 Flutter Web 빌드 테스트
 - [ ] **웹 호환성 테스트**
@@ -281,7 +284,7 @@
 
 ### 4.2 실제 음식 사진 분석 테스트 (핵심!)
 ```javascript
-// puppeteer MCP 테스트 시나리오
+// Playwright MCP 테스트 시나리오
 test('음식 사진 OpenAI 분석 테스트', async () => {
   // 1. testimg1.jpg 업로드 테스트
   await page.click('#fab_photo_recipe');
@@ -312,7 +315,7 @@ test('음식 사진 OpenAI 분석 테스트', async () => {
   - [ ] 에러 케이스 처리 확인
 
 ### 4.3 사용자 인터랙션 테스트
-- [ ] **puppeteer 자동화 테스트**
+- [ ] **Playwright 자동화 테스트**
   - [ ] Bottom Navigation 탭 전환
   - [ ] FAB 확장 메뉴 동작
   - [ ] 레시피 카드 클릭 네비게이션
@@ -363,10 +366,10 @@ flutter test integration_test/
 # 웹 빌드 및 브라우저 테스트
 flutter build web
 # -> Chrome에서 localhost:8080 접속
-# -> puppeteer MCP로 음식 사진 분석 테스트 실행
+# -> Playwright MCP로 음식 사진 분석 테스트 실행
 ```
 
-### Puppeteer MCP 테스트 스크립트
+### Playwright MCP 테스트 스크립트
 ```javascript
 // 음식 사진 분석 자동화 테스트
 const testImageAnalysis = async (imagePath, expectedKeywords) => {
@@ -402,14 +405,14 @@ await testImageAnalysis('./testimg3.jpg', ['재료', '조리법']);
 - [ ] 모든 위젯 테스트 PASS (100%)
 - [ ] 핵심 통합 시나리오 PASS (100%)
 - [ ] 음식 사진 분석 테스트 PASS (testimg1,2,3 모두)
-- [ ] Flutter Web에서 puppeteer 테스트 PASS
+- [ ] Flutter Web에서 Playwright 테스트 PASS
 - [ ] 커버리지 목표 달성
 - [ ] 성능 기준 만족
 
 ## 테스트 데이터 의존성
 - **이미지 파일**: testimg1.jpg, testimg2.jpg, testimg3.jpg
 - **OpenAI API**: 유효한 API 키 필요
-- **테스트 환경**: Chrome 브라우저 + puppeteer MCP
+- **테스트 환경**: Chrome 브라우저 + Playwright MCP
 - **샘플 데이터**: @TESTDATA.md 참조
 
 ---

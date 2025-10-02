@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'constants.dart';
 
@@ -5,48 +6,151 @@ import 'constants.dart';
 /// 환경변수(.env)에서 API 키를 가져와 안전하게 관리
 
 class ApiConfig {
-  // OpenAI API 설정
-  static const String baseUrl = 'https://api.openai.com/v1';
-  static const String chatCompletionsEndpoint = '/chat/completions';
+  // Vercel 프록시 서버 설정 (OpenAI API 보안 강화)
+  static const String baseUrl = 'https://recipesoup-proxy-n3crx7b51-hanabikwons-projects.vercel.app';
+  static const String chatCompletionsEndpoint = '/api/chat/completions';
   static const String model = AppConstants.openAiModel; // gpt-4o-mini
+
+  // Vercel 프록시 인증 토큰 (x-app-token 헤더용)
+  static const String proxyToken = 'e4dbe63b81f2029720374d4b76144b6f17c566d19754793ce01b4f04951780ed';
   
   /// OpenAI API 키 가져오기 및 검증
   static String? get openAiApiKey {
-    final apiKey = dotenv.env['OPENAI_API_KEY'];
-    
-    if (apiKey == null || apiKey.isEmpty) {
-      throw ApiConfigException(
-        'OPENAI_API_KEY not found in .env file. '
-        'Please add your API key to .env file.'
-      );
+    try {
+      final apiKey = dotenv.env['OPENAI_API_KEY'];
+
+      if (apiKey == null || apiKey.isEmpty) {
+        throw ApiConfigException(
+          kDebugMode
+            ? 'OPENAI_API_KEY not found in .env file. Please add your API key to .env file.'
+            : 'API configuration error. Please check your app settings.'
+        );
+      }
+
+      // API 키 형식 검증 (OpenAI API 키는 sk-로 시작)
+      if (!apiKey.startsWith('sk-')) {
+        throw ApiConfigException(
+          kDebugMode
+            ? 'Invalid OpenAI API key format. API key should start with "sk-"'
+            : 'Invalid API key format. Please check your configuration.'
+        );
+      }
+
+      return apiKey;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우
+      if (e is ApiConfigException) {
+        rethrow; // API 키 관련 예외는 그대로 전달
+      }
+      // NotInitializedError는 무시하고 null 반환
+      return null;
     }
-    
-    // API 키 형식 검증 (OpenAI API 키는 sk-로 시작)
-    if (!apiKey.startsWith('sk-')) {
-      throw ApiConfigException(
-        'Invalid OpenAI API key format. API key should start with "sk-"'
-      );
-    }
-    
-    return apiKey;
   }
   
   /// API 모델 설정 가져오기 (.env에서 커스텀 모델 사용 가능)
   static String get apiModel {
-    return dotenv.env['API_MODEL'] ?? model;
+    try {
+      return dotenv.env['API_MODEL'] ?? model;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return model;
+    }
   }
   
-  /// API 타임아웃 설정
-  static Duration get timeout => const Duration(seconds: AppConstants.apiTimeoutSeconds);
+  /// API 타임아웃 설정 (환경별 설정 지원)
+  static Duration get timeout {
+    try {
+      final timeoutSeconds = int.tryParse(dotenv.env['API_TIMEOUT_SECONDS'] ?? '') ?? AppConstants.apiTimeoutSeconds;
+      return Duration(seconds: timeoutSeconds);
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return Duration(seconds: AppConstants.apiTimeoutSeconds);
+    }
+  }
+
+  /// API 재시도 횟수 (환경별 설정 지원)
+  static int get retryAttempts {
+    try {
+      return int.tryParse(dotenv.env['API_RETRY_ATTEMPTS'] ?? '') ?? AppConstants.apiRetryAttempts;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return AppConstants.apiRetryAttempts;
+    }
+  }
+
+  /// 최대 동시 요청 수 (환경별 설정 지원)
+  static int get maxConcurrentRequests {
+    try {
+      return int.tryParse(dotenv.env['MAX_CONCURRENT_REQUESTS'] ?? '') ?? 3;
+    } catch (e) {
+      // dotenv가 초기화되지 않은 경우 기본값 사용
+      return 3;
+    }
+  }
+
+  /// 현재 환경 확인
+  static String get environment {
+    try {
+      return dotenv.env['ENVIRONMENT'] ?? 'development';
+    } catch (e) {
+      return 'development';
+    }
+  }
+
+  /// 로그 레벨 확인
+  static String get logLevel {
+    try {
+      return dotenv.env['LOG_LEVEL'] ?? 'debug';
+    } catch (e) {
+      return 'debug';
+    }
+  }
+
+  /// 애널리틱스 활성화 여부
+  static bool get analyticsEnabled {
+    try {
+      final enabled = dotenv.env['ANALYTICS_ENABLED'];
+      return enabled?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// 크래시 리포팅 활성화 여부
+  static bool get crashReportingEnabled {
+    try {
+      final enabled = dotenv.env['CRASH_REPORTING_ENABLED'];
+      return enabled?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// SSL 피닝 활성화 여부
+  static bool get sslPinningEnabled {
+    try {
+      final enabled = dotenv.env['ENABLE_SSL_PINNING'];
+      return enabled?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// HTTPS 강제 여부
+  static bool get requireHttps {
+    try {
+      final required = dotenv.env['REQUIRE_HTTPS'];
+      return required?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
+  }
   
-  /// API 재시도 횟수
-  static int get retryAttempts => AppConstants.apiRetryAttempts;
-  
-  /// 요청 헤더 생성
+  /// 요청 헤더 생성 (Vercel 프록시용)
   static Map<String, String> get headers {
     return {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer $openAiApiKey',
+      'x-app-token': proxyToken,
     };
   }
   
@@ -170,6 +274,24 @@ class ApiConfig {
       ],
       'max_tokens': maxTokens ?? 800,
       'temperature': 0.7, // 창의적인 레시피 생성을 위해
+    };
+  }
+
+  /// 냉장고 재료 기반 레시피 추천 요청 생성 (재료 리스트 기반)
+  static Map<String, dynamic> createIngredientsRecipeRequest({
+    required List<String> ingredients,
+    int? maxTokens,
+  }) {
+    return {
+      'model': apiModel,
+      'messages': [
+        {
+          'role': 'user',
+          'content': createIngredientsRecipePrompt(ingredients),
+        },
+      ],
+      'max_tokens': maxTokens ?? 1000, // 3개 레시피 추천을 위한 충분한 토큰
+      'temperature': 0.7, // 창의적인 추천을 위해 약간 높은 temperature
     };
   }
   
@@ -344,6 +466,37 @@ JSON 형식 예제:
 ''';
   }
 
+  /// 냉장고 재료 기반 레시피 추천 프롬프트 템플릿 생성
+  static String createIngredientsRecipePrompt(List<String> ingredients) {
+    final ingredientsText = ingredients.join(', ');
+
+    return '''
+다음 재료들로 만들 수 있는 한국 요리 3개를 추천해주세요: $ingredientsText
+
+각 추천 요리는 다음 JSON 형식으로 응답해주세요:
+
+{
+  "recommendations": [
+    {
+      "dishName": "추천 요리명",
+      "description": "이 요리에 대한 간단한 설명 (1-2줄)",
+      "estimatedTime": "예상 조리시간 (예: 30분)",
+      "difficulty": "난이도 (쉬움/보통/어려움 중 하나)",
+      "additionalIngredients": ["추가로 필요한 재료들"],
+      "cookingSteps": ["간단한 조리 단계 1", "간단한 조리 단계 2", "간단한 조리 단계 3"]
+    }
+  ]
+}
+
+조건:
+1. 정확히 3개의 서로 다른 요리를 추천해주세요
+2. 입력된 재료를 최대한 활용해주세요
+3. 한국 가정에서 쉽게 만들 수 있는 요리로 추천해주세요
+4. 추가 재료는 일반적으로 구하기 쉬운 것들로 제한해주세요
+5. 조리 단계는 간단명료하게 3-5단계로 작성해주세요
+''';
+  }
+
   /// 키워드 기반 퀵레시피 생성 프롬프트 템플릿
   static String createKeywordRecipePrompt(String keyword) {
     return '''
@@ -410,31 +563,145 @@ ${recipeData.toString()}
       'max_tokens': 5,
     };
   }
-  
-  /// 환경변수 초기화
-  static Future<void> initialize() async {
-    await dotenv.load(fileName: '.env');
+
+  // =====================================================================
+  // 🚀 Ultra Think 새로운 기능: 냉장고 재료 기반 단일 레시피 추천
+  // (기존 suggestRecipesFromIngredients 실패 해결을 위해 추가)
+  // =====================================================================
+
+  /// 냉장고 재료 기반 단일 레시피 추천 요청 (새로운 기능 - RecipeAnalysis 호환)
+  static Map<String, dynamic> createSingleIngredientRecipeRequest({
+    required List<String> ingredients,
+    int? maxTokens,
+  }) {
+    return {
+      'model': apiModel,
+      'messages': [
+        {
+          'role': 'user',
+          'content': createSingleIngredientRecipePrompt(ingredients),
+        },
+      ],
+      'max_tokens': maxTokens ?? 800,
+      'temperature': 0.3, // 일관성을 위해 낮은 temperature
+    };
+  }
+
+  /// 냉장고 재료 기반 단일 레시피 추천 프롬프트 (RecipeAnalysis 형식 호환)
+  static String createSingleIngredientRecipePrompt(List<String> ingredients) {
+    final ingredientsText = ingredients.join(', ');
+
+    return '''
+다음 재료들로 만들 수 있는 가장 추천하는 한국 요리 1개를 추천해주세요: $ingredientsText
+
+아래 형식의 JSON으로 답변해주세요:
+
+{
+  "dish_name": "추천 요리명 (한국어)",
+  "ingredients": [
+    {"name": "주재료1", "amount": "양", "unit": "단위"},
+    {"name": "주재료2", "amount": "양", "unit": "단위"}
+  ],
+  "sauce": "소스/조미료/양념 설명 (간장, 참기름, 마늘, 설탕 등 모든 조미료 포함)",
+  "instructions": [
+    "조리 단계 1",
+    "조리 단계 2",
+    "조리 단계 3",
+    "조리 단계 4",
+    "조리 단계 5"
+  ],
+  "estimated_time": "예상 조리 시간 (예: 30분)",
+  "difficulty": "난이도 (쉬움/보통/어려움 중 하나)",
+  "servings": "예상 인분 수 (예: 2-3인분)",
+  "tags": ["#재료활용", "#냉장고털기", "#한식"],
+  "tips": "조리 팁이나 주의사항 (있다면)"
+}
+
+**중요한 분류 기준:**
+- ingredients: 고기, 채소, 곡물, 해산물, 유제품 등 주된 재료만 포함
+- sauce: 기름(올리브오일, 참기름), 양념(소금, 후추, 간장, 된장), 향신료(마늘, 생강), 소스류 모두 포함
+
+**조건:**
+1. 입력된 재료를 최대한 활용한 1개의 최적 요리를 추천해주세요
+2. 한국 가정에서 쉽게 만들 수 있는 요리로 추천해주세요
+3. 추가 재료는 일반적으로 구하기 쉬운 것들로 제한해주세요
+4. 조리 단계는 명확하고 실용적으로 3-7단계로 작성해주세요
+5. 각 재료는 구체적인 양과 단위를 포함해주세요
+6. JSON 형식을 정확히 준수해주세요
+''';
   }
   
-  /// API 키 유효성 검증
-  static bool validateApiKey() {
+  /// 환경변수 초기화 (빌드 모드별 .env 파일 로드)
+  static Future<void> initialize() async {
     try {
-      final key = openAiApiKey;
-      return key != null && key.isNotEmpty && key.startsWith('sk-');
+      // 빌드 모드에 따라 다른 .env 파일 로드
+      String envFileName;
+
+      if (kReleaseMode) {
+        // 프로덕션/릴리즈 빌드에서는 .env.production 사용
+        envFileName = '.env.production';
+        if (kDebugMode) {
+          debugPrint('🚀 프로덕션 모드: .env.production 로드 중...');
+        }
+      } else {
+        // 개발/디버그 모드에서는 .env 사용
+        envFileName = '.env';
+        if (kDebugMode) {
+          debugPrint('🔧 개발 모드: .env 로드 중...');
+        }
+      }
+
+      await dotenv.load(fileName: envFileName);
+
+      // 로드된 환경 설정 확인
+      final environment = ApiConfig.environment;
+      final debugMode = ApiConfig.isDebugMode;
+      final logLevel = ApiConfig.logLevel;
+
+      if (kDebugMode) {
+        debugPrint('✅ 환경변수 로드 완료');
+        debugPrint('   - 파일: $envFileName');
+        debugPrint('   - 환경: $environment');
+        debugPrint('   - 디버그 모드: $debugMode');
+        debugPrint('   - 로그 레벨: $logLevel');
+        debugPrint('   - SSL 피닝: ${ApiConfig.sslPinningEnabled}');
+        debugPrint('   - HTTPS 강제: ${ApiConfig.requireHttps}');
+      }
+
     } catch (e) {
-      return false;
+      if (kDebugMode) {
+        debugPrint('⚠️ 환경변수 로드 실패: $e');
+        debugPrint('   기본 개발 설정으로 폴백합니다.');
+      }
+
+      // 환경변수 로드 실패시 기본값 사용
+      // dotenv.env가 비어있어도 getter들이 기본값을 반환하므로 계속 진행
     }
+  }
+  
+  /// Vercel 프록시 토큰 유효성 검증 (로컬 API 키 불필요)
+  static bool validateApiKey() {
+    // Vercel 프록시 방식에서는 프록시 토큰만 확인
+    return proxyToken.isNotEmpty;
   }
   
   /// 디버그/릴리즈 모드 확인
   static bool get isDebugMode {
-    final debugMode = dotenv.env['DEBUG_MODE'];
-    return debugMode?.toLowerCase() == 'true';
+    try {
+      final debugMode = dotenv.env['DEBUG_MODE'];
+      return debugMode?.toLowerCase() == 'true';
+    } catch (e) {
+      return false;
+    }
   }
-  
+
   /// 앱 버전 확인 (.env에서 커스텀 버전 사용 가능)
   static String get appVersion {
-    return dotenv.env['APP_VERSION'] ?? AppConstants.appVersion;
+    try {
+      return dotenv.env['APP_VERSION'] ?? AppConstants.appVersion;
+    } catch (e) {
+      return AppConstants.appVersion;
+    }
   }
 }
 

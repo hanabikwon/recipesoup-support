@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import '../models/burrow_milestone.dart';
 import '../services/burrow_unlock_service.dart';
-import '../services/hive_service.dart'; // 🔥 CRITICAL FIX: HiveService import 추가
+// Removed unused import: ../services/hive_service.dart
 import 'dart:developer' as developer;
 
 /// 토끼굴 마일스톤 시스템 상태 관리 Provider
 /// RecipeProvider와 이벤트 기반으로 통합되어 순환 참조 방지
 class BurrowProvider extends ChangeNotifier {
-  final BurrowUnlockService _unlockService;
+  final BurrowUnlockService _unlockCoordinator;
   
   // 상태 변수들
   List<BurrowMilestone> _milestones = [];
@@ -33,19 +33,10 @@ class BurrowProvider extends ChangeNotifier {
   final _recipeEventController = StreamController<RecipeEvent>.broadcast();
   StreamSubscription<RecipeEvent>? _recipeEventSubscription;
   
-  /// 생성자 - 🔥 CRITICAL FIX: HiveService 주입 지원
+  /// 생성자
   BurrowProvider({
-    BurrowUnlockService? unlockService,
-    HiveService? hiveService, // 🔥 CRITICAL: HiveService 주입 지원
-  }) : _unlockService = unlockService ?? 
-           BurrowUnlockService(
-             hiveService: hiveService ?? HiveService(), // 🔥 CRITICAL: 싱글톤 인스턴스 전달
-           );
-           
-  // 🔥 CRITICAL FIX: 레거시 생성자 (deprecated)
-  @Deprecated('Use BurrowProvider(hiveService: HiveService()) instead')
-  BurrowProvider.legacy({BurrowUnlockService? unlockService})
-      : _unlockService = unlockService ?? BurrowUnlockService.legacy();
+    required BurrowUnlockService unlockCoordinator,
+  }) : _unlockCoordinator = unlockCoordinator;
   
   // === Getters ===
   
@@ -91,22 +82,26 @@ class BurrowProvider extends ChangeNotifier {
   /// 초기화
   Future<void> initialize() async {
     _setLoading(true);
-    
+
     try {
-      await _unlockService.initialize();
+      // coordinator 초기화
+      await _unlockCoordinator.initialize();
       await _loadData();
       _clearError();
-      
+
+      // 🔥 ULTRA THINK: 기존 레시피 기반 특별공간 unlock 재검사
+      await _recheckSpecialRoomsForExistingRecipes();
+
       // 초기화 완료 후 마일스톤 상태 로깅
       developer.log('🔥 INIT DEBUG: BurrowProvider initialized with ${_milestones.length} milestones', name: 'BurrowProvider');
-      
+
       final growthMilestones = _milestones.where((m) => m.isGrowthTrack).toList();
       developer.log('🔥 INIT DEBUG: Growth milestones: ${growthMilestones.length}', name: 'BurrowProvider');
-      
+
       for (final milestone in growthMilestones) {
         developer.log('🔥 INIT DEBUG: L${milestone.level}: ${milestone.isUnlocked ? "UNLOCKED" : "LOCKED"} (needs ${milestone.requiredRecipes})', name: 'BurrowProvider');
       }
-      
+
       developer.log('BurrowProvider initialized successfully', name: 'BurrowProvider');
     } catch (e) {
       _setError('Failed to initialize burrow system: $e');
@@ -119,10 +114,10 @@ class BurrowProvider extends ChangeNotifier {
   /// 데이터 로드
   Future<void> _loadData() async {
     try {
-      _milestones = await _unlockService.getAllMilestones();
-      _progressList = await _unlockService.getCurrentProgress();
-      
-      developer.log('Loaded ${_milestones.length} milestones and ${_progressList.length} progress items', 
+      _milestones = await _unlockCoordinator.getAllMilestones();
+      _progressList = await _unlockCoordinator.getCurrentProgress();
+
+      developer.log('Loaded ${_milestones.length} milestones and ${_progressList.length} progress items',
                    name: 'BurrowProvider');
     } catch (e) {
       developer.log('Failed to load burrow data: $e', name: 'BurrowProvider');
@@ -141,66 +136,18 @@ class BurrowProvider extends ChangeNotifier {
   /// 새 레시피 이벤트 처리 (RecipeProvider에서 호출)
   Future<void> onRecipeAdded(Recipe recipe) async {
     try {
-      debugPrint('🚨🚨🚨 BURROW CRITICAL: onRecipeAdded CALLED for: ${recipe.title}');
+      if (kDebugMode) {
+        debugPrint('🚨🚨🚨 BURROW CRITICAL: onRecipeAdded CALLED for: ${recipe.title}');
+      }
       developer.log('🔥 BURROW DEBUG: Processing recipe added: ${recipe.id} - ${recipe.title}', name: 'BurrowProvider');
       
-      // 🔥 ULTRA BYPASS: RecipeProvider에서 직접 레시피 리스트를 받아서 처리
-      if (_getAllRecipesCallback != null) {
-        debugPrint('🔥 ULTRA BYPASS: Getting all recipes directly from RecipeProvider callback...');
-        
-        final allRecipes = _getAllRecipesCallback!();
-        debugPrint('🔥 ULTRA BYPASS: Got ${allRecipes.length} recipes from RecipeProvider');
-        
-        // 🔥 CRITICAL FIX: 모든 레벨 수동 체크 (레벨 1~5)
-        debugPrint('🚨 MANUAL UNLOCK: Starting manual check for all levels with ${allRecipes.length} recipes');
-        
-        // 현재 마일스톤 상태 로드
-        final currentMilestones = await _unlockService.getAllMilestones();
-        final growthMilestones = currentMilestones.where((m) => m.isGrowthTrack).toList();
-        
-        bool hasNewUnlocks = false;
-        
-        for (final milestone in growthMilestones) {
-          if (!milestone.isUnlocked && milestone.requiredRecipes != null) {
-            if (allRecipes.length >= milestone.requiredRecipes!) {
-              debugPrint('🚨 MANUAL UNLOCK: Level ${milestone.level} should unlock! (${allRecipes.length}/${milestone.requiredRecipes})');
-              
-              // 마일스톤 언락 처리
-              milestone.unlock();
-              
-              // 🔥 CRITICAL FIX: 저장소에 마일스톤 상태 저장
-              await _unlockService.updateMilestone(milestone);
-              
-              // 알림 큐에 추가
-              _pendingNotifications.add(UnlockQueueItem(
-                milestone: milestone,
-                unlockedAt: DateTime.now(),
-                triggerRecipeId: recipe.id,
-              ));
-              
-              hasNewUnlocks = true;
-              debugPrint('🚨 MANUAL SUCCESS: Level ${milestone.level} manually unlocked!');
-            } else {
-              debugPrint('🚨 MANUAL SKIP: Level ${milestone.level} needs ${milestone.requiredRecipes}, have ${allRecipes.length}');
-            }
-          } else {
-            debugPrint('🚨 MANUAL SKIP: Level ${milestone.level} already unlocked or no requirement');
-          }
-        }
-        
-        if (hasNewUnlocks) {
-          // 마일스톤 상태 새로고침
-          _milestones = await _unlockService.getAllMilestones();
-          _progressList = await _unlockService.getCurrentProgress();
-          
-          debugPrint('🚨 ULTRA SUCCESS: Manual unlock completed for all eligible levels!');
-          notifyListeners();
-          return;
-        }
+      // 중복 방지: 수동 unlock 체크 제거 (BurrowUnlockService에서 처리)
+      if (kDebugMode) {
+        debugPrint('🔥 DUPLICATE FIX: Skipping manual unlock check to prevent duplicate popups');
       }
       
       // 현재 마일스톤 상태 로깅
-      final currentMilestones = await _unlockService.getAllMilestones();
+      final currentMilestones = await _unlockCoordinator.getAllMilestones();
       developer.log('🔥 BURROW DEBUG: Current milestones count: ${currentMilestones.length}', name: 'BurrowProvider');
       
       for (final milestone in currentMilestones.where((m) => m.isGrowthTrack)) {
@@ -208,40 +155,56 @@ class BurrowProvider extends ChangeNotifier {
       }
       
       // 마일스톤 언락 체크
-      debugPrint('🚨 STEP 1: About to call checkUnlocksForRecipe for: ${recipe.title}');
-      
-      final newUnlocks = await _unlockService.checkUnlocksForRecipe(recipe);
-      debugPrint('🚨 STEP 2: checkUnlocksForRecipe returned ${newUnlocks.length} unlocks');
+      if (kDebugMode) {
+        debugPrint('🚨 STEP 1: About to call checkUnlocksForRecipe for: ${recipe.title}');
+      }
+
+      final List<BurrowMilestone> newUnlocks = await _unlockCoordinator.checkUnlocksForRecipe(recipe);
+      if (kDebugMode) {
+        debugPrint('🚨 STEP 2: Coordinator returned ${newUnlocks.length} new unlocks');
+      }
       
       developer.log('🔥 BURROW DEBUG: Found ${newUnlocks.length} new unlocks', name: 'BurrowProvider');
       
       if (newUnlocks.isNotEmpty) {
-        // 🔥 중요: 저장소에서 최신 마일스톤 상태를 다시 로드 (unlock 상태 반영)
-        _milestones = await _unlockService.getAllMilestones();
-        debugPrint('🚨 CRITICAL: Reloaded ${_milestones.length} milestones after unlock');
+        // 마일스톤 상태 새로고침 (unlock 결과 반영)
+        await _loadData();
         
         // 언락된 마일스톤들 상태 확인 로깅
         for (final milestone in _milestones.where((m) => m.isGrowthTrack)) {
-          debugPrint('🚨 MILESTONE STATUS: L${milestone.level} = ${milestone.isUnlocked ? "UNLOCKED ✅" : "LOCKED ❌"}');
+          if (kDebugMode) {
+            debugPrint('🚨 MILESTONE STATUS: L${milestone.level} = ${milestone.isUnlocked ? "UNLOCKED ✅" : "LOCKED ❌"}');
+          }
         }
         
-        // 알림 큐에 추가 (순차 처리)
-        for (final unlock in newUnlocks) {
+        // 🔥 순서 제어: 성장 여정이 특별한 순간보다 먼저 팝업되도록 정렬
+        final sortedUnlocks = newUnlocks..sort((a, b) {
+          if (a.isGrowthTrack && b.isSpecialRoom) return -1;  // 성장 여정 우선
+          if (a.isSpecialRoom && b.isGrowthTrack) return 1;   // 특별한 순간 나중
+          return 0; // 같은 타입이면 기존 순서 유지
+        });
+
+        for (final unlock in sortedUnlocks) {
+          if (kDebugMode) {
+            debugPrint('🔥 POPUP ORDER: Adding ${unlock.isGrowthTrack ? "Growth" : "Special"} unlock L${unlock.level}');
+          }
           _pendingNotifications.add(UnlockQueueItem(
             milestone: unlock,
             unlockedAt: DateTime.now(),
             triggerRecipeId: recipe.id,
           ));
         }
-        
+
         // 진행상황 새로고침
-        _progressList = await _unlockService.getCurrentProgress();
+        _progressList = await _unlockCoordinator.getCurrentProgress();
         
         developer.log('Added ${newUnlocks.length} unlocks to notification queue', name: 'BurrowProvider');
         
         // 즉시 UI 업데이트 (디바운스 제거)
         notifyListeners();
-        debugPrint('🚨 CRITICAL: notifyListeners() called - UI should update now!');
+        if (kDebugMode) {
+          debugPrint('🚨 CRITICAL: notifyListeners() called - UI should update now!');
+        }
       }
       
     } catch (e) {
@@ -253,11 +216,52 @@ class BurrowProvider extends ChangeNotifier {
   /// 레시피 수정 이벤트 처리
   Future<void> onRecipeUpdated(Recipe recipe) async {
     try {
-      // 레시피 수정 시에는 새로운 언락 체크는 하지 않음 (중복 방지)
-      // 단, 진행상황은 새로고침
-      developer.log('Recipe updated, refreshing progress: ${recipe.id}', name: 'BurrowProvider');
+      if (kDebugMode) {
+        debugPrint('🚨🚨🚨 BURROW CRITICAL: onRecipeUpdated CALLED for: ${recipe.title}');
+      }
+      developer.log('🔥 BURROW DEBUG: Processing recipe updated: ${recipe.id} - ${recipe.title}', name: 'BurrowProvider');
       
-      _progressList = await _unlockService.getCurrentProgress();
+      // 🔥 ULTRA THINK FIX: 레시피 업데이트 시에도 언락 체크 수행
+      // 감정스토리 추가/수정 시 특별 공간 조건이 새로 충족될 수 있음
+      if (kDebugMode) {
+        debugPrint('🔥 FIX: Adding unlock check for recipe update (especially for emotional story changes)');
+      }
+      
+      // 언락 체크 수행 (BurrowUnlockService 내부에 중복 방지 로직 있음)
+      final List<BurrowMilestone> newUnlocks = await _unlockCoordinator.checkUnlocksForRecipe(recipe);
+      if (kDebugMode) {
+        debugPrint('🔥 UPDATE CHECK: Found ${newUnlocks.length} new unlocks from recipe update');
+      }
+      
+      developer.log('🔥 BURROW DEBUG: Found ${newUnlocks.length} new unlocks from update', name: 'BurrowProvider');
+      
+      if (newUnlocks.isNotEmpty) {
+        // 마일스톤 상태 새로고침
+        await _loadData();
+        
+        // 🔥 순서 제어: 성장 여정이 특별한 순간보다 먼저 팝업되도록 정렬
+        final sortedUnlocks = newUnlocks..sort((a, b) {
+          if (a.isGrowthTrack && b.isSpecialRoom) return -1;  // 성장 여정 우선
+          if (a.isSpecialRoom && b.isGrowthTrack) return 1;   // 특별한 순간 나중
+          return 0; // 같은 타입이면 기존 순서 유지
+        });
+
+        for (final unlock in sortedUnlocks) {
+          if (kDebugMode) {
+            debugPrint('🔥 UPDATE UNLOCK: Adding ${unlock.isGrowthTrack ? "Growth" : "Special"} unlock L${unlock.level}');
+          }
+          _pendingNotifications.add(UnlockQueueItem(
+            milestone: unlock,
+            unlockedAt: DateTime.now(),
+            triggerRecipeId: recipe.id,
+          ));
+        }
+
+        developer.log('Added ${newUnlocks.length} unlocks to notification queue from update', name: 'BurrowProvider');
+      }
+
+      // 진행상황 새로고침
+      _progressList = await _unlockCoordinator.getCurrentProgress();
       _debouncedNotify();
       
     } catch (e) {
@@ -270,8 +274,8 @@ class BurrowProvider extends ChangeNotifier {
     try {
       // 레시피 삭제 시 진행상황 새로고침 (언락은 그대로 유지)
       developer.log('Recipe deleted, refreshing progress: $recipeId', name: 'BurrowProvider');
-      
-      _progressList = await _unlockService.getCurrentProgress();
+
+      _progressList = await _unlockCoordinator.getCurrentProgress();
       _debouncedNotify();
       
     } catch (e) {
@@ -457,12 +461,77 @@ class BurrowProvider extends ChangeNotifier {
   
   // === 정리 ===
   
+  /// 🔥 ULTRA THINK: 기존 레시피 기반 특별공간 unlock 재검사
+  Future<void> _recheckSpecialRoomsForExistingRecipes() async {
+    try {
+      developer.log('🔥 ULTRA THINK: Starting special rooms recheck for existing recipes...', name: 'BurrowProvider');
+
+      // 1. 기존 모든 레시피 가져오기 (HiveService 직접 호출 또는 콜백 사용)
+      List<Recipe> existingRecipes = [];
+
+      if (_getAllRecipesCallback != null) {
+        // RecipeProvider 콜백 사용 (더 안전함)
+        existingRecipes = _getAllRecipesCallback!();
+        developer.log('🔥 ULTRA THINK: Got ${existingRecipes.length} recipes from RecipeProvider callback', name: 'BurrowProvider');
+      } else {
+        // Coordinator를 통한 조회 (fallback)
+        try {
+          existingRecipes = await _unlockCoordinator.getAllRecipes();
+          developer.log('🔥 ULTRA THINK: Got ${existingRecipes.length} recipes from Coordinator', name: 'BurrowProvider');
+        } catch (e) {
+          developer.log('🔥 ULTRA THINK: Coordinator recipe access failed: $e', name: 'BurrowProvider');
+          return; // 레시피를 가져올 수 없으면 재검사 중단
+        }
+      }
+
+      if (existingRecipes.isEmpty) {
+        developer.log('🔥 ULTRA THINK: No existing recipes found, skipping special rooms recheck', name: 'BurrowProvider');
+        return;
+      }
+
+      // 2. 각 레시피에 대해 특별공간 unlock 조건 체크
+      int totalUnlocks = 0;
+      for (final recipe in existingRecipes) {
+        try {
+          final newUnlocks = await _unlockCoordinator.checkUnlocksForRecipe(recipe);
+
+          if (newUnlocks.isNotEmpty) {
+            totalUnlocks += newUnlocks.length as int;
+            developer.log('🔥 ULTRA THINK: Recipe "${recipe.title}" triggered ${newUnlocks.length} unlocks', name: 'BurrowProvider');
+
+            for (final milestone in newUnlocks) {
+              if (milestone.isSpecialRoom) {
+                developer.log('🔥 ULTRA THINK: ✅ UNLOCKED Special Room: ${milestone.specialRoom?.name}', name: 'BurrowProvider');
+              }
+            }
+          }
+        } catch (e) {
+          developer.log('🔥 ULTRA THINK: Failed to check recipe "${recipe.title}": $e', name: 'BurrowProvider');
+          continue; // 개별 레시피 실패 시 다음 레시피 계속 진행
+        }
+      }
+
+      // 3. 데이터 새로고침 (unlock된 결과 반영)
+      if (totalUnlocks > 0) {
+        await _loadData();
+        developer.log('🔥 ULTRA THINK: ✅ Special rooms recheck completed: $totalUnlocks total unlocks for ${existingRecipes.length} recipes', name: 'BurrowProvider');
+        _debouncedNotify(); // UI 업데이트
+      } else {
+        developer.log('🔥 ULTRA THINK: Special rooms recheck completed: No new unlocks found', name: 'BurrowProvider');
+      }
+
+    } catch (e) {
+      developer.log('🔥 ULTRA THINK: Special rooms recheck failed: $e', name: 'BurrowProvider');
+      // 재검사 실패는 critical하지 않으므로 exception을 다시 throw하지 않음
+    }
+  }
+
   @override
   void dispose() {
     _debounceTimer?.cancel();
     _recipeEventController.close();
     _recipeEventSubscription?.cancel();
-    
+
     developer.log('BurrowProvider disposed', name: 'BurrowProvider');
     super.dispose();
   }

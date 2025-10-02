@@ -264,7 +264,7 @@ class SpecialRoomCard extends StatelessWidget {
     } else {
       // 잠긴 상태: burrow_locked.png 직접 사용
       return Image.asset(
-        'assets/images/burrow/special_rooms/burrow_locked.png',
+        'assets/images/burrow/special_rooms/burrow_locked.webp',
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           debugPrint('🔥 SPECIAL ROOM LOCKED IMAGE ERROR: $error');

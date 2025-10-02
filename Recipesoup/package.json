@@ -1,0 +1,28 @@
+{
+  "name": "recipesoup-proxy",
+  "version": "1.0.0",
+  "description": "Vercel serverless proxy for Recipesoup OpenAI API with rate limiting",
+  "type": "module",
+  "main": "api/chat.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step needed for serverless functions'",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "vercel",
+    "serverless",
+    "openai",
+    "proxy",
+    "rate-limiting",
+    "recipesoup"
+  ],
+  "author": "Recipesoup Team",
+  "license": "MIT"
+}

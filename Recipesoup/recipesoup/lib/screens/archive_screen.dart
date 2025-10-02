@@ -138,18 +138,6 @@ class _ArchiveScreenState extends State<ArchiveScreen>
                             },
                             tooltip: _isBottomSheetVisible ? '검색 닫기' : '검색',
                           ),
-                          // 알림 아이콘 (다른 화면들과 동일)
-                          IconButton(
-                            icon: const Icon(
-                              Icons.notifications_none,
-                              color: AppTheme.primaryColor,
-                              size: 24,
-                            ),
-                            onPressed: () {
-                              // 알림 기능 (추후 구현)
-                            },
-                            tooltip: '알림',
-                          ),
                         ],
                       ),
                     ),
@@ -290,9 +278,9 @@ class _ArchiveScreenState extends State<ArchiveScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(updatedRecipe.isFavorite 
-                ? 'Added to favorites' 
-                : 'Removed from favorites'),
+            content: Text(updatedRecipe.isFavorite
+                ? '즐겨찾기에 추가했어요'
+                : '즐겨찾기에서 제거했어요'),
             backgroundColor: AppTheme.successColor,
           ),
         );
@@ -301,7 +289,7 @@ class _ArchiveScreenState extends State<ArchiveScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Favorite error occurred: $e'),
+            content: Text('즐겨찾기 오류가 발생했어요: $e'),
             backgroundColor: AppTheme.errorColor,
           ),
         );
@@ -527,113 +515,130 @@ class _ArchiveScreenState extends State<ArchiveScreen>
                 ),
               ],
               SizedBox(height: 16),
-              // 검색 결과 또는 상태 메시지
+              // CustomScrollView로 제스처 분리
               Expanded(
-                child: SingleChildScrollView(
+                child: CustomScrollView(
                   controller: scrollController,
-                  child: _isInSearchMode 
-                    ? (_isSearching
-                        ? Container(
-                            height: 200,
-                            child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircularProgressIndicator(
-                                  color: AppTheme.primaryColor,
-                                ),
-                                SizedBox(height: 16),
-                                Text(
-                                  '검색 중...',
-                                  style: TextStyle(
-                                    color: AppTheme.textSecondary,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ))
-                        : (_searchResults.isNotEmpty
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // 검색 결과 개수 표시
-                                  Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          '검색 결과 ${_searchResults.length}개',
-                                          style: TextStyle(
-                                            color: AppTheme.textSecondary,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        if (_selectedTag != null) ...[
-                                          SizedBox(width: 8),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                            decoration: BoxDecoration(
-                                              color: AppTheme.primaryColor.withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                            child: Text(
-                                              '#$_selectedTag',
-                                              style: TextStyle(
-                                                color: AppTheme.primaryColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ],
-                                    ),
-                                  ),
-                                  // 검색 결과 리스트
-                                  ...List.generate(_searchResults.length, (index) {
-                                    final recipe = _searchResults[index];
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                                      child: RecipeCard(
-                                        recipe: recipe,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => DetailScreen(recipe: recipe),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  }),
-                                  SizedBox(height: 80), // 바텀 여백
-                                ],
-                              )
-                            : Container(
+                  slivers: [
+                    // 검색 상태별 Sliver 표시
+                    _isInSearchMode
+                      ? (_isSearching
+                          // 로딩 상태
+                          ? SliverToBoxAdapter(
+                              child: Container(
                                 height: 200,
                                 child: Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
-                                        Icons.search_off,
-                                        size: 60,
-                                        color: AppTheme.textTertiary.withOpacity(0.5),
+                                      CircularProgressIndicator(
+                                        color: AppTheme.primaryColor,
                                       ),
                                       SizedBox(height: 16),
                                       Text(
-                                        '검색 결과가 없습니다',
+                                        '검색 중...',
                                         style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
                                         ),
                                       ),
-                                      SizedBox(height: 8),
-                                      Text(
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : (_searchResults.isNotEmpty
+                              // 검색 결과가 있을 때
+                              ? SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      // 첫 번째 항목: 검색 결과 개수
+                                      if (index == 0) {
+                                        return Padding(
+                                          padding: EdgeInsets.all(16),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                '검색 결과 ${_searchResults.length}개',
+                                                style: TextStyle(
+                                                  color: AppTheme.textSecondary,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              if (_selectedTag != null) ...[
+                                                SizedBox(width: 8),
+                                                Container(
+                                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                                  decoration: BoxDecoration(
+                                                    color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  child: Text(
+                                                    '#$_selectedTag',
+                                                    style: TextStyle(
+                                                      color: AppTheme.primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ],
+                                          ),
+                                        );
+                                      }
+
+                                      // 검색 결과 카드들
+                                      final recipeIndex = index - 1;
+                                      if (recipeIndex < _searchResults.length) {
+                                        final recipe = _searchResults[recipeIndex];
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                                          child: RecipeCard(
+                                            recipe: recipe,
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => DetailScreen(recipe: recipe),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+
+                                      // 마지막 항목: 바텀 여백
+                                      return SizedBox(height: 80);
+                                    },
+                                    childCount: _searchResults.length + 2, // 헤더 + 결과들 + 여백
+                                  ),
+                                )
+                              // 검색 결과가 없을 때
+                              : SliverToBoxAdapter(
+                                  child: Container(
+                                    height: 200,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.search_off,
+                                            size: 60,
+                                            color: AppTheme.textTertiary.withValues(alpha: 0.5),
+                                          ),
+                                          SizedBox(height: 16),
+                                          Text(
+                                            '검색 결과가 없습니다',
+                                            style: TextStyle(
+                                              color: AppTheme.textSecondary,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
                                         '다른 검색어를 입력하거나 태그를 눌러보세요',
                                         style: TextStyle(
                                           color: AppTheme.textTertiary,
@@ -645,9 +650,13 @@ class _ArchiveScreenState extends State<ArchiveScreen>
                                   ),
                                 ),
                               )
+                            ))
                         )
-                    )
-                    : SizedBox(height: 100), // 검색 모드가 아닐 때 여백
+                      // 검색 모드가 아닐 때 빈 여백
+                      : SliverToBoxAdapter(
+                          child: SizedBox(height: 100),
+                        ),
+                  ],
                 ),
               ),
             ],

@@ -1,54 +1,116 @@
 {
   "knowledge": [
     {
-      "id": "knowledge_009",
+      "id": "knowledge_014",
       "displayDate": "2025-12-05",
-      "title": "스테이크 굽기 정도",
-      "content": "레어(48-52°C): 속은 붉은색, 블루(38-43°C): 거의 날것, 미디엄 레어(52-57°C): 분홍빛, 미디엄(57-63°C): 연분홍, 미디엄 웰(63-68°C): 약간 분홍, 웰던(68°C 이상): 완전히 익힌 상태를 말합니다.",
-      "category": "요리 기법"
+      "title": "향신료 보관법",
+      "content": "향신료는 빛, 열, 습기에 약하므로 서늘하고 어두운 곳에 밀폐용기에 보관해야 합니다. 통째로 된 향신료가 가루보다 오래 보관되며, 사용 직전에 갈아야 최고의 향을 낼 수 있습니다. 대부분 1-2년 내 사용하는 것이 좋습니다.",
+      "category": "식재료 관리",
+      "image": "assets/images/knowledge/knowledge_014.webp"
+    },
+    {
+      "id": "knowledge_013",
+      "displayDate": "2025-11-28",
+      "title": "칼 관리의 기본",
+      "content": "좋은 칼은 평생 사용할 수 있습니다. 사용 후 즉시 손으로 씻고 완전히 건조시켜야 하며, 나무나 플라스틱 도마를 사용해야 칼날이 상하지 않습니다. 정기적인 숫돌 날 세우기로 예리함을 유지하세요.",
+      "category": "조리 도구",
+      "image": "assets/images/knowledge/knowledge_013.webp"
+    },
+    {
+      "id": "knowledge_012",
+      "displayDate": "2025-11-21",
+      "title": "전통 장류의 숙성",
+      "content": "된장, 고추장, 간장 등 전통 장류는 최소 1년 이상 숙성되어야 깊은 맛이 납니다. 숙성 과정에서 단백질이 아미노산으로 분해되어 감칠맛(우마미)이 생성되며, 시간이 길수록 복합적인 맛이 발달합니다.",
+      "category": "전통 발효",
+      "image": "assets/images/knowledge/knowledge_012.webp"
+    },
+    {
+      "id": "knowledge_011",
+      "displayDate": "2025-11-14",
+      "title": "마이야르 반응",
+      "content": "단백질과 당분이 열에 의해 결합하여 갈색으로 변하며 고소한 향과 맛을 내는 화학반응입니다. 스테이크의 겉면이 갈색으로 변하고 고소해지는 것이 대표적인 예입니다. 140°C 이상에서 활발해집니다.",
+      "category": "식품 과학",
+      "image": "assets/images/knowledge/knowledge_011.webp"
+    },
+    {
+      "id": "knowledge_010",
+      "displayDate": "2025-11-07",
+      "title": "글루텐의 역할",
+      "content": "밀가루의 글루텐은 빵의 쫄깃한 식감을 만드는 단백질입니다. 반죽을 치대면 글루텐이 그물망 구조를 형성하여 발효 시 생기는 가스를 가두어 부풀어 오른 빵을 만들 수 있습니다.",
+      "category": "제빵 과학",
+      "image": "assets/images/knowledge/knowledge_010.webp"
+    },
+    {
+      "id": "knowledge_009",
+      "displayDate": "2025-10-31",
+      "title": "발효의 과학",
+      "content": "발효는 미생물이 당분을 분해하여 알코올, 젖산, 초산 등을 만드는 과정입니다. 김치의 유산균 발효는 4-10°C에서 가장 활발하며, 이때 특유의 신맛과 감칠맛이 생성됩니다.",
+      "category": "식품 과학",
+      "image": "assets/images/knowledge/knowledge_009.webp"
     },
     {
       "id": "knowledge_008",
-      "displayDate": "2025-11-20",
-      "title": "MSG의 진실",
-      "content": "MSG(글루탐산나트륨)는 다시마, 토마토, 치즈에도 자연적으로 존재하는 감칠맛 성분입니다. 1968년 '중국음식점 증후군'이라는 오해로 부정적 인식이 생겼지만, WHO와 FDA는 안전한 식품첨가물로 분류하고 있습니다.",
-      "category": "식품 과학"
+      "displayDate": "2025-10-24",
+      "title": "수비드(Sous Vide) 조리법",
+      "content": "프랑스어로 '진공 상태'를 의미하며, 음식을 진공포장하여 정확한 온도의 물에서 장시간 조리하는 방법입니다. 육류의 경우 56-60°C에서 1-24시간 조리하면 완벽한 식감을 얻을 수 있습니다.",
+      "category": "조리 기법",
+      "image": "assets/images/knowledge/knowledge_008.webp"
     },
     {
       "id": "knowledge_007",
-      "displayDate": "2025-11-05",
-      "title": "에스코피에의 5가지 모체 소스",
-      "content": "프랑스 요리의 아버지 오귀스트 에스코피에가 정립한 5가지 기본 소스: 베샤멜(우유), 벨루테(닭육수), 에스파뇰(갈색육수), 홀란데이즈(달걀노른자), 토마토 소스. 모든 프랑스 소스는 이 5가지에서 파생됩니다.",
-      "category": "요리 역사"
+      "displayDate": "2025-10-17",
+      "title": "스테이크 굽기 정도",
+      "content": "블루(38-43°C): 거의 날것, 레어(48-52°C): 속은 붉은색, 미디엄 레어(52-57°C): 분홍빛, 미디엄(57-63°C): 연분홍, 미디엄 웰(63-68°C): 약간 분홍, 웰던(68°C 이상): 완전히 익힌 상태를 말합니다.",
+      "category": "요리 기법",
+      "image": "assets/images/knowledge/knowledge_007.webp"
     },
     {
       "id": "knowledge_006",
-      "displayDate": "2025-10-20",
-      "title": "칼의 종류와 용도",
-      "content": "셰프나이프: 다목적, 페어링나이프: 껍질 벗기기, 브레드나이프: 빵 자르기, 필레나이프: 생선 손질, 클리버: 뼈 자르기, 산토쿠: 일본식 다목적 칼. 각 칼은 특정 작업에 최적화되어 있습니다.",
-      "category": "조리 도구"
+      "displayDate": "2025-10-10",
+      "title": "MSG의 진실",
+      "content": "MSG(글루탐산나트륨)는 다시마, 토마토, 치즈에도 자연적으로 존재하는 감칠맛 성분입니다. 1968년 '중국음식점 증후군'이라는 오해로 부정적 인식이 생겼지만, WHO와 FDA는 안전한 식품첨가물로 분류하고 있습니다.",
+      "category": "식품 과학",
+      "image": "assets/images/knowledge/knowledge_006.webp"
     },
     {
       "id": "knowledge_005",
-      "displayDate": "2025-10-05",
-      "title": "템퍼링(Tempering)의 과학",
-      "content": "초콜릿을 녹였다가 특정 온도로 식히는 과정을 반복해 안정적인 결정 구조를 만드는 기법입니다. 제대로 템퍼링된 초콜릿은 윤기가 나고 부러질 때 '탁' 소리가 나며, 실온에서도 녹지 않습니다.",
-      "category": "제과 기법"
+      "displayDate": "2025-10-03",
+      "title": "에스코피에의 5가지 모체 소스",
+      "content": "프랑스 요리의 아버지 오귀스트 에스코피에가 정립한 5가지 기본 소스: 베샤멜(우유), 벨루테(닭육수), 에스파뇰(갈색육수), 홀란데이즈(달걀노른자), 토마토 소스. 모든 프랑스 소스는 이 5가지에서 파생됩니다.",
+      "category": "요리 역사",
+      "image": "assets/images/knowledge/knowledge_005.webp"
     },
     {
       "id": "knowledge_004",
-      "displayDate": "2025-09-20",
-      "title": "김치의 세계화",
-      "content": "2013년 유네스코 인류무형문화유산에 '김장 문화'가 등재되었습니다. 현재 김치는 'Kimchi'라는 고유명사로 세계 70여 개국에 수출되며, 프로바이오틱스 식품으로 주목받고 있습니다.",
-      "category": "한국 음식 문화"
+      "displayDate": "2025-09-26",
+      "title": "칼의 종류와 용도",
+      "content": "셰프나이프: 다목적, 페어링나이프: 껍질 벗기기, 브레드나이프: 빵 자르기, 필레나이프: 생선 손질, 클리버: 뼈 자르기, 산토쿠: 일본식 다목적 칼. 각 칼은 특정 작업에 최적화되어 있습니다.",
+      "category": "조리 도구",
+      "image": "assets/images/knowledge/knowledge_004.webp"
     },
     {
       "id": "knowledge_003",
+      "displayDate": "2025-09-19",
+      "title": "템퍼링의 과학",
+      "content": "초콜릿을 녹였다가 특정 온도로 식히는 과정을 반복해 안정적인 결정 구조를 만드는 기법입니다. 제대로 템퍼링된 초콜릿은 윤기가 나고 부러질 때 '탁' 소리가 나며, 실온에서도 녹지 않습니다.",
+      "category": "제과 기법",
+      "image": "assets/images/knowledge/knowledge_003.webp"
+    },
+    {
+      "id": "knowledge_002",
+      "displayDate": "2025-09-12",
+      "title": "쇼콜라티에",
+      "content": "쇼콜라티에는 초콜릿 전문 제과사를 뜻합니다. 카카오 원두 선별부터 로스팅, 템퍼링, 몰딩까지 초콜릿 제작의 모든 과정을 마스터한 장인입니다. 온도와 습도, 시간을 정밀하게 조절하여 초콜릿 고유의 풍미와 질감을 극대화합니다.",
+      "category": "제과 전문직",
+      "image": "assets/images/knowledge/knowledge_002.webp"
+    },
+    {
+      "id": "knowledge_001",
       "displayDate": "2025-09-05",
       "title": "알덴테(Al dente)",
       "content": "이탈리아어로 '치아에 닿는' 뜻으로, 파스타를 살짝 덜 익혀 씹는 맛이 있게 조리하는 것을 말합니다. 파스타의 중심에 약간의 심이 남아있는 상태죠.",
       "category": "요리 용어",
-      "image": "assets/images/knowledge/knowledge_003.png"
+      "image": "assets/images/knowledge/knowledge_001.webp"
     }
   ]
 }

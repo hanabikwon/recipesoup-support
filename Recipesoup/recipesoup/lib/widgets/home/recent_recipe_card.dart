@@ -117,16 +117,7 @@ class RecentRecipeCard extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: recipe?.localImagePath != null
-        ? ClipRRect(
-            borderRadius: BorderRadius.circular(7),
-            child: Image.asset(
-              recipe!.localImagePath!,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => _buildDefaultEmoji(),
-            ),
-          )
-        : _buildDefaultEmoji(),
+      child: _buildDefaultEmoji(),
     );
   }
 

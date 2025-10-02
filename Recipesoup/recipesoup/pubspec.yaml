@@ -53,7 +53,16 @@ dependencies:
   # 이미지 처리
   image_picker: ^1.1.2
   image: ^4.2.0
-  path_provider: ^2.1.4
+  path_provider: 2.0.15  # iOS Platform Channel 안정 버전 (^2.1.4에서 다운그레이드)
+
+  # 메시지 시스템 (로컬 읽음 상태 저장)
+  shared_preferences: ^2.3.2
+
+  # 백업/복원 기능
+  archive: ^3.4.9        # ZIP 압축/해제
+  share_plus: ^7.2.1     # 파일 공유 (이메일, 드라이브 등)
+  file_picker: ^6.1.1    # 파일 선택기
+  url_launcher: ^6.2.1   # 이메일 링크
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +101,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
+    - assets/data/
     - assets/images/
     - assets/images/burrow/
     - assets/images/burrow/milestones/
@@ -102,6 +112,9 @@ flutter:
     - assets/images/knowledge/
     - assets/images/recipes/
     - lib/data/content/
+    - lib/data/challenge_recipes.json
+    - lib/data/challenge_badges.json
+    - lib/data/detailed_cooking_methods.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -124,15 +137,15 @@ flutter:
 flutter_launcher_icons:
   android: "ic_launcher"
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/app_icon.webp"
   min_sdk_android: 21 # Android 최소 SDK 버전
   remove_alpha_ios: true # iOS App Store 정책 준수
   web:
     generate: true
-    image_path: "assets/images/app_icon.png"
+    image_path: "assets/images/app_icon.webp"
   windows:
     generate: true
-    image_path: "assets/images/app_icon.png"
+    image_path: "assets/images/app_icon.webp"
   macos:
     generate: true
-    image_path: "assets/images/app_icon.png"
+    image_path: "assets/images/app_icon.webp"

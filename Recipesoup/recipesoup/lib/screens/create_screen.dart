@@ -12,11 +12,22 @@ import '../widgets/common/required_badge.dart';
 class CreateScreen extends StatefulWidget {
   final Recipe? editingRecipe; // 편집할 레시피 또는 미리 채워진 데이터
   final bool isEditMode; // 실제 편집 모드인지 여부
-  
+
+  // 새로운 프리필 기능 (기존 호환성 완전 유지)
+  final String? prefilledTitle;           // AI 추천에서 받은 요리명
+  final List<String>? prefilledIngredients; // 통합 재료 리스트
+  final String? prefilledCookingMethod;   // AI 추천 조리법
+  final String? dataSource;              // 데이터 출처 ('fridge_ingredients' 등)
+
   const CreateScreen({
     super.key,
     this.editingRecipe,
     this.isEditMode = false, // 기본값은 생성 모드
+    // 새로운 매개변수들 (모두 optional)
+    this.prefilledTitle,
+    this.prefilledIngredients,
+    this.prefilledCookingMethod,
+    this.dataSource,
   });
 
   @override
@@ -72,10 +83,33 @@ class _CreateScreenState extends State<CreateScreen> {
       
       // 출처 URL 설정
       _sourceUrlController.text = recipe.sourceUrl ?? '';
-      
-      // 이미지 경로 설정 (편집 모드일 때만)
-      if (_isEditMode) {
-        _currentImagePath = recipe.localImagePath;
+    }
+    // 새로운 프리필 데이터 처리 (기존 editingRecipe가 없을 때만)
+    else if (widget.prefilledTitle != null ||
+             widget.prefilledIngredients != null ||
+             widget.prefilledCookingMethod != null) {
+
+      // AI 추천에서 받은 요리명 프리필
+      if (widget.prefilledTitle != null) {
+        _titleController.text = widget.prefilledTitle!;
+      }
+
+      // 통합 재료 리스트 프리필
+      if (widget.prefilledIngredients != null && widget.prefilledIngredients!.isNotEmpty) {
+        _ingredientsController.text = widget.prefilledIngredients!.join(', ');
+      }
+
+      // AI 추천 조리법 프리필
+      if (widget.prefilledCookingMethod != null) {
+        _instructionsController.text = widget.prefilledCookingMethod!;
+      }
+
+      // 프리필 데이터 출처에 따른 추가 처리
+      if (widget.dataSource == 'fridge_ingredients') {
+        // 냉장고 재료 기반 추천의 경우 기본 태그 추가
+        _tagsController.text = '#냉장고재료 #AI추천';
+        // 기본 감정을 평온함으로 설정 (요리 추천받는 상황)
+        _selectedMood = Mood.peaceful;
       }
     }
   }
@@ -177,7 +211,7 @@ class _CreateScreenState extends State<CreateScreen> {
     } else {
       icon = Icons.restaurant_menu;
       title = '감정과 함께하는 레시피 작성';
-      subtitle = '오늘 만든 요리의 이야기를 감정과 함께 기록해보세요';
+      subtitle = '오늘의 요리 이야기를 감정과 함께 기록해보세요';
     }
 
     return Container(
@@ -404,7 +438,8 @@ class _CreateScreenState extends State<CreateScreen> {
         const SizedBox(height: AppTheme.spacing8),
         TextFormField(
           controller: _instructionsController,
-          maxLines: 4,
+          minLines: 3,
+          maxLines: 6,
           decoration: const InputDecoration(
             hintText: '예:\n1. 면을 삶아 찬물에 헹군다\n2. 오이, 햄을 채 썬다\n3. 소스와 함께 비벼 완성',
             border: OutlineInputBorder(),
@@ -535,9 +570,6 @@ class _CreateScreenState extends State<CreateScreen> {
     });
 
     try {
-      // 기존 이미지 경로 유지
-      String? savedImagePath = _currentImagePath;
-      
       final recipe = Recipe(
         id: _isEditMode ? widget.editingRecipe!.id : DateTime.now().millisecondsSinceEpoch.toString(),
         title: _titleController.text.trim(),
@@ -549,8 +581,6 @@ class _CreateScreenState extends State<CreateScreen> {
         createdAt: _isEditMode ? widget.editingRecipe!.createdAt : DateTime.now(),
         mood: _selectedMood,
         rating: _rating,
-        localImagePath: savedImagePath,
-        reminderDate: _isEditMode ? widget.editingRecipe!.reminderDate : null,
         isFavorite: _isEditMode ? widget.editingRecipe!.isFavorite : false,
         sourceUrl: _sourceUrlController.text.trim().isEmpty ? null : _sourceUrlController.text.trim(),
       );

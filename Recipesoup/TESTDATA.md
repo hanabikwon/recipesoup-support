@@ -468,36 +468,36 @@ const tagCombinations = [
 
 ### 날짜 기반 회상 레시피
 ```dart
-// 현재 날짜: 2024-12-15라고 가정
+// 현재 날짜: 2025-09-17라고 가정
 final pastTodayRecipes = [
-  // 1년 전 오늘 (2023-12-15)
+  // 1년 전 오늘 (2024-09-17)
   Recipe(
     id: 'past_today_001',
-    title: '작년 크리스마스 준비',
-    emotionalStory: '작년 이맘때 크리스마스 파티를 준비하며 만들었던 치킨... 올해는 어떤 요리를 해볼까?',
-    createdAt: DateTime(2023, 12, 15, 18, 30),
+    title: '작년 가을 요리',
+    emotionalStory: '작년 이맘때 가을 요리를 만들며 계절의 변화를 느꼈던... 올해는 어떤 요리를 해볼까?',
+    createdAt: DateTime(2024, 9, 17, 18, 30),
     mood: Mood.excited,
-    tags: ['#크리스마스', '#파티', '#1년전오늘'],
+    tags: ['#가을요리', '#계절변화', '#1년전오늘'],
     // ... 기타 필드들
   ),
   
-  // 2년 전 오늘 (2022-12-15)
+  // 2년 전 오늘 (2023-09-17)
   Recipe(
-    id: 'past_today_002', 
+    id: 'past_today_002',
     title: '첫 원룸에서 만든 김치찌개',
-    emotionalStory: '독립 후 첫 겨울, 추워서 뜨거운 국물이 그리워 만든 김치찌개. 그때가 벌써 2년 전이네요.',
-    createdAt: DateTime(2022, 12, 15, 19, 45),
+    emotionalStory: '독립 후 첫 가을, 날씨가 쌀쌀해져서 뜨거운 국물이 그리워 만든 김치찌개. 그때가 벌써 2년 전이네요.',
+    createdAt: DateTime(2023, 9, 17, 19, 45),
     mood: Mood.nostalgic,
     tags: ['#독립', '#첫원룸', '#2년전오늘', '#김치찌개'],
     // ... 기타 필드들
   ),
   
-  // 3년 전 오늘 (2021-12-15) 
+  // 3년 전 오늘 (2022-09-17)
   Recipe(
     id: 'past_today_003',
     title: '재택근무 중 만든 간단 파스타',
     emotionalStory: '코로나 시기 재택근무 중이었는데, 점심으로 간단한 파스타를 만들어 먹었네요. 그때가 벌써 3년 전...',
-    createdAt: DateTime(2021, 12, 15, 12, 20),
+    createdAt: DateTime(2022, 9, 17, 12, 20),
     mood: Mood.peaceful,
     tags: ['#재택근무', '#코로나시기', '#3년전오늘', '#파스타'],
     // ... 기타 필드들
@@ -708,24 +708,24 @@ final dateTimeTestCases = {
   'last_year': DateTime.now().subtract(Duration(days: 365)),
   
   // 특수한 날짜들
-  'leap_year': DateTime(2024, 2, 29), // 윤년
-  'new_year': DateTime(2024, 1, 1),
-  'christmas': DateTime(2024, 12, 25),
+  'leap_year': DateTime(2025, 2, 28), // 평년 (2025년은 윤년 아님)
+  'new_year': DateTime(2025, 1, 1),
+  'christmas': DateTime(2025, 12, 25),
   
   // 시간대 테스트
-  'early_morning': DateTime(2024, 12, 15, 6, 0),
-  'lunch_time': DateTime(2024, 12, 15, 12, 30),
-  'dinner_time': DateTime(2024, 12, 15, 19, 0),
-  'late_night': DateTime(2024, 12, 15, 23, 30),
+  'early_morning': DateTime(2025, 9, 17, 6, 0),
+  'lunch_time': DateTime(2025, 9, 17, 12, 30),
+  'dinner_time': DateTime(2025, 9, 17, 19, 0),
+  'late_night': DateTime(2025, 9, 17, 23, 30),
 };
 ```
 
-## Puppeteer MCP 테스트용 시나리오 데이터
+## Playwright MCP 테스트용 시나리오 데이터
 
 ### 브라우저 자동화 테스트 스크립트
 ```javascript
-// JavaScript 테스트 시나리오 (Puppeteer MCP용)
-const puppeteerTestScenarios = {
+// JavaScript 테스트 시나리오 (Playwright MCP용)
+const playwrightTestScenarios = {
   // 음식 사진 업로드 및 분석 테스트
   photoAnalysisTest: {
     testImg1: {
@@ -834,7 +834,7 @@ when(mockOpenAiService.analyzeImage(any))
 final pastRecipes = getPastTodayRecipes(DateTime.now());
 ```
 
-### Puppeteer MCP 테스트 실행
+### Playwright MCP 테스트 실행
 ```bash
 # Flutter 웹 빌드
 flutter build web
@@ -842,7 +842,7 @@ flutter build web
 # 로컬 서버 실행 (포트 8080)
 python -m http.server 8080 -d build/web
 
-# Puppeteer MCP 테스트 실행
+# Playwright MCP 테스트 실행
 # (testimg1.jpg, testimg2.jpg, testimg3.jpg 파일이 준비되어야 함)
 ```
 

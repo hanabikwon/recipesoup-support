@@ -21,10 +21,7 @@ class Recipe {
   
   /// 단계별 조리법
   final List<String> instructions;
-  
-  /// 로컬 이미지 파일 경로 (옵션)
-  final String? localImagePath;
-  
+
   /// 해시태그 리스트
   final List<String> tags;
   
@@ -36,10 +33,7 @@ class Recipe {
   
   /// 만족도 점수 (1-5점, 옵션)
   final int? rating;
-  
-  /// 리마인더 날짜 (옵션)
-  final DateTime? reminderDate;
-  
+
   /// 즐겨찾기 여부
   final bool isFavorite;
   
@@ -59,12 +53,10 @@ class Recipe {
     required this.ingredients,
     this.sauce,
     required this.instructions,
-    this.localImagePath,
     required this.tags,
     required this.createdAt,
     required this.mood,
     this.rating,
-    this.reminderDate,
     this.isFavorite = false,
     this.sourceUrl,
     this.isScreenshot = false, // 기본값: 일반 음식 사진
@@ -79,11 +71,9 @@ class Recipe {
     List<Ingredient>? ingredients,
     String? sauce,
     List<String>? instructions,
-    String? localImagePath,
     List<String>? tags,
     DateTime? createdAt,
     int? rating,
-    DateTime? reminderDate,
     bool isFavorite = false,
     String? sourceUrl,
     bool isScreenshot = false, // 기본값: 일반 음식 사진
@@ -100,12 +90,10 @@ class Recipe {
       ingredients: ingredients ?? [],
       sauce: sauce,
       instructions: instructions ?? [],
-      localImagePath: localImagePath,
       tags: tags ?? [],
       createdAt: createdAt ?? DateTime.now(),
       mood: mood,
       rating: rating,
-      reminderDate: reminderDate,
       isFavorite: isFavorite,
       sourceUrl: sourceUrl,
       isScreenshot: isScreenshot,
@@ -122,12 +110,10 @@ class Recipe {
       'ingredients': ingredients.map((i) => i.toJson()).toList(),
       'sauce': sauce,
       'instructions': instructions,
-      'localImagePath': localImagePath,
       'tags': tags,
       'createdAt': createdAt.toIso8601String(),
       'mood': mood.name, // enum name으로 저장
       'rating': rating,
-      'reminderDate': reminderDate?.toIso8601String(),
       'isFavorite': isFavorite,
       'sourceUrl': sourceUrl,
       'isScreenshot': isScreenshot,
@@ -142,18 +128,23 @@ class Recipe {
       title: json['title'] as String,
       emotionalStory: json['emotionalStory'] as String,
       ingredients: (json['ingredients'] as List<dynamic>)
-          .map((i) => Ingredient.fromJson(i as Map<String, dynamic>))
+          .map((i) {
+            if (i is Map<String, dynamic>) {
+              return Ingredient.fromJson(i);
+            } else if (i is Map) {
+              // 안전한 변환: _Map<dynamic, dynamic>을 Map<String, dynamic>으로 변환
+              return Ingredient.fromJson(Map<String, dynamic>.from(i));
+            } else {
+              throw ArgumentError('Invalid ingredient data type: ${i.runtimeType}');
+            }
+          })
           .toList(),
       sauce: json['sauce'] as String?,
       instructions: List<String>.from(json['instructions'] as List<dynamic>),
-      localImagePath: json['localImagePath'] as String?,
       tags: List<String>.from(json['tags'] as List<dynamic>),
       createdAt: DateTime.parse(json['createdAt'] as String),
       mood: Mood.values.firstWhere((m) => m.name == json['mood']),
       rating: json['rating'] as int?,
-      reminderDate: json['reminderDate'] != null 
-          ? DateTime.parse(json['reminderDate'] as String) 
-          : null,
       isFavorite: json['isFavorite'] as bool? ?? false,
       sourceUrl: json['sourceUrl'] as String?,
       // 호환성을 위한 기본값 제공 (기존 데이터에는 이 필드들이 없을 수 있음)
@@ -170,12 +161,10 @@ class Recipe {
     List<Ingredient>? ingredients,
     String? sauce,
     List<String>? instructions,
-    String? localImagePath,
     List<String>? tags,
     DateTime? createdAt,
     Mood? mood,
     int? rating,
-    DateTime? reminderDate,
     bool? isFavorite,
     String? sourceUrl,
     bool? isScreenshot,
@@ -188,12 +177,10 @@ class Recipe {
       ingredients: ingredients ?? this.ingredients,
       sauce: sauce ?? this.sauce,
       instructions: instructions ?? this.instructions,
-      localImagePath: localImagePath ?? this.localImagePath,
       tags: tags ?? this.tags,
       createdAt: createdAt ?? this.createdAt,
       mood: mood ?? this.mood,
       rating: rating ?? this.rating,
-      reminderDate: reminderDate ?? this.reminderDate,
       isFavorite: isFavorite ?? this.isFavorite,
       sourceUrl: sourceUrl ?? this.sourceUrl,
       isScreenshot: isScreenshot ?? this.isScreenshot,
@@ -207,13 +194,6 @@ class Recipe {
            title.isNotEmpty &&
            emotionalStory.isNotEmpty && // 감정 기반 앱의 핵심!
            (rating == null || (rating! >= 1 && rating! <= 5));
-  }
-
-  /// "과거 오늘" 체크 (같은 월/일, 다른 년도)
-  bool isPastTodayFor(DateTime date) {
-    return createdAt.month == date.month &&
-           createdAt.day == date.day &&
-           createdAt.year != date.year;
   }
 
   /// 태그 검색 매칭

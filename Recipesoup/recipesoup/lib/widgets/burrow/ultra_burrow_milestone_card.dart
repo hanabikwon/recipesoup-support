@@ -98,7 +98,7 @@ class UltraBurrowMilestoneCard extends StatelessWidget {
             // 특별한 공간에서 잠금 상태일 때만 burrow_locked.png 이미지로 교체
             if (!milestone.isUnlocked && milestone.burrowType == BurrowType.special)
               UltraBurrowImageHandler.ultraSafeImage(
-                imagePath: 'assets/images/burrow/special_rooms/burrow_locked.png',
+                imagePath: 'assets/images/burrow/special_rooms/burrow_locked.webp',
                 milestone: milestone,
                 width: 80,
                 height: 80,
@@ -227,20 +227,9 @@ class UltraBurrowMilestoneCard extends StatelessWidget {
 
   /// 언락된 상태 설명 (계획된 카피 적용)
   String _getUnlockedDescription() {
-    switch (milestone.level) {
-      case 1:
-        return '첫 레시피 기록을 축하해요!';
-      case 2:
-        return '조금 더 넓어진 두 번째 굴';
-      case 3:
-        return '중간 크기의 세 번째 굴';
-      case 4:
-        return '넓은 네 번째 굴';
-      case 5:
-        return '최고급 다섯 번째 굴';
-      default:
-        return '특별한 공간이 열렸어요!';
-    }
+    // burrow_unlock_service.dart에 정의된 각 레벨별 설명을 그대로 사용
+    // Level 1~32까지 모두 정확한 설명이 표시됨
+    return milestone.description;
   }
 
   /// 달성 시간 표시

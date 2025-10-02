@@ -4,12 +4,16 @@ import 'package:provider/provider.dart';
 import '../config/theme.dart';
 import '../config/constants.dart';
 import '../providers/recipe_provider.dart';
+import '../providers/challenge_provider.dart';
+import '../providers/message_provider.dart';
 import '../services/content_service.dart';
 import '../widgets/home/recent_recipe_card.dart';
 import '../widgets/home/seasonal_recipe_card.dart';
 import '../widgets/home/cooking_knowledge_card.dart';
 import '../widgets/home/recommended_content_card.dart';
+import '../widgets/home/challenge_cta_card.dart';
 import '../widgets/vintage_loading_widget.dart';
+import '../widgets/message/message_bottom_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,6 +35,18 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   void initState() {
     super.initState();
     _loadHomeContent();
+    _initializeChallengeProvider();
+  }
+
+  /// ChallengeProvider 초기화
+  void _initializeChallengeProvider() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final challengeProvider = Provider.of<ChallengeProvider>(context, listen: false);
+      if (challengeProvider.allChallenges.isEmpty) {
+        challengeProvider.loadInitialData();
+      }
+
+    });
   }
 
   /// 홈 화면 콘텐츠 로드 (제철 레시피, 요리 지식)
@@ -120,14 +136,37 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
             ),
           ),
           const Spacer(),
-          IconButton(
-            onPressed: () {
-              // 알림 기능 (추후 구현)
+          Consumer<MessageProvider>(
+            builder: (context, messageProvider, child) {
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      await MessageBottomSheet.show(context);
+                    },
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      color: AppTheme.textSecondary,
+                    ),
+                  ),
+                  // 레드닷 표시
+                  if (messageProvider.hasUnreadMessages)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFB5704F), // 빈티지 레드
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                ],
+              );
             },
-            icon: const Icon(
-              Icons.notifications_none,
-              color: AppTheme.textSecondary,
-            ),
           ),
         ],
       ),
@@ -146,9 +185,11 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       onRefresh: () async {
         // 🔥 CRITICAL FIX: 안전한 새로고침 (에러 발생시 기존 데이터 유지)
         try {
+          final challengeProvider = Provider.of<ChallengeProvider>(context, listen: false);
           await Future.wait([
             provider.loadRecipes(), // 이미 안전하게 수정됨
             _loadHomeContent(),
+            challengeProvider.refresh(), // 깡총 챌린지 데이터도 새로고침
           ]);
         } catch (e) {
           debugPrint('새로고침 중 오류 발생 (기존 데이터 유지): $e');
@@ -163,6 +204,16 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
             child: RecentRecipeCard(
               recipe: provider.recipes.isNotEmpty ? provider.recipes.first : null,
             ),
+          ),
+
+          // 깡총 챌린지 CTA 카드
+          const SliverToBoxAdapter(
+            child: ChallengeCTACard(),
+          ),
+
+          // 섹션 간 추가 여백
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 16),
           ),
 
           // 요즘 주목받는 레시피 섹션

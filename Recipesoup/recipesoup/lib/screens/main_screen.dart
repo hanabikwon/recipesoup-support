@@ -15,6 +15,7 @@ import 'create_screen.dart';
 import 'url_import_screen.dart';
 import 'photo_import_screen.dart';
 import 'keyword_import_screen.dart';
+import 'fridge_ingredients_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -50,8 +51,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
     
-    // 🔥 ULTRA FIX: 인덱스 안전 매핑 (설정 바텀바 이동, 5개 탭 구조)
-    _currentIndex = _migrateCurrentIndex(_currentIndex);
+    // 현재 인덱스 초기화 완료 (5개 탭 구조 정상 작동)
     
     // 앱 시작 후 대기 중인 마일스톤 알림 체크
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -59,18 +59,6 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     });
   }
 
-  /// 🔥 ULTRA THINK: 기존 인덱스를 새로운 5개 인덱스로 안전 매핑 (설정 바텀바 이동)
-  int _migrateCurrentIndex(int oldIndex) {
-    switch (oldIndex) {
-      case 0: return 0; // 홈 → 홈 (변경 없음)
-      case 1: return 3; // 검색 → 보관함 (검색이 보관함으로 통합됨)
-      case 2: return 1; // 토끼굴 → 토끼굴 (변경 없음)
-      case 3: return 2; // 통계 → 통계 (변경 없음)
-      case 4: return 3; // 보관함 → 보관함 (변경 없음)
-      case 5: return 4; // 설정 → 설정 (바텀바로 이동)
-      default: return 0; // 안전한 기본값
-    }
-  }
 
   @override
   void dispose() {
@@ -135,6 +123,15 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     );
   }
 
+  void _navigateToFridgeIngredients() {
+    _closeExpandedFab();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const FridgeIngredientsScreen(),
+      ),
+    );
+  }
+
   void _closeExpandedFab() {
     if (_isExpandedFabOpen) {
       setState(() {
@@ -149,16 +146,22 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   /// 글로벌 마일스톤 알림 체크 (앱 전역에서 팝업 표시)
   Future<void> _checkGlobalNotifications() async {
     if (!mounted) return;
+
+    // Provider가 준비되지 않았을 수 있으므로 try-catch로 보호
+    try {
+      final burrowProvider = context.read<BurrowProvider>();
     
-    final burrowProvider = context.read<BurrowProvider>();
-    
-    while (burrowProvider.pendingNotificationCount > 0) {
-      final notification = burrowProvider.getNextNotification();
-      if (notification != null && mounted) {
-        await _showGlobalAchievementDialog(notification);
-      } else {
-        break;
+      while (burrowProvider.pendingNotificationCount > 0) {
+        final notification = burrowProvider.getNextNotification();
+        if (notification != null && mounted) {
+          await _showGlobalAchievementDialog(notification);
+        } else {
+          break;
+        }
       }
+    } catch (e) {
+      // Provider가 아직 준비되지 않았을 때 무시 (정상 상황)
+      debugPrint('⚠️ Provider not ready yet during _checkGlobalNotifications: $e');
     }
   }
 
@@ -213,7 +216,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             GestureDetector(
               onTap: _closeExpandedFab,
               child: Container(
-                color: Colors.black.withOpacity(0.3), // 자연스러운 dim 처리 (30% 불투명도)
+                color: Colors.black.withValues(alpha: 0.3), // 자연스러운 dim 처리 (30% 불투명도)
                 child: Stack(
                   children: [
                     // 딤드 배경 (전체 화면)
@@ -345,7 +348,16 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                       backgroundColor: AppTheme.primaryColor,
                     ),
                     const SizedBox(height: 12),
-                    
+
+                    // 냉장고 재료 입력하기 (새로운 기능!)
+                    _buildFabMenuItem(
+                      onPressed: _navigateToFridgeIngredients,
+                      icon: Icons.kitchen,
+                      label: '냉장고 재료 입력하기',
+                      backgroundColor: AppTheme.successColor,
+                    ),
+                    const SizedBox(height: 12),
+
                     // 링크로 가져오기
                     _buildFabMenuItem(
                       onPressed: _navigateToUrlImport,

@@ -156,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen>
             height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/splash_rabbit.png'),
+                image: AssetImage('assets/images/splash_rabbit.webp'),
                 fit: BoxFit.cover, // fill → cover 복원 (비율 유지하면서 화면 채움)
                 alignment: Alignment.center,
               ),

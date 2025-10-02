@@ -99,7 +99,6 @@ class RecipeCard extends StatelessWidget {
         ),
         const Spacer(),
         if (showFavoriteButton) _buildFavoriteButton(),
-        _buildRating(),
       ],
     );
   }
@@ -157,6 +156,15 @@ class RecipeCard extends StatelessWidget {
     return Row(
       children: [
         _buildDate(),
+        const SizedBox(width: AppTheme.spacing8),
+        if (recipe.rating != null) _buildRating(),
+        const SizedBox(width: AppTheme.spacing8),
+        if (recipe.sourceUrl != null && recipe.sourceUrl!.isNotEmpty)
+          Icon(
+            Icons.link,
+            size: 14,
+            color: AppTheme.primaryColor,
+          ),
         const Spacer(),
         _buildTags(),
       ],
@@ -167,6 +175,15 @@ class RecipeCard extends StatelessWidget {
     return Row(
       children: [
         _buildDate(),
+        const SizedBox(width: AppTheme.spacing8),
+        if (recipe.rating != null) _buildRating(),
+        const SizedBox(width: AppTheme.spacing8),
+        if (recipe.sourceUrl != null && recipe.sourceUrl!.isNotEmpty)
+          Icon(
+            Icons.link,
+            size: 12,
+            color: AppTheme.primaryColor,
+          ),
         const SizedBox(width: AppTheme.spacing8),
         if (recipe.tags.isNotEmpty) ...
           recipe.tags.take(2).map(
@@ -186,8 +203,6 @@ class RecipeCard extends StatelessWidget {
               ),
             ),
           ),
-        const Spacer(),
-        if (recipe.rating != null) _buildRating(),
       ],
     );
   }

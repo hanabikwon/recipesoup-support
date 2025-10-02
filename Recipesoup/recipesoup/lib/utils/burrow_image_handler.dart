@@ -86,6 +86,7 @@ class BurrowImageHandler {
         for (final variant in variations) {
           if (await _assetExists(variant)) {
             final image = AssetImage(variant);
+            // ignore: use_build_context_synchronously
             await precacheImage(image, context);
             _cache[path] = image;
             break;

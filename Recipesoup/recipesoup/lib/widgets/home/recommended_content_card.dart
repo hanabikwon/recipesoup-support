@@ -328,12 +328,19 @@ class RecommendedContentCard extends StatelessWidget {
     );
   }
 
-  /// 이미지 경로 생성 (안전한 null 체크 포함)
+  /// 이미지 경로 생성 (JSON image 필드 우선, 동적 생성 fallback)
   String _getImagePath(Map<String, dynamic> data) {
+    // 1. JSON image 필드 우선 체크 (Ultra Think: 명시적 필드 우선)
+    final explicitImage = data['image'] as String?;
+    if (explicitImage != null && explicitImage.isNotEmpty) {
+      return explicitImage;
+    }
+
+    // 2. 기존 동적 로직을 안전한 fallback으로 유지 (Ultra Think: 기존 기능 완전 보존)
     final type = data['type'] as String? ?? 'movie';
     final id = data['id'] as String? ?? 'default';
     final folder = _isMovieType(type) ? 'movies' : 'books';
-    return 'assets/images/content/$folder/$id.jpg';
+    return 'assets/images/content/$folder/$id.webp';
   }
 
   /// 영화 타입 여부 확인 (안전한 null 체크 포함)

@@ -1,22 +1,4 @@
 class RecipeDateUtils {
-  /// "과거 오늘" 기능 - 같은 월/일이지만 다른 년도인지 확인
-  static bool isPastToday(DateTime recipeDate, DateTime baseDate) {
-    return recipeDate.month == baseDate.month &&
-        recipeDate.day == baseDate.day &&
-        recipeDate.year != baseDate.year;
-  }
-
-  /// 몇 년 전인지 계산
-  static int getYearsAgo(DateTime pastDate, DateTime currentDate) {
-    return currentDate.year - pastDate.year;
-  }
-
-  /// "과거 오늘" 메시지 포맷팅
-  static String formatPastTodayMessage(DateTime pastDate, DateTime currentDate) {
-    final yearsAgo = getYearsAgo(pastDate, currentDate);
-    return '$yearsAgo년 전 오늘';
-  }
-
   /// 상대 시간 표시 (한국어)
   static String formatRelativeTime(DateTime dateTime, DateTime baseDate) {
     final difference = baseDate.difference(dateTime);

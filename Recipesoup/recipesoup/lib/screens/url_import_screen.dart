@@ -7,6 +7,7 @@ import '../models/recipe_analysis.dart';
 import '../services/url_scraper_service.dart';
 import '../services/openai_service.dart';
 import '../widgets/common/required_badge.dart';
+import '../widgets/common/vintage_info_card.dart';
 import 'create_screen.dart';
 
 /// URL에서 레시피를 가져와서 분석하는 화면
@@ -28,11 +29,40 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
   ScrapedContent? _scrapedContent;
   RecipeAnalysis? _analysisResult;
   String _currentLoadingMessage = '';
+  String? _videoUrlWarning; // 비디오 URL 경고 메시지
 
   @override
   void dispose() {
     _urlController.dispose();
     super.dispose();
+  }
+
+  /// 비디오 URL인지 실시간으로 감지하는 메서드
+  void _checkVideoUrl(String url) {
+    if (url.isEmpty) {
+      setState(() {
+        _videoUrlWarning = null;
+      });
+      return;
+    }
+
+    final lowercaseUrl = url.toLowerCase();
+
+    // 비디오 URL 패턴 감지
+    final isVideoUrl = lowercaseUrl.contains('youtube.com') ||
+                       lowercaseUrl.contains('youtu.be') ||
+                       lowercaseUrl.contains('tiktok.com') ||
+                       lowercaseUrl.contains('instagram.com') ||
+                       lowercaseUrl.contains('reels') ||
+                       lowercaseUrl.contains('shorts');
+
+    setState(() {
+      if (isVideoUrl) {
+        _videoUrlWarning = '영상 링크 분석은 준비중이에요.\n텍스트 레시피 링크를 사용해주세요.';
+      } else {
+        _videoUrlWarning = null;
+      }
+    });
   }
 
   @override
@@ -100,7 +130,7 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
           const SizedBox(width: AppTheme.spacing12),
           Expanded(
             child: Text(
-              '블로그나 웹사이트의 레시피 URL을 입력하면 Ai가 자동으로 재료와 조리법을 추출해드려요.',
+              '블로그나 웹사이트의 레시피 URL을 입력하면 재료와 조리법을 추출해드려요.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppTheme.textSecondary,
               ),
@@ -135,8 +165,19 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
             }
             return null;
           },
+          onChanged: _checkVideoUrl, // 실시간 비디오 URL 감지
           onFieldSubmitted: (_) => _processUrl(),
         ),
+        // 비디오 URL 경고 표시
+        if (_videoUrlWarning != null) ...[
+          const SizedBox(height: AppTheme.spacing12),
+          VintageInfoCard(
+            title: '잠시만 기다려주세요 🐰',
+            message: _videoUrlWarning!,
+            titleIcon: Icons.warning_amber_outlined,
+            iconColor: AppTheme.warningColor,
+          ),
+        ],
         // 지원 사이트 안내 문구 제거됨
       ],
     );
@@ -192,45 +233,12 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
   }
 
   Widget _buildErrorCard() {
-    return Container(
-      padding: const EdgeInsets.all(AppTheme.paddingMedium),
-      decoration: BoxDecoration(
-        color: AppTheme.errorColor.withValues(alpha: 26),
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-        border: Border.all(color: AppTheme.errorColor.withValues(alpha: 77)),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.error_outline,
-            color: AppTheme.errorColor,
-            size: 24,
-          ),
-          const SizedBox(width: AppTheme.spacing12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '오류가 발생했습니다',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.errorColor,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _error!,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppTheme.errorColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    if (_error == null) return Container();
+
+    // VintageInfoCard 컴포넌트 사용
+    return VintageInfoCard(
+      title: '잠시만 기다려주세요 🐰',
+      message: _error!,
     );
   }
 
@@ -415,6 +423,11 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
       return;
     }
 
+    // 비디오 URL인 경우 조기 리턴 (안전 장치)
+    if (_videoUrlWarning != null) {
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _error = null;
@@ -495,8 +508,37 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
       await Future.delayed(Duration(milliseconds: 400));
 
     } catch (e) {
+      // 에러 메시지 구체화
+      String errorMessage;
+      final errorStr = e.toString().toLowerCase();
+      final url = _urlController.text.trim().toLowerCase();
+
+      // Rate Limit 에러 감지 및 전용 다이얼로그 표시
+      if (errorStr.contains('rate limit') || errorStr.contains('429') || errorStr.contains('quota')) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _currentLoadingMessage = '';
+          });
+          _showRateLimitDialog();
+        }
+        return;
+      }
+
+      // 영상 링크 감지 (YouTube, TikTok, Instagram 등)
+      if (url.contains('youtube.com') || url.contains('youtu.be') ||
+          url.contains('tiktok.com') || url.contains('instagram.com') ||
+          url.contains('reels') || url.contains('shorts')) {
+        errorMessage = '영상 링크 분석은 준비중이에요.\n텍스트 레시피 링크를 사용해주세요.';
+      } else if (errorStr.contains('network') || errorStr.contains('timeout') || errorStr.contains('connection')) {
+        errorMessage = '네트워크 연결을 확인해주세요.\n인터넷 연결 상태를 점검해보세요.';
+      } else {
+        // 기본 에러 메시지
+        errorMessage = '레시피를 가져올 수 없습니다.\n다른 URL을 시도해주세요.';
+      }
+
       setState(() {
-        _error = e.toString();
+        _error = errorMessage;
         _isLoading = false;
         _currentLoadingMessage = '';
       });
@@ -525,6 +567,100 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
           editingRecipe: recipe,
           isEditMode: false, // 새로운 레시피 생성 모드
         ),
+      ),
+    );
+  }
+
+  void _showRateLimitDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppTheme.cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.hourglass_empty,
+              color: AppTheme.accentOrange,
+              size: 28,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              '잠시만 기다려주세요 🐰',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '시간당 AI 분석 요청 한도를 초과했습니다.',
+              style: TextStyle(
+                color: AppTheme.textPrimary,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryLight.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: AppTheme.accentOrange,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      '시간당 최대 50회까지 분석 가능합니다',
+                      style: TextStyle(
+                        color: AppTheme.textSecondary,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '잠시 후 다시 시도해주세요.\n조금만 기다리면 다시 사용하실 수 있습니다.',
+              style: TextStyle(
+                color: AppTheme.textSecondary,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              backgroundColor: AppTheme.accentOrange,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text('확인'),
+          ),
+        ],
       ),
     );
   }
