@@ -89,9 +89,9 @@ class OpenAiService {
     LoadingProgressCallback? onProgress,
   }) async {
     try {
-      // API 키 검증
-      if (!ApiConfig.validateApiKey()) {
-        throw const InvalidApiKeyException('OpenAI API key is not configured');
+      // Vercel 프록시 토큰 검증 (로컬 API 키 불필요)
+      if (ApiConfig.proxyToken.isEmpty) {
+        throw const InvalidApiKeyException('Proxy token is not configured');
       }
 
       // Base64 이미지 데이터 유효성 검증
