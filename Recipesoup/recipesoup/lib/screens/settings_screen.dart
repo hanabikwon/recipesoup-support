@@ -385,7 +385,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 '복원 방식을 선택해주세요.',
                 style: TextStyle(fontWeight: FontWeight.w500),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               // 주요 액션 버튼들 (병합 | 덮어쓰기)
               Row(
                 children: [
@@ -418,7 +418,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               // 취소 버튼 (하단 중앙)
               Center(
                 child: TextButton(
@@ -726,7 +726,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('백업: ${backupData.summary}'),
+              Text(' ${backupData.summary}'),
               const SizedBox(height: 8),
               Text('복원 방식: $optionText'),
               const SizedBox(height: 16),
