@@ -726,16 +726,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(' ${backupData.summary}'),
+              Text(
+                backupData.summary,
+                style: const TextStyle(fontSize: 16),
+              ),
               const SizedBox(height: 8),
-              Text('복원 방식: $optionText'),
+              Text(
+                '복원 방식: $optionText',
+                style: const TextStyle(fontSize: 16),
+              ),
               const SizedBox(height: 16),
               Text(
                 option == RestoreOption.overwrite
                   ? '기존 데이터가 모두 삭제되고 백업 데이터로 대체됩니다.'
                   : '기존 데이터와 백업 데이터가 병합됩니다.',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   color: option == RestoreOption.overwrite ? Colors.red : AppTheme.textSecondary,
                 ),
               ),
