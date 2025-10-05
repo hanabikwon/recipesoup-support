@@ -399,37 +399,41 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     required String label,
     required Color backgroundColor,
   }) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // 라벨
-        Container(
-          margin: const EdgeInsets.only(right: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: AppTheme.cardColor,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: AppTheme.vintageShadow,
-          ),
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppTheme.textPrimary,
+    return InkWell(
+      onTap: onPressed, // 전체 영역 클릭 가능
+      borderRadius: BorderRadius.circular(24),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 라벨
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.cardColor,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: AppTheme.vintageShadow,
+            ),
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppTheme.textPrimary,
+              ),
             ),
           ),
-        ),
-        // FAB 버튼
-        FloatingActionButton.small(
-          onPressed: onPressed,
-          backgroundColor: backgroundColor,
-          foregroundColor: Colors.white,
-          elevation: 4,
-          heroTag: label, // 각 FAB에 고유한 heroTag
-          child: Icon(icon, size: 20),
-        ),
-      ],
+          // FAB 버튼
+          FloatingActionButton.small(
+            onPressed: onPressed,
+            backgroundColor: backgroundColor,
+            foregroundColor: Colors.white,
+            elevation: 4,
+            heroTag: label, // 각 FAB에 고유한 heroTag
+            child: Icon(icon, size: 20),
+          ),
+        ],
+      ),
     );
   }
 
