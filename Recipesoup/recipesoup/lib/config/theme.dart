@@ -29,6 +29,13 @@ class AppTheme {
   static const accentRed = Color(0xFFB5704F);          // 빈티지 레드 (토마토)
   static const accentGreen = Color(0xFF7A9B5C);        // 허브 그린
 
+  // FAB Menu Colors - 빈티지 채소/과일 테마
+  static const fabQuickRecipe = Color(0xFFD2A45B);     // 호박/당근 오렌지
+  static const fabFridge = Color(0xFF7A9B5C);          // 허브/상추 그린
+  static const fabLink = Color(0xFF9B8B7E);            // 가지/버섯 브라운
+  static const fabPhoto = Color(0xFFB5704F);           // 토마토 레드
+  static const fabCustom = Color(0xFFC9A86A);          // 밀/곡물 베이지
+
   // Status Colors
   static const successColor = Color(0xFF7A9B5C);       // 허브 그린
   static const warningColor = Color(0xFFD2A45B);       // 빈티지 오렌지

@@ -340,48 +340,48 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // 퀵레시피 작성하기
+                    // 퀵레시피 작성하기 (호박/당근 오렌지)
                     _buildFabMenuItem(
                       onPressed: _navigateToQuickRecipe,
                       icon: Icons.flash_on,
                       label: '퀵레시피 작성하기',
-                      backgroundColor: AppTheme.primaryColor,
+                      backgroundColor: AppTheme.fabQuickRecipe,
                     ),
                     const SizedBox(height: 12),
 
-                    // 냉장고 재료 입력하기 (새로운 기능!)
+                    // 냉장고 재료 입력하기 (허브/상추 그린)
                     _buildFabMenuItem(
                       onPressed: _navigateToFridgeIngredients,
                       icon: Icons.kitchen,
                       label: '냉장고 재료 입력하기',
-                      backgroundColor: AppTheme.successColor,
+                      backgroundColor: AppTheme.fabFridge,
                     ),
                     const SizedBox(height: 12),
 
-                    // 링크로 가져오기
+                    // 링크로 가져오기 (가지/버섯 브라운)
                     _buildFabMenuItem(
                       onPressed: _navigateToUrlImport,
                       icon: Icons.link,
                       label: '링크로 가져오기',
-                      backgroundColor: AppTheme.primaryLight,
+                      backgroundColor: AppTheme.fabLink,
                     ),
                     const SizedBox(height: 12),
-                    
-                    // 사진으로 가져오기
+
+                    // 사진으로 가져오기 (토마토 레드)
                     _buildFabMenuItem(
                       onPressed: _navigateToPhotoCreate,
                       icon: Icons.camera_alt,
                       label: '사진으로 가져오기',
-                      backgroundColor: AppTheme.secondaryLight,
+                      backgroundColor: AppTheme.fabPhoto,
                     ),
                     const SizedBox(height: 12),
-                    
-                    // 나만의 레시피 작성하기
+
+                    // 나만의 레시피 작성하기 (밀/곡물 베이지)
                     _buildFabMenuItem(
                       onPressed: _navigateToCreate,
                       icon: Icons.edit,
                       label: '나만의 레시피 작성하기',
-                      backgroundColor: AppTheme.accentOrange,
+                      backgroundColor: AppTheme.fabCustom,
                     ),
                   ],
                 ),

@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     },
                     icon: const Icon(
                       Icons.notifications_none,
-                      color: AppTheme.textSecondary,
+                      color: AppTheme.primaryColor, // 빈티지 올리브 색상으로 통일
                     ),
                   ),
                   // 레드닷 표시
