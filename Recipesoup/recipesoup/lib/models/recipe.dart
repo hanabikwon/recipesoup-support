@@ -24,8 +24,8 @@ class Recipe {
 
   /// 해시태그 리스트
   final List<String> tags;
-  
-  /// 생성 날짜 ("과거 오늘" 기능용)
+
+  /// 생성 날짜
   final DateTime createdAt;
   
   /// 감정 상태 (8가지 중 하나)

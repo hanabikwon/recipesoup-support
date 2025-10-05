@@ -693,10 +693,7 @@ class Recipe extends HiveObject {
   
   @HiveField(9)
   int? rating;
-  
-  @HiveField(10)
-  DateTime? reminderDate;
-  
+
   @HiveField(11)
   bool isFavorite;
 }
@@ -1541,7 +1538,6 @@ class BackupService {
 enum MessageType {
   system,      // 시스템 알림
   achievement, // 성취 메시지 (마일스톤, 챌린지)
-  reminder,    // 리마인더
   update,      // 업데이트 안내
   tip          // 요리 팁
 }

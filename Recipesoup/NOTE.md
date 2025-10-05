@@ -309,21 +309,18 @@
   )
   ```
 
-### 15. "과거 오늘" 기능 날짜 계산 실수 (기술 참조용)
-- **흔한 실수**: DateTime 비교에서 년도까지 같이 비교
-- **올바른 로직**: 월과 일만 비교해서 다른 년도 레시피 찾기
-- **현재 상태**: 비즈니스 로직만 구현됨, UI 연동 미완성
+### 15. 날짜 비교 로직 (기술 참조용)
+- **흔한 실수**: DateTime 비교에서 모든 필드를 같이 비교
+- **올바른 로직**: 필요한 필드만 선택적으로 비교
   ```dart
-  // ❌ 틀린 비교 (년도까지 비교)
+  // ❌ 틀린 비교 (모든 필드 비교)
   bool isSameDay(DateTime a, DateTime b) {
     return a.year == b.year && a.month == b.month && a.day == b.day;
   }
-  
-  // ✅ 올바른 "과거 오늘" 비교 (년도 제외, 기술 참조용)
-  bool isPastToday(DateTime recipeDate, DateTime today) {
-    return recipeDate.month == today.month && 
-           recipeDate.day == today.day &&
-           recipeDate.year != today.year; // 다른 년도여야 함
+
+  // ✅ 올바른 날짜 비교 (필요한 필드만)
+  bool isSameMonthDay(DateTime a, DateTime b) {
+    return a.month == b.month && a.day == b.day;
   }
   ```
 
@@ -509,7 +506,6 @@
   - 토끼굴 마일스톤 시스템 (32+16) 완전 검증
   - 챌린지 시스템 (51개) 진행률 추적 정상
   - 감정 기반 레시피 아카이빙 완전 동작
-  - "과거 오늘" 기능 비즈니스 로직만 구현 (UI 연동 미완성)
 - **📱 디바이스 호환성 검증**:
   - UI 렌더링 오류 해결 (15px 오버플로우 → 23px 여유)
   - 메모리 사용량 정상 범위 유지
