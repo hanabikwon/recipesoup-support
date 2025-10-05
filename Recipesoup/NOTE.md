@@ -324,9 +324,43 @@
   }
   ```
 
+### 16. 이미지 분석 범위 오해 방지 (UI vs 실제 분석)
+- **사용자 오해**: "UI에 작게 보이는 영역만 분석되는 거 아니야?"
+- **실제 동작**: 화면에 작게 보여도 **원본 이미지 전체**가 OpenAI Vision API로 분석됨
+- **처리 흐름**:
+  ```dart
+  // 1. 원본 이미지 선택 (예: 3000x4000 고해상도)
+  final XFile? image = await _imagePicker.pickImage(
+    source: source,
+    imageQuality: 80,  // 원본 크기 유지, 품질만 80%
+  );
+
+  // 2. API 전송용 최적화 (image_service.dart:119-147)
+  final resized = _resizeImage(image, maxWidth: 1024, maxHeight: 1024);
+  // → 비율 유지하며 최대 1024x1024로 리사이징
+
+  // 3. Base64 인코딩 및 OpenAI API 전송
+  final base64Image = await _imageService.toBase64(optimizedBytes);
+  final analysisResult = await _openAiService.analyzeImage(base64Image);
+  // → 1024x1024 이하 이미지 전체가 분석됨
+
+  // 4. UI 표시 (photo_import_screen.dart)
+  Image.file(_selectedImage)  // ← 화면 크기에 맞게 축소 표시
+  // → 작게 보이지만 분석은 원본 전체!
+  ```
+- **핵심 포인트**:
+  - **UI에 보이는 크기 ≠ 분석되는 이미지 크기**
+  - 실제로는 원본 전체(최대 1024x1024)가 AI로 분석됨
+  - 이미지 최적화는 API 비용/속도를 위한 것일 뿐, 분석 품질 저하 아님
+  - 1024x1024 리사이징도 Vision API 권장 크기로, 충분한 품질 보장
+- **관련 코드**:
+  - `lib/services/image_service.dart`: `optimizeForApi()`, `_resizeImage()`
+  - `lib/screens/photo_import_screen.dart`: `_analyzeImage()`
+  - `lib/services/openai_service.dart`: `analyzeImage()`
+
 ## 🧪 테스트 관련 실수
 
-### 16. MockOpenAIService 설정 실수
+### 17. MockOpenAIService 설정 실수
 - **흔한 실수**: Mock 응답을 TESTDATA.md와 다르게 설정
 - **올바른 방법**: TESTDATA.md의 정확한 응답 구조 사용
   ```dart
@@ -341,19 +375,19 @@
     ));
   ```
 
-### 17. 테스트 격리 실패
+### 18. 테스트 격리 실패
 - **흔한 실수**: 이전 테스트의 Hive 데이터가 다음 테스트에 영향
 - **해결**: setUp/tearDown에서 완전한 정리
   ```dart
   group('Recipe Tests', () {
     late Box<Recipe> recipeBox;
-    
+
     setUp(() async {
       await Hive.initFlutter();
       recipeBox = await Hive.openBox<Recipe>('test_recipes');
     });
-    
-    tearDown(() async {
+
+    tearDown() async {
       await recipeBox.clear(); // 반드시 정리
       await recipeBox.close();
       await Hive.deleteFromDisk(); // 완전 삭제
@@ -363,7 +397,7 @@
 
 ## 🚀 성능 최적화 실수
 
-### 18. 이미지 메모리 관리 실수  
+### 19. 이미지 메모리 관리 실수  
 - **흔한 실수**: 고해상도 이미지를 그대로 메모리에 로드
 - **해결**: 이미지 리사이징 및 압축
   ```dart
@@ -380,19 +414,19 @@
   }
   ```
 
-### 19. API 호출 과다 실수
+### 20. API 호출 과다 실수
 - **흔한 실수**: 같은 이미지를 여러 번 분석 API 호출
 - **해결**: 로컬 캐싱 구현
   ```dart
   class OpenAIService {
     final Map<String, RecipeAnalysis> _cache = {};
-    
+
     Future<RecipeAnalysis> analyzeImage(String imageHash) async {
       // 캐시 확인 먼저
       if (_cache.containsKey(imageHash)) {
         return _cache[imageHash]!;
       }
-      
+
       // API 호출 및 캐싱
       final result = await _callAPI(imageHash);
       _cache[imageHash] = result;
@@ -403,7 +437,7 @@
 
 ## 📱 플랫폼별 주의사항
 
-### 20. iOS 권한 설정 누락
+### 21. iOS 권한 설정 누락
 - **필수 권한**: Info.plist에 카메라, 사진 라이브러리 접근
   ```xml
   <key>NSCameraUsageDescription</key>
@@ -413,7 +447,7 @@
   <string>음식 사진을 선택하여 레시피를 기록하기 위해 사진 라이브러리 접근이 필요합니다</string>
   ```
 
-### 21. Android 네트워크 보안 설정
+### 22. Android 네트워크 보안 설정
 - **문제**: HTTP 요청 차단 (Android 9+)
 - **해결**: network_security_config.xml 설정
   ```xml
@@ -427,7 +461,7 @@
 
 ## 🔍 디버깅 팁
 
-### 22. OpenAI API 응답 디버깅
+### 23. OpenAI API 응답 디버깅
 - **로깅 추가**: API 요청/응답 상세 로그
   ```dart
   if (kDebugMode) {
@@ -436,7 +470,7 @@
   }
   ```
 
-### 23. Hive 데이터 검사
+### 24. Hive 데이터 검사
 - **디버깅 명령**: Box 내용 확인
   ```dart
   void debugHiveData() async {
