@@ -169,6 +169,51 @@
 ## 주요 이슈 및 해결 사항
 ### 해결된 이슈
 
+### 2025-10-06: 사진 크롭 기능 추가 완료 ✂️
+- **요구사항**: 사진으로 가져오기 기능에서 이미지 크롭(잘라내기) 기능 추가
+- **문제 상황**: 한 사진에 음식이 2개 이상 찍혀 있을 때 원하는 부분만 선택 불가
+- **구현 완료**:
+  - ✅ `image_cropper: ^8.0.2` 패키지 추가 (pubspec.yaml)
+  - ✅ PhotoImportScreen에 크롭 단계 추가 (이미지 선택 → 크롭 → AI 분석)
+  - ✅ 플랫폼별 최적화된 크롭 UI 구현
+    - iOS: TOCropViewController 네이티브 UI
+    - Android: uCrop 라이브러리 기반 UI
+    - Web: Cropper.js 통합
+  - ✅ 빈티지 테마 색상 적용 (AppTheme.primaryColor)
+  - ✅ 자유 비율 크롭 지원 (음식 모양이 다양하므로)
+  - ✅ 회전 기능 지원
+  - ✅ 크롭 취소 시 이미지 선택 취소 처리
+- **기술적 구현**:
+  ```dart
+  // _selectImage 메서드에 크롭 단계 추가
+  if (image != null) {
+    await _cropImage(image.path); // 크롭 후 AI 분석
+  }
+
+  // _cropImage 메서드 신규 추가
+  final croppedFile = await ImageCropper().cropImage(
+    sourcePath: imagePath,
+    uiSettings: [
+      AndroidUiSettings(...), // Android UI 설정
+      IOSUiSettings(...),     // iOS UI 설정
+      WebUiSettings(...),     // Web UI 설정
+    ],
+  );
+  ```
+- **Side Effect 방지**:
+  - 기존 PhotoImportScreen 기능 100% 보존
+  - 다른 화면 및 서비스에 영향 없음
+  - 크롭 취소 시 안전한 상태 복원
+- **테스트 완료**:
+  - ✅ `flutter pub get` 성공 (image_cropper 8.1.0 설치)
+  - ✅ `flutter analyze` 통과 (컴파일 에러 없음)
+  - ✅ iPhone 실기 테스트 (권카리나의 iPhone, iOS 15.8.5)
+- **사용자 경험 개선**:
+  - 한 사진에 여러 음식 → 원하는 음식만 선택 가능
+  - 직관적인 드래그 인터페이스
+  - 회전 및 비율 조정 자유도 제공
+- **날짜**: 2025-10-06
+
 ### 2025-10-02: 프로덕션 환경변수 설정 완료 🔐
 - **목표**: Apple App Store 심사 대비 프로덕션 환경변수 파일 생성
 - **Ultra Think 분석**:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'dart:io';
 
 import '../config/theme.dart';
@@ -468,23 +469,71 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
 
   Future<void> _selectImage(ImageSource source) async {
     Navigator.of(context).pop(); // 바텀시트 닫기
-    
+
     try {
       final XFile? image = await _imagePicker.pickImage(
         source: source,
         imageQuality: 80, // 품질 조정으로 파일 크기 최적화
       );
-      
+
       if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-          _error = null;
-          _analysisResult = null;
-        });
+        // 크롭 단계 추가: 사용자가 원하는 부분만 선택 가능
+        await _cropImage(image.path);
       }
     } catch (e) {
       setState(() {
         _error = '이미지를 선택할 수 없습니다: $e';
+      });
+    }
+  }
+
+  /// 이미지 크롭 기능 (원하는 부분만 선택)
+  Future<void> _cropImage(String imagePath) async {
+    try {
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imagePath,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: '음식 부분 선택',
+            toolbarColor: AppTheme.primaryColor,
+            toolbarWidgetColor: Colors.white,
+            backgroundColor: AppTheme.backgroundColor,
+            activeControlsWidgetColor: AppTheme.primaryColor,
+            cropGridColor: AppTheme.primaryLight,
+            cropFrameColor: AppTheme.primaryColor,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false, // 자유 비율 (음식 모양이 다양하므로)
+          ),
+          IOSUiSettings(
+            title: '음식 부분 선택',
+            cancelButtonTitle: '취소',
+            doneButtonTitle: '완료',
+            aspectRatioLockEnabled: false, // 자유 비율
+            resetAspectRatioEnabled: true, // 비율 리셋 가능
+            rotateButtonsHidden: false, // 회전 버튼 표시
+          ),
+          WebUiSettings(
+            context: context,
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        // 크롭된 이미지로 설정
+        setState(() {
+          _selectedImage = File(croppedFile.path);
+          _error = null;
+          _analysisResult = null;
+        });
+      } else {
+        // 사용자가 크롭 취소 시 - 원본 이미지도 선택 안된 것으로 처리
+        if (kDebugMode) {
+          print('사용자가 크롭을 취소했습니다.');
+        }
+      }
+    } catch (e) {
+      setState(() {
+        _error = '이미지를 편집할 수 없습니다: $e';
       });
     }
   }

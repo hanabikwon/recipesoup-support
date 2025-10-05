@@ -53,6 +53,7 @@ dependencies:
   # 이미지 처리
   image_picker: ^1.1.2
   image: ^4.2.0
+  image_cropper: ^8.0.2  # 이미지 크롭 기능 (사진에서 원하는 부분만 선택)
   path_provider: 2.0.15  # iOS Platform Channel 안정 버전 (^2.1.4에서 다운그레이드)
 
   # 메시지 시스템 (로컬 읽음 상태 저장)
