@@ -169,6 +169,66 @@
 ## 주요 이슈 및 해결 사항
 ### 해결된 이슈
 
+### 2025-10-06: 통계 화면 월별 레시피 연도 선택 기능 추가 완료 📅
+- **요구사항**: 통계 화면 "월별 레시피" 기능에서 과거 연도 데이터 조회 불가능 문제 해결
+- **문제 상황**:
+  - 연도가 현재 연도로 고정되어 있어 2024년 레시피를 볼 수 없음
+  - 연도 전환 시나리오 미고려 (2025년 앱 실행 시 2024년 데이터 접근 불가)
+  - 사용자 혼란: "작년 레시피가 왜 안 보이지?"
+- **Ultra Think 분석 결과**:
+  - `currentYear = DateTime.now().year` 매번 재계산으로 고정
+  - 연도 상태 변수 없음 → 동적 연도 선택 불가능
+  - 첫 레시피 연도 계산 로직 부재
+- **구현 완료**:
+  - ✅ **상태 변수 추가**: `int _selectedYear = DateTime.now().year`
+  - ✅ **연도 선택 UI 구현**: `[◀ 2024년 ▶]` 직관적 인터페이스
+  - ✅ **_getFirstRecipeYear() 메서드**: 첫 레시피 연도 자동 계산
+  - ✅ **연도 전환 시 월 초기화**: 연도 변경 시 `_selectedMonth = null` 자동 처리
+  - ✅ **미래 연도 접근 방지**: 현재 연도까지만 선택 가능 (오른쪽 화살표 비활성화)
+- **기술적 구현**:
+  ```dart
+  // 상태 변수 추가 (Line 20)
+  int _selectedYear = DateTime.now().year;
+  int? _selectedMonth;
+
+  // 연도 선택 UI (Line 428-473)
+  Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      IconButton(icon: Icon(Icons.chevron_left), onPressed: _selectedYear > firstYear ? () => setState(() { _selectedYear--; _selectedMonth = null; }) : null),
+      Text('$_selectedYear년', style: TextStyle(fontSize: 18, fontWeight: bold)),
+      IconButton(icon: Icon(Icons.chevron_right), onPressed: _selectedYear < currentYear ? () => setState(() { _selectedYear++; _selectedMonth = null; }) : null),
+    ],
+  )
+
+  // 첫 레시피 연도 계산 (Line 603-614)
+  int _getFirstRecipeYear(RecipeProvider provider) {
+    if (provider.recipes.isEmpty) return DateTime.now().year;
+    final sortedRecipes = provider.recipes.toList()..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    return sortedRecipes.first.createdAt.year;
+  }
+  ```
+- **Side Effect 방지**:
+  - `_getRecipesByMonth(int month, int year)` 메서드 완전 보존
+  - `HiveService.getRecipesByDateRange()` 호출 로직 그대로
+  - 월 선택 칩 (1~12월) UI 100% 유지
+  - 레시피 카드 표시 로직 완전 보존
+- **테스트 완료**:
+  - ✅ `flutter analyze` 통과 (stats_screen.dart 에러 0개)
+  - ✅ 과거 레시피 조회: 2024년 3월 레시피 정상 표시 확인
+  - ✅ 미래 접근 방지: 2026년 선택 시 오른쪽 화살표 비활성화
+  - ✅ 연도 전환 시 월 초기화: 2025년 5월 → 2024년 전환 시 월 선택 해제
+- **사용자 경험 개선**:
+  - 작년/재작년 레시피 조회 가능 (연도 제한 해제)
+  - 직관적인 ◀ 연도 ▶ UI로 쉬운 탐색
+  - 연도 변경 시 자동 월 초기화로 명확한 상태 관리
+  - 버튼 비활성화로 유효 범위 시각적 안내
+- **엣지 케이스 처리**:
+  - 레시피 없을 때: 현재 연도만 표시, 화살표 모두 비활성화
+  - 첫 레시피 연도 도달: 왼쪽 화살표 비활성화 (회색)
+  - 현재 연도 도달: 오른쪽 화살표 비활성화 (미래 방지)
+- **날짜**: 2025-10-06
+
 ### 2025-10-06: 홈 화면 아이콘 색상 통일 완료 🎨
 - **요구사항**: FAB 메뉴 색상 개선 후 랜딩페이지(홈 화면) 아이콘도 통일
 - **변경 사항**:
