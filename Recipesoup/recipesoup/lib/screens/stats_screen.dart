@@ -17,6 +17,7 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
+  int _selectedYear = DateTime.now().year; // 선택된 연도
   int? _selectedMonth; // 선택된 월 (1~12, null이면 미선택)
 
   @override
@@ -395,8 +396,8 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   Widget _buildMonthlyRecipesCard(RecipeProvider provider) {
-    final now = DateTime.now();
-    final currentYear = now.year;
+    final firstYear = _getFirstRecipeYear(provider);
+    final currentYear = DateTime.now().year;
 
     return Card(
       elevation: 4,
@@ -424,12 +425,51 @@ class _StatsScreenState extends State<StatsScreen> {
               ],
             ),
             const SizedBox(height: AppTheme.spacing16),
-            Text(
-              '$currentYear년',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppTheme.textSecondary,
-                fontWeight: FontWeight.w500,
-              ),
+            // 연도 선택 UI: [◀ 2024년 ▶]
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // 이전 연도 버튼
+                IconButton(
+                  icon: const Icon(Icons.chevron_left, size: 28),
+                  color: _selectedYear > firstYear
+                    ? AppTheme.primaryColor
+                    : AppTheme.disabledColor,
+                  onPressed: _selectedYear > firstYear
+                    ? () {
+                        setState(() {
+                          _selectedYear--;
+                          _selectedMonth = null; // 연도 변경 시 월 초기화
+                        });
+                      }
+                    : null,
+                ),
+                const SizedBox(width: AppTheme.spacing8),
+                // 연도 표시
+                Text(
+                  '$_selectedYear년',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: AppTheme.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: AppTheme.spacing8),
+                // 다음 연도 버튼
+                IconButton(
+                  icon: const Icon(Icons.chevron_right, size: 28),
+                  color: _selectedYear < currentYear
+                    ? AppTheme.primaryColor
+                    : AppTheme.disabledColor,
+                  onPressed: _selectedYear < currentYear
+                    ? () {
+                        setState(() {
+                          _selectedYear++;
+                          _selectedMonth = null; // 연도 변경 시 월 초기화
+                        });
+                      }
+                    : null,
+                ),
+              ],
             ),
             const SizedBox(height: AppTheme.spacing12),
             Wrap(
@@ -460,7 +500,7 @@ class _StatsScreenState extends State<StatsScreen> {
               const SizedBox(height: AppTheme.spacing16),
               const Divider(color: AppTheme.dividerColor),
               const SizedBox(height: AppTheme.spacing16),
-              _buildSelectedMonthRecipes(currentYear),
+              _buildSelectedMonthRecipes(_selectedYear),
             ],
           ],
         ),
@@ -558,6 +598,19 @@ class _StatsScreenState extends State<StatsScreen> {
 
     final hiveService = HiveService();
     return await hiveService.getRecipesByDateRange(startDate, endDate);
+  }
+
+  /// 첫 번째 레시피의 연도 반환 (연도 선택 범위 계산용)
+  int _getFirstRecipeYear(RecipeProvider provider) {
+    if (provider.recipes.isEmpty) {
+      return DateTime.now().year;
+    }
+
+    // 가장 오래된 레시피 찾기
+    final sortedRecipes = provider.recipes.toList()
+      ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
+    return sortedRecipes.first.createdAt.year;
   }
 
   Widget _buildCookingPatternCard(RecipeProvider provider) {
