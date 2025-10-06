@@ -383,6 +383,46 @@ class ContentService {
     }
   }
 
+  /// 캐러셀용: 전체 요리 지식 가져오기 (displayDate 필터 없음)
+  static Future<List<Map<String, dynamic>>> getAllCookingKnowledge() async {
+    try {
+      final knowledgeData = await _loadKnowledge();
+      final knowledgeList = knowledgeData['knowledge'] as List?;
+
+      if (knowledgeList == null || knowledgeList.isEmpty) {
+        return [];
+      }
+
+      return knowledgeList
+          .where((item) => item is Map<String, dynamic>)
+          .map((item) => item as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      debugPrint('전체 요리 지식 로드 오류: $e');
+      return [];
+    }
+  }
+
+  /// 캐러셀용: 전체 추천 콘텐츠 가져오기 (displayDate 필터 없음)
+  static Future<List<Map<String, dynamic>>> getAllRecommendedContent() async {
+    try {
+      final contentData = await _loadRecommendedContent();
+      final contentList = contentData['content'] as List?;
+
+      if (contentList == null || contentList.isEmpty) {
+        return [];
+      }
+
+      return contentList
+          .where((item) => item is Map<String, dynamic>)
+          .map((item) => item as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      debugPrint('전체 추천 콘텐츠 로드 오류: $e');
+      return [];
+    }
+  }
+
   /// 기본 추천 콘텐츠 데이터
   static Map<String, dynamic> _getDefaultRecommendedData() {
     return {

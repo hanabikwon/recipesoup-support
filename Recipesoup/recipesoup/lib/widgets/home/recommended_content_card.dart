@@ -1,41 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../config/theme.dart';
 
-/// 추천 콘텐츠(영화/책)를 보여주는 카드 위젯
-class RecommendedContentCard extends StatelessWidget {
-  final Map<String, dynamic>? contentData;
+/// 추천 콘텐츠(영화/책)를 캐러셀로 보여주는 카드 위젯
+class RecommendedContentCard extends StatefulWidget {
+  final List<Map<String, dynamic>> contentList;
   final VoidCallback? onTap;
 
   const RecommendedContentCard({
     super.key,
-    required this.contentData,
+    required this.contentList,
     this.onTap,
   });
 
   @override
+  State<RecommendedContentCard> createState() => _RecommendedContentCardState();
+}
+
+class _RecommendedContentCardState extends State<RecommendedContentCard> {
+  int _currentIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
-    if (contentData == null) {
+    if (widget.contentList.isEmpty) {
       return _buildErrorCard(context);
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 32.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader(context, contentData),
+          _buildSectionHeader(context),
           const SizedBox(height: 8),
-          _buildContentCard(context),
+          _buildCarousel(context),
+          const SizedBox(height: 12),
+          _buildCompactIndicator(),
         ],
       ),
     );
   }
 
   /// 섹션 헤더 (콘텐츠 큐레이션)
-  Widget _buildSectionHeader(BuildContext context, Map<String, dynamic>? data) {
-    final category = data?['category'] as String? ?? '';
-    
+  Widget _buildSectionHeader(BuildContext context) {
+    final currentContent = widget.contentList[_currentIndex];
+    final category = currentContent['category'] as String? ?? '';
+
     return Row(
       children: [
         const Icon(
@@ -81,75 +92,127 @@ class RecommendedContentCard extends StatelessWidget {
     );
   }
 
+  /// 캐러셀 슬라이더
+  Widget _buildCarousel(BuildContext context) {
+    return CarouselSlider.builder(
+      itemCount: widget.contentList.length,
+      itemBuilder: (context, index, realIndex) {
+        return _buildContentCard(context, widget.contentList[index]);
+      },
+      options: CarouselOptions(
+        height: 250,
+        viewportFraction: 1.0,
+        enableInfiniteScroll: true,
+        autoPlay: false,
+        onPageChanged: (index, reason) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+    );
+  }
+
+  /// 미니멀 3개 도트 인디케이터
+  Widget _buildCompactIndicator() {
+    final totalItems = widget.contentList.length;
+    if (totalItems <= 1) return const SizedBox.shrink();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // 왼쪽 도트 (이전 아이템 암시)
+        _buildDot(false, isSmall: true),
+        const SizedBox(width: 8),
+
+        // 중앙 도트 (현재 위치 - 크게 강조)
+        _buildDot(true, isSmall: false),
+        const SizedBox(width: 8),
+
+        // 오른쪽 도트 (다음 아이템 암시)
+        _buildDot(false, isSmall: true),
+      ],
+    );
+  }
+
+  /// 단일 도트 (크기 2종류)
+  Widget _buildDot(bool isActive, {required bool isSmall}) {
+    return Container(
+      width: isActive ? 10 : (isSmall ? 5 : 6),
+      height: isActive ? 10 : (isSmall ? 5 : 6),
+      decoration: BoxDecoration(
+        color: isActive
+            ? AppTheme.primaryColor
+            : AppTheme.dividerColor.withValues(alpha: 0.5),
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+
   /// 콘텐츠 카드 메인 컨테이너
-  Widget _buildContentCard(BuildContext context) {
-    final data = contentData!;
+  Widget _buildContentCard(BuildContext context, Map<String, dynamic> data) {
     final type = data['type'] as String? ?? 'movie';
     final title = data['title'] as String? ?? '제목 없음';
     final subtitle = data['subtitle'] as String? ?? '';
     final director = data['director'] as String?;
     final author = data['author'] as String?;
     final description = data['description'] as String? ?? '';
-    final category = data['category'] as String? ?? '';
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppTheme.cardColor,
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-          border: Border.all(
-            color: const Color(0xFFE8E3D8),
-            width: 1,
-          ),
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppTheme.cardColor,
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
+        border: Border.all(
+          color: const Color(0xFFE8E3D8),
+          width: 1,
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // 왼쪽: 이미지 영역 (세로 중앙 정렬)
-              _buildImageArea(context, data),
-              const SizedBox(width: 20), // 간격 12 -> 20으로 확장
-              
-              // 오른쪽: 텍스트 콘텐츠 (위쪽 정렬 유지)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min, // 텍스트 높이에 맞춰 조절
-                    children: [
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 왼쪽: 이미지 영역 (세로 상단 정렬)
+            _buildImageArea(context, data),
+            const SizedBox(width: 20), // 간격 12 -> 20으로 확장
+
+            // 오른쪽: 텍스트 콘텐츠 (위쪽 정렬 유지)
+            Expanded(
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min, // 텍스트 높이에 맞춰 조절
+                  children: [
                     // 제목과 카테고리
-                    _buildTextHeader(context, title, subtitle, category, type, director, author),
-                    
+                    _buildTextHeader(context, title, subtitle, type, director, author),
+
                     const SizedBox(height: 8),
-                    
+
                     // 구분선
                     const Divider(
                       height: 1,
                       thickness: 1,
                       color: AppTheme.dividerColor,
                     ),
-                    
+
                     const SizedBox(height: 8),
-                    
+
                     // 설명
                     _buildContent(context, description),
-                    ],
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   /// 텍스트 헤더 (제목만)
-  Widget _buildTextHeader(BuildContext context, String title, String subtitle, String category, String type, String? director, String? author) {
+  Widget _buildTextHeader(BuildContext context, String title, String subtitle, String type, String? director, String? author) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -164,6 +227,8 @@ class RecommendedContentCard extends StatelessWidget {
                   color: AppTheme.textPrimary,
                   fontSize: 16,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               if (subtitle.isNotEmpty) ...[
                 const SizedBox(height: 4),
@@ -173,11 +238,13 @@ class RecommendedContentCard extends StatelessWidget {
                     color: AppTheme.textSecondary,
                     fontSize: 13,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ],
           ),
-          
+
           // 감독/작가 정보
           if (director != null || author != null) ...[
             const SizedBox(height: 8),
@@ -187,6 +254,8 @@ class RecommendedContentCard extends StatelessWidget {
                 color: AppTheme.textTertiary,
                 fontSize: 12,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ],
@@ -194,7 +263,7 @@ class RecommendedContentCard extends StatelessWidget {
   }
 
 
-  /// 콘텐츠 내용 (동적 높이 지원)
+  /// 콘텐츠 내용 (전체 표시)
   Widget _buildContent(BuildContext context, String description) {
     return Text(
       description,
@@ -203,7 +272,8 @@ class RecommendedContentCard extends StatelessWidget {
         fontSize: 14,
         height: 1.5,
       ),
-      // maxLines와 overflow 제거하여 전체 텍스트 표시
+      maxLines: null,
+      overflow: TextOverflow.visible,
     );
   }
 
@@ -211,18 +281,6 @@ class RecommendedContentCard extends StatelessWidget {
   Color _getCategoryColor(String category) {
     // 모든 카테고리를 올리브 그린으로 통일
     return const Color(0xFF6B7A5B); // 올리브 그린
-    
-    // 기존 개별 색상 코드 (참고용)
-    // switch (category.toLowerCase()) {
-    //   case '영화': return const Color(0xFF2196F3); // 파란색
-    //   case '드라마': return const Color(0xFF9C27B0); // 보라색
-    //   case '애니메이션': return const Color(0xFFFF9800); // 주황색
-    //   case '다큐멘터리': return const Color(0xFF4CAF50); // 초록색
-    //   case '에세이': return const Color(0xFF6B7A5B); // 올리브 그린
-    //   case '소설': return const Color(0xFF795548); // 갈색
-    //   case '요리책': return const Color(0xFF6B7A5B); // 올리브 그린
-    //   default: return const Color(0xFF9E9E9E); // 회색
-    // }
   }
 
   /// 에러 카드
@@ -232,7 +290,7 @@ class RecommendedContentCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader(context, null),
+          _buildSectionHeader(context),
           const SizedBox(height: 8),
           Container(
             width: double.infinity,
@@ -261,18 +319,18 @@ class RecommendedContentCard extends StatelessWidget {
   /// 이미지 영역 (안전한 null 체크 포함)
   Widget _buildImageArea(BuildContext context, Map<String, dynamic> data) {
     final type = data['type'] as String? ?? 'movie';
-    
+
     // 카드 콘텐츠 영역 기준 30% 계산 (모든 섹션과 통일)
     final contentWidth = MediaQuery.of(context).size.width - 64;
     final imageWidth = contentWidth * 0.3;
-    
+
     // 타입별 비율 결정
     final aspectRatio = _isMovieType(type) ? 2.0 / 3.0 : 10.0 / 16.0;
-    
+
     return ConstrainedBox(
       constraints: BoxConstraints(
         minWidth: imageWidth * 0.8, // 동적 최소 너비
-        maxWidth: imageWidth * 1.2, // 동적 최대 너비  
+        maxWidth: imageWidth * 1.2, // 동적 최대 너비
         minHeight: imageWidth / aspectRatio * 0.8, // 동적 최소 높이
         maxHeight: imageWidth / aspectRatio * 1.2, // 동적 최대 높이
       ),
@@ -289,7 +347,7 @@ class RecommendedContentCard extends StatelessWidget {
   /// 이미지 콘텐츠
   Widget _buildImageContent(BuildContext context, Map<String, dynamic> data) {
     final imagePath = _getImagePath(data);
-    
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -312,7 +370,7 @@ class RecommendedContentCard extends StatelessWidget {
   Widget _buildImagePlaceholder(BuildContext context, String type) {
     final color = _getCategoryColor('영화').withValues(alpha: 179);
     final icon = _isMovieType(type) ? Icons.movie : Icons.menu_book;
-    
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),

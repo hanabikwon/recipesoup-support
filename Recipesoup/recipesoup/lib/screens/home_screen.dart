@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
-  
+
   @override
   bool get wantKeepAlive => true;
 
@@ -31,10 +31,15 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   Map<String, dynamic> _contentData = {};
   bool _isContentLoading = false;
 
+  // 캐러셀용 상태 변수
+  List<Map<String, dynamic>> _shuffledKnowledge = [];
+  List<Map<String, dynamic>> _shuffledContent = [];
+
   @override
   void initState() {
     super.initState();
     _loadHomeContent();
+    _loadCarouselData(); // 캐러셀 데이터 로드
     _initializeChallengeProvider();
   }
 
@@ -52,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   /// 홈 화면 콘텐츠 로드 (제철 레시피, 요리 지식)
   Future<void> _loadHomeContent() async {
     if (!mounted) return;
-    
+
     setState(() {
       _isContentLoading = true;
     });
@@ -72,6 +77,27 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
           _isContentLoading = false;
         });
       }
+    }
+  }
+
+  /// 캐러셀용 데이터 로드 및 랜덤 셔플
+  Future<void> _loadCarouselData() async {
+    if (!mounted) return;
+
+    try {
+      // 전체 데이터 가져오기 (displayDate 필터 없음)
+      final knowledgeList = await ContentService.getAllCookingKnowledge();
+      final contentList = await ContentService.getAllRecommendedContent();
+
+      if (mounted) {
+        setState(() {
+          // 랜덤 셔플
+          _shuffledKnowledge = List.from(knowledgeList)..shuffle();
+          _shuffledContent = List.from(contentList)..shuffle();
+        });
+      }
+    } catch (e) {
+      debugPrint('캐러셀 데이터 로드 실패: $e');
     }
   }
 
@@ -229,27 +255,27 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
             ),
           ],
 
-          // 레시피 너머의 이야기 섹션
-          if (!_isContentLoading) ...[
+          // 레시피 너머의 이야기 섹션 (캐러셀)
+          if (!_isContentLoading && _shuffledKnowledge.isNotEmpty) ...[
             SliverToBoxAdapter(
               child: CookingKnowledgeCard(
-                knowledgeData: _contentData['todayKnowledge'],
+                knowledgeList: _shuffledKnowledge, // 캐러셀용 전체 리스트
               ),
             ),
-          ] else ...[
+          ] else if (_isContentLoading) ...[
             SliverToBoxAdapter(
               child: _buildContentLoadingCard('요리 지식'),
             ),
           ],
 
-          // 콘텐츠 큐레이션 섹션
-          if (!_isContentLoading) ...[
+          // 콘텐츠 큐레이션 섹션 (캐러셀)
+          if (!_isContentLoading && _shuffledContent.isNotEmpty) ...[
             SliverToBoxAdapter(
               child: RecommendedContentCard(
-                contentData: _contentData['recommendedContent'],
+                contentList: _shuffledContent, // 캐러셀용 전체 리스트
               ),
             ),
-          ] else ...[
+          ] else if (_isContentLoading) ...[
             SliverToBoxAdapter(
               child: _buildContentLoadingCard('추천 콘텐츠'),
             ),
