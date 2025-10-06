@@ -508,7 +508,7 @@ class _ChallengeHubScreenState extends State<ChallengeHubScreen> {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        '오늘의 감정에 어울리는 레시피를 추천해드려요',
+                        '오늘의 감정에 어울리는 레시피를 추천해드려요.',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppTheme.textSecondary,

@@ -211,7 +211,7 @@ class _CreateScreenState extends State<CreateScreen> {
     } else {
       icon = Icons.restaurant_menu;
       title = '감정과 함께하는 레시피 작성';
-      subtitle = '오늘의 요리 이야기를 감정과 함께 기록해보세요';
+      subtitle = '오늘의 요리 이야기를 감정과 함께 기록해보세요.';
     }
 
     return Container(

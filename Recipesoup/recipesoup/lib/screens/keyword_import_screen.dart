@@ -206,7 +206,7 @@ class _KeywordImportScreenState extends State<KeywordImportScreen> {
               const SizedBox(width: AppTheme.spacing12),
               Expanded(
                 child: Text(
-                  '만들고 싶은 요리명을 입력하면 Ai가 레시피를 자동으로 생성해드려요.',
+                  '만들고 싶은 요리명을 입력하면 레시피를 자동으로 생성해드려요.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppTheme.textSecondary,
                   ),
