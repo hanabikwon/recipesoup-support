@@ -476,10 +476,56 @@
   ```xml
   <key>NSCameraUsageDescription</key>
   <string>음식 사진을 촬영하여 레시피를 기록하기 위해 카메라 접근이 필요합니다</string>
-  
+
   <key>NSPhotoLibraryUsageDescription</key>
   <string>음식 사진을 선택하여 레시피를 기록하기 위해 사진 라이브러리 접근이 필요합니다</string>
   ```
+
+### 21-1. Xcode 아카이브 후 Distribute 버튼 안 보이는 문제 🍎
+- **문제**: Xcode에서 Archive 성공했는데 Distribute App 버튼이 안 나타남
+- **주요 원인들**:
+  | 문제 | 해결 방법 |
+  |------|----------|
+  | ❌ Team 설정 안됨 | Apple Developer 계정으로 로그인 (Xcode → Settings → Accounts) |
+  | ❌ Bundle ID 중복 | 고유한 Bundle Identifier 사용 (예: `com.hanabi.recipesoup`) |
+  | ❌ Provisioning Profile 없음 | Automatically manage signing 활성화 |
+  | ❌ Scheme이 Release가 아님 | Product → Scheme → Edit Scheme → Run → Release |
+
+- **해결 순서**:
+  1. **Xcode 워크스페이스 열기**:
+     ```bash
+     open ios/Runner.xcworkspace
+     ```
+
+  2. **Signing & Capabilities 설정**:
+     - 왼쪽 네비게이터에서 `Runner` 프로젝트 클릭
+     - **TARGETS > Runner** 선택
+     - **Signing & Capabilities** 탭 이동
+     - ✅ **Automatically manage signing** 체크박스 활성화
+     - ✅ **Team**: Apple Developer 계정 선택
+     - ✅ **Bundle Identifier**: 고유한 ID 입력
+
+  3. **Clean Build 후 재시도**:
+     ```bash
+     cd ios
+     rm -rf build/
+     rm -rf ~/Library/Developer/Xcode/DerivedData/
+     ```
+     - Xcode: **Product → Clean Build Folder** (⇧⌘K)
+     - 다시 **Product → Archive**
+
+  4. **Organizer 수동 열기** (아카이브 성공했는데 창 안 뜬 경우):
+     - Xcode → Window → Organizer (⌥⌘⇧O)
+     - **Archives 탭** 선택
+     - 최근 아카이브 선택 후 **Distribute App** 버튼 확인
+
+- **Apple Developer 계정 확인**:
+  - **무료 계정 (Personal Team)**: 실제 디바이스 테스트만 가능
+  - **유료 계정 ($99/년)**: App Store 배포 가능
+  - 가입: https://developer.apple.com/programs/enroll/
+
+- **빌드 번호 확인**: `pubspec.yaml`의 `version: 1.0.0+1`에서 `+1`이 빌드 번호
+- **작업일**: 2025-10-07
 
 ### 22. Android 네트워크 보안 설정
 - **문제**: HTTP 요청 차단 (Android 9+)

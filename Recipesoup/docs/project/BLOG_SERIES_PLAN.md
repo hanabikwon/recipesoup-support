@@ -379,7 +379,70 @@
 
 ---
 
+---
+
+## 📂 프로젝트 MD 파일 구조 (2025-10-07 기준)
+
+### 루트 레벨 (9개)
+- `README.md` - 프로젝트 메인 문서
+- `ARCHITECTURE.md` - 아키텍처 설계
+- `DESIGN.md` - 디자인 문서
+- `TESTPLAN.md` - 테스트 계획
+- `TESTDATA.md` - 테스트 데이터
+- `NOTE.md` - 노트
+- `PROGRESS.md` - 개발 진행 상황
+- `ROADMAP_V2.md` - v2.0 로드맵
+- `CLAUDE.md` - Claude 관련 문서
+
+### docs/project/ (14개)
+개발 과정 문서들:
+- `ios_test.md`
+- `project-now-report_2025-09-22.md`
+- `BUGFIX_UNLOCK_RACE_CONDITION.md`
+- `API_FIX_LOG.md`
+- `Social_Media_Shorts_Text_Extraction_Analysis.md`
+- `APP_CRASH_DEBUG_2025-10-01.md`
+- `APP_CRASH_DEBUG_RECOVERED.md`
+- `proxy_limit.md`
+- `MD_DOCUMENTS_VERIFICATION_REPORT.md`
+- `burrow_image_prompt.md`
+- `DEAD_CODE_ANALYSIS.md`
+- `UNUSED_FEATURES_ANALYSIS.md`
+- `BLOG_SERIES_PLAN.md`
+- `PERSISTENCE_ANALYSIS.md`
+
+### docs/guides/ (7개)
+가이드 문서들:
+- `app-usage-guide-for-pdf.md`
+- `api-key-guide.md`
+- `TEST_EXECUTION_GUIDE.md`
+- `burrow-unlock-conditions.md`
+- `About-Recipesoup.md`
+- `VERCEL_DEPLOYMENT_GUIDE.md`
+- `persona.md`
+- `SECURITY_AND_RATE_LIMITING.md`
+
+### docs/templates/ (2개)
+템플릿 문서들:
+- `feedback_collection_template.md`
+- `bug_report_template_detail.md`
+
+### docs/store/ (8개)
+앱스토어 관련 문서들:
+- `app-store-review-memo.md`
+- `release_todo.md`
+- `app-store-screenshot-guide.md`
+- `TESTFLIGHT_BUILD_GUIDE.md`
+- `app-store-data-usage.md`
+- `beta_test_guide.md`
+- `app-store-additional-content_re.md`
+- `privacy-policy-for-pdf.md`
+
+**총 40개의 .md 파일**이 체계적으로 구성되어 있습니다.
+
+---
+
 **문서 생성일**: 2025-10-07
 **최종 업데이트**: 2025-10-07
 **작성자**: Claude (Ultra Think Mode)
-**버전**: v1.0
+**버전**: v1.1 (MD 파일 구조 추가)
