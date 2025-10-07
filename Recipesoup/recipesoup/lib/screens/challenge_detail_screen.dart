@@ -122,23 +122,8 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
             size: 20,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // TODO: 즐겨찾기 기능 구현
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('즐겨찾기 기능을 구현하고 있어요'),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.favorite_border,
-              color: AppTheme.textPrimary,
-            ),
-          ),
-        ],
+        // 즐겨찾기 기능 제거 (챌린지에서는 미지원)
+        actions: [],
       ),
       backgroundColor: AppTheme.backgroundColor,
       body: Consumer<ChallengeProvider>(
