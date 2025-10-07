@@ -1,5 +1,5 @@
 name: recipesoup
-description: "A new Flutter project."
+description: "AI 기반 레시피 분석과 관리 기능을 제공하는 요리 레시피 앱"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
