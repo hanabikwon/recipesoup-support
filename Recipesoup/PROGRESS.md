@@ -1207,6 +1207,131 @@
   - **영향도**: 모든 백업/복원/persistence 테스트는 Release 모드 실행 필요
 - **날짜**: 2025-01-10
 
+### Phase 1: Dead Code 제거 완료 ✅
+- **목표**: 코드베이스 정리 및 유지보수성 향상
+- **제거된 코드**: 총 524줄
+- **작업 내용**:
+  - 미사용 파일 정리 완료
+  - 미사용 함수 제거 완료
+  - 상세 내역은 `DEAD_CODE_ANALYSIS.md` 참조
+- **성과**:
+  - ✅ 코드베이스 정리로 유지보수성 향상
+  - ✅ 프로젝트 구조 명확화
+  - ✅ 불필요한 코드 제거로 앱 크기 감소
+- **날짜**: 2025-09-XX
+
+### Phase 2a: 레시피 데이터 검증 완료 ✅
+- **목표**: 데이터 무결성 검증 시스템 안정화
+- **제거된 코드**: 총 442줄
+- **작업 내용**:
+  - 레시피 검증 로직 최적화
+  - 중복 코드 제거 완료
+  - 검증 알고리즘 개선
+- **성과**:
+  - ✅ 데이터 무결성 검증 시스템 안정화
+  - ✅ 코드 중복 제거로 버그 발생 가능성 감소
+  - ✅ 검증 성능 향상
+- **날짜**: 2025-09-XX
+
+### 2025-10-07: 토끼굴 언락 Race Condition 버그 수정 완료 🐛
+- **요구사항**: 토끼굴 언락 시스템 안정화 - 레시피 개수 조건 충족 시 언락 및 팝업 정상 작동
+- **사용자 보고**: "unlock숫자 레시피 개수 채워졌는데토끼굴 unlock안되고 팝업도 안떠. 성장여정, 특별한 공간 모두"
+- **문제 상황**:
+  - ❌ 레시피 개수 조건 충족했음에도 토끼굴 언락 발생 안함
+  - ❌ 성장여정(Growth Journey) 마일스톤 언락 실패
+  - ❌ 특별한 공간(Special Rooms) 언락 실패
+  - ❌ 축하 팝업(AchievementDialog) 표시 안됨
+- **원인 분석** (Ultra Think):
+  **Race Condition 메커니즘**:
+  1. 앱 시작 → Provider들이 생성됨
+  2. UI가 즉시 표시됨
+  3. `Future.microtask()`가 콜백 연결을 **나중에** 실행하도록 예약
+  4. 사용자가 microtask 완료 전에 레시피 추가 가능
+  5. 이때 `_onRecipeAdded` 콜백이 아직 **null 상태**
+  6. `_onRecipeAdded?.call(recipe)` 조용히 실패
+  7. `BurrowProvider.onRecipeAdded()` 절대 호출 안됨
+  8. 언락 체크 로직이 실행 안됨 → 팝업 표시 안됨
+
+  **버그가 있던 코드** (`/lib/main.dart` 361-377번 줄):
+  ```dart
+  // ❌ 버그가 있던 코드
+  home: Builder(
+    builder: (context) {
+      Future.microtask(() async {
+        try {
+          await _burrowProvider?.initialize();
+
+          // 🚨 문제: 콜백 연결이 비동기적으로 실행됨
+          if (mounted) {
+            _connectProviderCallbacks(context);  // 너무 늦게 연결!
+          }
+        } catch (e) {
+          debugPrint('❌ BurrowProvider 초기화 실패: $e');
+        }
+      });
+
+      return const SplashScreen();
+    },
+  ),
+  ```
+- **구현 완료**:
+  - ✅ **콜백 연결을 동기적으로 수행** (`/lib/main.dart` Lines 257-264)
+    ```dart
+    // ✅ 수정된 코드
+    void _initializeProviders() async {
+      // Provider 인스턴스 생성
+      _recipeProvider = RecipeProvider(hiveService: _hiveService!);
+      final burrowUnlockService = BurrowUnlockService(hiveService: _hiveService!);
+      _burrowProvider = BurrowProvider(unlockCoordinator: burrowUnlockService);
+      _challengeProvider = ChallengeProvider();
+      _messageProvider = MessageProvider();
+
+      // 🔥 CRITICAL FIX: 콜백 연결을 동기적으로 수행 (race condition 방지)
+      _recipeProvider!.setBurrowCallbacks(
+        onRecipeAdded: _burrowProvider!.onRecipeAdded,
+        onRecipeUpdated: _burrowProvider!.onRecipeUpdated,
+        onRecipeDeleted: _burrowProvider!.onRecipeDeleted,
+      );
+      _burrowProvider!.setRecipeListCallback(() => _recipeProvider!.recipes);
+
+      // UI 활성화는 콜백 연결 후에 발생
+      if (mounted) {
+        setState(() {
+          _isProvidersInitialized = true;
+        });
+      }
+    }
+    ```
+- **Before vs After**:
+  | Before (버그) | After (수정) |
+  |--------------|-------------|
+  | 콜백 연결이 `Future.microtask()` 안에서 **비동기** 실행 | 콜백 연결이 `_initializeProviders()` 메서드에서 **동기** 실행 |
+  | Provider 생성 후 언제 연결될지 **불확실** | Provider 생성 **직후** 즉시 연결 보장 |
+  | UI 활성화와 콜백 연결 **순서 보장 안됨** | 콜백 연결 완료 **후** UI 활성화 보장 |
+  | 사용자가 레시피 추가 시 콜백이 **null일 수 있음** | 사용자가 레시피 추가 시 콜백이 **항상 연결됨** |
+- **사용자 검증**: ✅ **"오 잘 작동한다"** (2025-10-07)
+  - ✅ 레시피 추가 시 토끼굴 언락 정상 작동
+  - ✅ 성장여정 마일스톤 언락 팝업 정상 표시
+  - ✅ 특별한 공간 언락 팝업 정상 표시
+  - ✅ AchievementDialog 정상 렌더링
+- **관련 파일**:
+  - ✏️ `/lib/main.dart` (257-264번 줄) - 수정됨
+  - 📖 `/lib/widgets/burrow/achievement_dialog.dart` - 분석만 수행
+  - 📖 `/lib/screens/main_screen.dart` - 분석만 수행
+  - 📖 `/lib/providers/burrow_provider.dart` - 분석만 수행
+  - 📖 `/lib/services/burrow_unlock_service.dart` - 분석만 수행
+  - 📖 `/lib/providers/recipe_provider.dart` - 분석만 수행
+- **문서화**:
+  - 📄 `BUGFIX_UNLOCK_RACE_CONDITION.md` (395 lines) - 전체 분석 및 해결 과정 상세 문서화
+  - 📄 `DEAD_CODE_ANALYSIS.md` - Phase 3 버그 수정 내역 추가
+- **Side Effect**: ✅ 없음 - 기존 기능 100% 보존, 타이밍 이슈만 해결
+- **교훈**:
+  1. **비동기 초기화의 위험성**: 중요한 연결 작업은 절대 비동기로 하면 안됨
+  2. **UI 활성화 전 의존성 준비**: 모든 의존성이 준비된 후 UI 활성화 필수
+  3. **Null-Safe 연산자의 함정**: `?.` 연산자는 버그를 숨길 수 있음
+  4. **Provider 초기화 순서**: 생성 → 연결 → UI 활성화 순서 엄수
+- **날짜**: 2025-10-07
+
 ---
 *이 문서는 개발 진행에 따라 지속적으로 업데이트됩니다.*
-*마지막 업데이트: 2025-01-10 (치명적 버그 2건 수정 완료: 백업 크래시 + 챌린지 데이터 손실)*
+*마지막 업데이트: 2025-10-07 (토끼굴 언락 Race Condition 버그 수정 완료, Dead Code 제거 966줄)*
