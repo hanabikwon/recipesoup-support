@@ -1,25 +1,25 @@
 ## 🚀 iOS 앱스토어 배포 필수 최소 조건 (간단 버전)
 
 ### 💳 필수 준비
-- [ ] Apple Developer Program 가입 ($99/년)
-- [ ] Xcode 설치 및 Certificate 생성
+- [x] Apple Developer Program 가입 ($99/년)
+- [x] Xcode 설치 및 Certificate 생성
 
 ### 📱 앱 설정
-- [ ] Bundle Identifier 설정
-- [ ] 앱 아이콘 1024x1024 제작
-- [ ] iOS 권한 설명 추가 (카메라, 사진)
+- [x] Bundle Identifier 설정
+- [x] 앱 아이콘 1024x1024 제작
+- [x] iOS 권한 설명 추가 (카메라, 사진)
 
 ### 🧪 테스트
-- [ ] iOS 릴리즈 빌드 성공 (`flutter build ios --release`)
-- [ ] 베타 테스터 최소 3명 모집 (본인+내부1명+외부1명)
+- [x] iOS 릴리즈 빌드 성공 (`flutter build ios --release`)
+- [x] 베타 테스터 최소 3명 모집 (본인+내부1명+외부1명)
 - [ ] TestFlight 업로드 및 테스트
 
 ### 📋 App Store Connect
-- [ ] 앱 등록 및 메타데이터 입력
-- [ ] 스크린샷 촬영 및 업로드
-- [ ] GitHub Pages로 개인정보처리방침 페이지 생성
-- [ ] 개인정보처리방침 URL 앱에 연결 (WebView)
-- [ ] 개인정보처리방침 웹사이트 테스트
+- [x] 앱 등록 및 메타데이터 입력
+- [x] 스크린샷 촬영 및 업로드
+- [x] GitHub Pages로 개인정보처리방침 페이지 생성
+- [x] 개인정보처리방침 URL 앱에 연결 (WebView)
+- [x] 개인정보처리방침 웹사이트 테스트
 
 ### ✅ 제출
 - [ ] App Review Guidelines 점검
