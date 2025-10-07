@@ -309,7 +309,41 @@
   )
   ```
 
-### 15. 날짜 비교 로직 (기술 참조용)
+### 15. 감정 색상 시스템 중복 문제
+- **문제**: 8가지 감정 중 여러 개가 같은 색상 계열 사용 (올리브 4개)
+- **증상**: 감정 인디케이터 시각적 구분 어려움, 사용자 혼란
+- **해결 방법**: 각 감정마다 고유한 색상 계열 부여
+  ```dart
+  // ❌ 문제가 있는 색상 매핑 (올리브 중복)
+  static const Map<String, Color> emotionColors = {
+    'happy': Color(0xFFD2A45B),      // 빈티지 오렌지
+    'sad': Color(0xFF8B9A6B),        // 올리브 (중복!)
+    'tired': Color(0xFF8B9A6B),      // 올리브 (중복!)
+    'comfortable': Color(0xFF8B9A6B), // 올리브 (중복!)
+    'grateful': Color(0xFF8B9A6B),   // 올리브 (중복!)
+    // ...
+  };
+
+  // ✅ 올바른 색상 매핑 (각 감정 고유 색상)
+  static const Map<String, Color> emotionColors = {
+    'happy': Color(0xFFE8B4B8),      // 소프트 핑크
+    'peaceful': accentGreen,         // 허브 그린
+    'sad': Color(0xFFB8A9C9),        // 라벤더 그레이
+    'tired': Color(0xFF9B9B9B),      // 쿨 그레이
+    'excited': accentOrange,         // 밝은 오렌지
+    'nostalgic': secondaryColor,     // 따뜻한 브라운
+    'comfortable': Color(0xFFABC4D6), // 소프트 블루
+    'grateful': Color(0xFFEAD896),   // 소프트 옐로우
+  };
+  ```
+- **Side Effect 체크 필수**:
+  - `recipe_card.dart`, `stats_screen.dart` 등에서 `emotionColors` 사용하는 곳 확인
+  - 모두 `?? AppTheme.primaryColor` fallback 패턴 사용하는지 검증
+  - `flutter analyze` 실행하여 컴파일 에러 없는지 확인
+- **검증 방법**: Hot restart (`R`) 후 시뮬레이터에서 각 감정별 색상 확인
+- **작업일**: 2025-10-07
+
+### 16. 날짜 비교 로직 (기술 참조용)
 - **흔한 실수**: DateTime 비교에서 모든 필드를 같이 비교
 - **올바른 로직**: 필요한 필드만 선택적으로 비교
   ```dart

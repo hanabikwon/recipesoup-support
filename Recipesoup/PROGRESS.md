@@ -1205,7 +1205,7 @@
   - **Debug vs Release 모드 차이**: Debug 모드는 Hot Reload, OS 캐시, DevTools 간섭으로 데이터 persistence 테스트 신뢰 불가
   - **테스트 프로토콜 확립**: `flutter run -d <DEVICE_ID> --release` 필수
   - **영향도**: 모든 백업/복원/persistence 테스트는 Release 모드 실행 필요
-- **날짜**: 2025-01-10
+- **날짜**: 2025-10-01
 
 ### Phase 1: Dead Code 제거 완료 ✅
 - **목표**: 코드베이스 정리 및 유지보수성 향상
