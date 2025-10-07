@@ -8,7 +8,7 @@ import '../../widgets/burrow/ultra_burrow_milestone_card.dart';
 import '../../widgets/burrow/fullscreen_burrow_overlay.dart';
 import '../../utils/ultra_burrow_image_handler.dart';
 // import '../../utils/run_milestone_reset.dart';  // 🔧 TEMPORARY: 컴파일 오류 해결을 위해 임시 주석처리
-import 'achievement_dialog.dart';
+import '../../widgets/burrow/achievement_dialog.dart';
 
 /// 토끼굴 마일스톤 메인 화면
 /// 성장 트랙과 특별 공간을 모두 표시
@@ -849,7 +849,7 @@ class _BurrowScreenState extends State<BurrowScreen> with TickerProviderStateMix
                 Text(
                   isUnlocked ? _getCompactDescription(milestone) : '???',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: isUnlocked
                         ? const Color(0xFF2E3D1F)

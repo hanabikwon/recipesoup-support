@@ -254,8 +254,18 @@ class _RecipesoupAppState extends State<RecipesoupApp> {
       _challengeProvider = ChallengeProvider();
       _messageProvider = MessageProvider();
 
+      // 🔥 CRITICAL FIX: 콜백 연결을 동기적으로 수행 (race condition 방지)
+      // RecipeProvider ↔ BurrowProvider 양방향 연결
+      _recipeProvider!.setBurrowCallbacks(
+        onRecipeAdded: _burrowProvider!.onRecipeAdded,
+        onRecipeUpdated: _burrowProvider!.onRecipeUpdated,
+        onRecipeDeleted: _burrowProvider!.onRecipeDeleted,
+      );
+      _burrowProvider!.setRecipeListCallback(() => _recipeProvider!.recipes);
+
       if (kDebugMode) {
         debugPrint('🔥 모든 Provider 인스턴스 생성 완료');
+        debugPrint('✅ Provider 간 콜백 연결 완료 (동기적)');
       }
 
       // ✅ 상태 업데이트 (UI 재렌더링)

@@ -307,6 +307,55 @@
 
 ---
 
+## 🐛 Phase 3 실행 중 발견된 Critical Bug
+
+### 토끼굴 언락 시스템 Race Condition 버그 (2025-10-07 발견 및 수정 완료)
+
+**사용자 보고**:
+- "unlock숫자 레시피 개수 채워졌는데토끼굴 unlock안되고 팝업도 안떠. 성장여정, 특별한 공간 모두"
+- 레시피 개수 조건 충족했음에도 언락 실패
+- 성장여정(Growth Journey) 및 특별한 공간(Special Rooms) 모두 팝업 안뜸
+
+**근본 원인 (Root Cause)**:
+- **위치**: `/lib/main.dart` 361-377번 줄
+- **문제**: Provider 콜백 연결이 `Future.microtask()` 내부에서 비동기적으로 실행
+- **메커니즘**:
+  1. 앱 시작 → Provider 생성 → UI 즉시 표시
+  2. `Future.microtask()`가 콜백 연결을 나중에 실행하도록 예약
+  3. 사용자가 microtask 완료 전에 레시피 추가 가능
+  4. `_onRecipeAdded?.call(recipe)` 실행 시 콜백이 null 상태
+  5. Null-safe 연산자(`?.`)로 인해 조용히 실패 (에러 없음)
+  6. BurrowProvider.onRecipeAdded() 절대 호출 안됨 → 언락 체크 안됨 → 팝업 없음
+
+**수정 방법**:
+- **위치**: `/lib/main.dart` 257-264번 줄 (`_initializeProviders()` 메서드)
+- **변경 사항**: 콜백 연결을 동기적으로 수행
+  ```dart
+  // 🔥 CRITICAL FIX: 콜백 연결을 동기적으로 수행 (race condition 방지)
+  _recipeProvider!.setBurrowCallbacks(
+    onRecipeAdded: _burrowProvider!.onRecipeAdded,
+    onRecipeUpdated: _burrowProvider!.onRecipeUpdated,
+    onRecipeDeleted: _burrowProvider!.onRecipeDeleted,
+  );
+  ```
+- **핵심 개선**: Provider 생성 직후 즉시 콜백 연결 → UI 활성화 전 완료 보장
+
+**사용자 검증**:
+- ✅ **"오 잘 작동한다"** - 수정 후 정상 작동 확인 완료
+
+**상세 분석 문서**:
+- `BUGFIX_UNLOCK_RACE_CONDITION.md` (395 lines) - 전체 분석 및 해결 과정 문서화
+
+**Side Effect**:
+- 없음 (기존 기능 100% 보존, 타이밍 이슈만 해결)
+
+**교훈**:
+- 중요한 Provider 간 연결 작업은 절대 비동기로 처리하면 안됨
+- UI 활성화 전에 모든 의존성 준비 완료 필수
+- Null-safe 연산자(`?.`)는 버그를 숨길 수 있으므로 주의 필요
+
+---
+
 **작성자**: Claude (Ultra Think Analysis)
-**최종 업데이트**: 2025-10-06 (Phase 1 & 2a 완료)
+**최종 업데이트**: 2025-10-07 (Phase 1 & 2a 완료, Race Condition 버그 수정 완료)
 **다음 작업**: Phase 3 아키텍처 개선 (사용자 결정 대기)
