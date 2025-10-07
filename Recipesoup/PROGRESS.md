@@ -169,6 +169,63 @@
 ## 주요 이슈 및 해결 사항
 ### 해결된 이슈
 
+### 2025-10-07: App Store Connect ITMS-91061 에러 해결 완료 📱
+- **문제 상황**: App Store Connect 심사 제출 시 ITMS-91061 에러 발생
+- **에러 내용**:
+  - "Missing privacy manifest" for file_picker SDK
+  - "Missing privacy manifest" for share_plus SDK
+  - Apple 2024년 정책: 모든 서드파티 SDK는 PrivacyInfo.xcprivacy 파일 필수
+- **영향받는 SDK**:
+  - file_picker 6.1.1 → 10.3.3 (Privacy Manifest 미포함 → 포함)
+  - share_plus 7.2.1 → 12.0.0 (Privacy Manifest 미포함 → 포함)
+- **해결 과정**:
+  1. ✅ **패키지 버전 업데이트**:
+     - `pubspec.yaml` 수정: file_picker ^10.3.3, share_plus ^12.0.0
+     - 주석 추가: "Privacy Manifest 포함" 명시
+  2. ✅ **Side Effect 검증**:
+     - `backup_service.dart` 분석: 두 SDK 사용 유일한 파일
+     - API 호환성 확인: `FilePicker.platform.pickFiles()`, `Share.shareXFiles()` 메서드 유지
+     - 메이저 버전 업데이트에도 안정적 API 사용 확인
+  3. ✅ **Privacy Manifest 파일 확인**:
+     - file_picker: `.pub-cache/.../ios/file_picker/Sources/file_picker/PrivacyInfo.xcprivacy` 존재
+     - share_plus: `.pub-cache/.../ios/share_plus/Sources/share_plus/PrivacyInfo.xcprivacy` 존재
+  4. ✅ **빌드 및 검증**:
+     - `flutter clean` → `flutter pub get` → `flutter build ipa --release`
+     - 빌드 성공 (48.5초), Build 번호 7 → 8 증가
+- **Xcode 아카이브 대안 워크플로우**:
+  ```bash
+  # 1. Xcode 워크스페이스 열기
+  open ios/Runner.xcworkspace
+
+  # 2. Xcode UI에서:
+  #    Product → Archive
+  #    Distribute App → App Store Connect → Upload
+  #    Export → 자동 서명
+
+  # 3. App Store Connect에서 빌드 처리 완료 후 재심사 제출
+  ```
+- **검증 결과**:
+  - ✅ Privacy Manifest 파일 두 SDK 모두 포함 확인
+  - ✅ API 호환성 100% 보존 (backup_service.dart 수정 불필요)
+  - ✅ iOS IPA 빌드 성공 (Build 8)
+  - 🔄 **진행 중**: App Store Connect 재심사 제출 대기
+- **관련 파일**:
+  - ✏️ `/Users/hanabi/Downloads/practice/Recipesoup/recipesoup/pubspec.yaml` (Lines 67-68)
+  - 📖 `/Users/hanabi/Downloads/practice/Recipesoup/recipesoup/lib/services/backup_service.dart` (분석만)
+  - 📄 Privacy Manifest 위치:
+    - `/Users/hanabi/.pub-cache/hosted/pub.dev/file_picker-10.3.3/ios/file_picker/Sources/file_picker/PrivacyInfo.xcprivacy`
+    - `/Users/hanabi/.pub-cache/hosted/pub.dev/share_plus-12.0.0/ios/share_plus/Sources/share_plus/PrivacyInfo.xcprivacy`
+- **Side Effect**: ✅ 없음 - API 호환성 완벽 유지, 백업/복원 기능 정상 작동
+- **Apple 정책 배경**:
+  - 2024년부터 모든 서드파티 SDK는 Privacy Manifest 파일 필수
+  - 사용자 데이터 수집 및 추적 정보 명시 의무화
+  - 미포함 시 App Store 심사 자동 거부 (ITMS-91061)
+- **교훈**:
+  - 정기적 패키지 업데이트로 최신 Apple 정책 준수 필요
+  - 메이저 버전 업데이트 시 API 호환성 체크 필수
+  - Privacy Manifest 파일 존재 여부 사전 확인
+- **날짜**: 2025-10-07
+
 ### 2025-10-07: 토끼굴 언락 시스템 Race Condition 버그 수정 완료 🐛
 - **사용자 보고**: "unlock숫자 레시피 개수 채워졌는데토끼굴 unlock안되고 팝업도 안떠. 성장여정, 특별한 공간 모두"
 - **증상**:

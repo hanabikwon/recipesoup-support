@@ -64,8 +64,8 @@ dependencies:
 
   # 백업/복원 기능
   archive: ^3.4.9        # ZIP 압축/해제
-  share_plus: ^7.2.1     # 파일 공유 (이메일, 드라이브 등)
-  file_picker: ^6.1.1    # 파일 선택기
+  share_plus: ^12.0.0    # 파일 공유 (이메일, 드라이브 등) - Privacy Manifest 포함
+  file_picker: ^10.3.3   # 파일 선택기 - Privacy Manifest 포함
   url_launcher: ^6.2.1   # 이메일 링크
 
 dev_dependencies:
