@@ -32,7 +32,7 @@ class BackupService {
     BackupProgressCallback? onProgress,
   }) async {
     try {
-      onProgress?.call('백업 데이터 준비중...', 0.1);
+      onProgress?.call('백업 데이터 생성 중...', 0.1);
 
       // 백업 데이터 생성
       final backupData = BackupData.create(
@@ -94,7 +94,7 @@ class BackupService {
     BackupProgressCallback? onProgress,
   }) async {
     try {
-      onProgress?.call('공유 준비중...', 0.5);
+      onProgress?.call('공유 처리중...', 0.5);
 
       final file = File(backupFilePath);
       if (!await file.exists()) {

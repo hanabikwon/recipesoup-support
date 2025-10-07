@@ -358,7 +358,7 @@ class UltraBurrowImageHandler {
           if (width == null || width >= 80) ...[
             const SizedBox(height: 8),
             Text(
-              isLocked ? '???' : '이미지\n준비중',
+              isLocked ? '???' : '이미지\n로딩중...',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: isLocked ? Color(0xFF757575) : Color(0xFF5A6B49),

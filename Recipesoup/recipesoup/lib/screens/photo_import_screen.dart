@@ -545,11 +545,11 @@ class _PhotoImportScreenState extends State<PhotoImportScreen> {
       _isLoading = true;
       _error = null;
       _analysisResult = null;
-      _currentLoadingMessage = '레시피 재료 준비중';
+      _currentLoadingMessage = '레시피 재료 추출중';
     });
 
     try {
-      // 1단계: 레시피 재료 준비중
+      // 1단계: 레시피 재료 추출중
       await Future.delayed(Duration(milliseconds: 500));
 
       setState(() {

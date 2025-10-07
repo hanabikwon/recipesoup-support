@@ -12,7 +12,7 @@ typedef LoadingProgressCallback = void Function(String message, double progress)
 
 /// AI 분석 단계별 상태
 enum AnalysisStep {
-  preparing('레시피 재료 준비중', 0.1),
+  preparing('재료 정보를 가져오고 있어요', 0.1),
   uploading('이미지 업로드 중...', 0.3),
   cooking('AI로 레시피 분석중', 0.6),
   completing('레시피 작성 완료 🐰', 1.0);
@@ -398,7 +398,7 @@ class OpenAiService {
     LoadingProgressCallback? onProgress,
   }) async {
     try {
-      // 1단계: 준비 중
+      // 1단계: 재료 정보 가져오기
       onProgress?.call(AnalysisStep.preparing.message, AnalysisStep.preparing.progress);
       await Future.delayed(Duration(milliseconds: 300)); // UI 업데이트 대기
 
@@ -458,7 +458,7 @@ class OpenAiService {
     LoadingProgressCallback? onProgress,
   }) async {
     try {
-      // 1단계: 준비 중
+      // 1단계: 재료 정보 가져오기
       onProgress?.call(AnalysisStep.preparing.message, AnalysisStep.preparing.progress);
       await Future.delayed(Duration(milliseconds: 300)); // UI 업데이트 대기
 
@@ -965,7 +965,7 @@ class OpenAiService {
       {'progress': 0.7, 'message': '두 번째 요리 분석중 🍲', 'delay': 400},
       {'progress': 0.8, 'message': '세 번째 요리 분석중 🍳', 'delay': 400},
       {'progress': 0.9, 'message': '추천 결과 정리중 📝', 'delay': 300},
-      {'progress': 0.95, 'message': '추천 완료 준비중 ✨', 'delay': 200},
+      {'progress': 0.95, 'message': '추천을 마무리하고 있어요 ✨', 'delay': 200},
     ];
 
     for (final step in progressSteps) {

@@ -771,9 +771,9 @@ class _BurrowScreenState extends State<BurrowScreen> with TickerProviderStateMix
             const SizedBox(height: 16),
             Center(
               child: Text(
-                remaining > 0 
+                remaining > 0
                     ? '레시피를 $remaining개 더 작성하면 열려요!\n\n현재: $currentCount개 / 필요: $required개'
-                    : '조건을 만족했어요! 곧 열릴 예정입니다.',
+                    : '조건을 만족했어요! 다시 확인해주세요.',
                 style: const TextStyle(
                   color: Color(0xFF5A6B49),
                   fontSize: 16,

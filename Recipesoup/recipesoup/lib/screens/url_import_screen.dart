@@ -58,7 +58,7 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
 
     setState(() {
       if (isVideoUrl) {
-        _videoUrlWarning = '영상 링크 분석은 준비중이에요.\n텍스트 레시피 링크를 사용해주세요.';
+        _videoUrlWarning = '영상 분석 기능은 지원하지 않습니다.\n텍스트 레시피 링크를 사용해주세요.';
       } else {
         _videoUrlWarning = null;
       }
@@ -433,7 +433,7 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
       _error = null;
       _scrapedContent = null;
       _analysisResult = null;
-      _currentLoadingMessage = '레시피 재료 준비중';
+      _currentLoadingMessage = '레시피 재료 추출중';
     });
 
     try {
@@ -444,7 +444,7 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
 
       setState(() {
         _scrapedContent = scrapedContent;
-        _currentLoadingMessage = '레시피 재료 준비중';
+        _currentLoadingMessage = '레시피 재료 추출중';
       });
 
       // 콘텐츠가 너무 짧으면 에러 (조건 완화: 10자 → 5자)
@@ -529,7 +529,7 @@ class _UrlImportScreenState extends State<UrlImportScreen> {
       if (url.contains('youtube.com') || url.contains('youtu.be') ||
           url.contains('tiktok.com') || url.contains('instagram.com') ||
           url.contains('reels') || url.contains('shorts')) {
-        errorMessage = '영상 링크 분석은 준비중이에요.\n텍스트 레시피 링크를 사용해주세요.';
+        errorMessage = '영상 분석은 지원하지 않습니다.\n텍스트 레시피 링크를 사용해주세요.';
       } else if (errorStr.contains('network') || errorStr.contains('timeout') || errorStr.contains('connection')) {
         errorMessage = '네트워크 연결을 확인해주세요.\n인터넷 연결 상태를 점검해보세요.';
       } else {

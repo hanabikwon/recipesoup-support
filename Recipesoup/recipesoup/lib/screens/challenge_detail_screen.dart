@@ -128,7 +128,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
               // TODO: 즐겨찾기 기능 구현
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('즐겨찾기 기능 준비 중입니다'),
+                  content: Text('즐겨찾기 기능을 구현하고 있어요'),
                   behavior: SnackBarBehavior.floating,
                 ),
               );
@@ -858,7 +858,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      '이 챌린지의 상세 조리법이 준비 중입니다.\n기본 재료와 설명을 참고해주세요.',
+                      '이 챌린지의 상세 조리법을 추가하고 있어요.\n기본 재료와 설명을 참고해주세요.',
                       style: TextStyle(
                         color: AppTheme.textSecondary,
                         fontSize: 14,
@@ -1063,7 +1063,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
                       SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          '이 챌린지의 상세 조리법이 준비 중입니다.\n기본 재료와 설명을 참고해주세요.',
+                          '이 챌린지의 상세 조리법을 추가하고 있어요.\n기본 재료와 설명을 참고해주세요.',
                           style: TextStyle(
                             color: AppTheme.textSecondary,
                             fontSize: 14,
@@ -1701,7 +1701,7 @@ class _ChallengeDetailScreenState extends State<ChallengeDetailScreen>
       if (challengeData['migrationCompleted'] != true) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('이 챌린지는 아직 새 구조로 업데이트되지 않았습니다.'),
+            content: Text('이 챌린지는 새 구조로 업데이트되지 않았어요.'),
             backgroundColor: AppTheme.errorColor,
           ),
         );

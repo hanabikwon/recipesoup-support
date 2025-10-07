@@ -63,13 +63,13 @@ class _KeywordImportScreenState extends State<KeywordImportScreen> {
 
     setState(() {
       _isLoading = true;
-      _loadingMessage = '레시피 재료 준비중';
+      _loadingMessage = '레시피 재료 추출중';
       _loadingProgress = 0.1;
     });
     _startProgressAnimation(0.3);
 
     try {
-      // 1단계: 레시피 재료 준비중
+      // 1단계: 레시피 재료 추출중
       await Future.delayed(Duration(milliseconds: 500));
       
       setState(() {

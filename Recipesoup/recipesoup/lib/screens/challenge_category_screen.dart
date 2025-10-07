@@ -63,7 +63,7 @@ class _ChallengeCategoryScreenState extends State<ChallengeCategoryScreen> {
         builder: (context, provider, child) {
           if (provider.isLoading) {
             return VintageLoadingWidget(
-              message: '${_getCategoryTitle(widget.category)} 준비 중...',
+              message: '${_getCategoryTitle(widget.category)} 챌린지를 불러오고 있어요...',
             );
           }
 
@@ -252,7 +252,7 @@ class _ChallengeCategoryScreenState extends State<ChallengeCategoryScreen> {
           ),
           SizedBox(height: 16),
           Text(
-            '아직 챌린지가 없어요',
+            '챌린지가 없어요',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -261,7 +261,7 @@ class _ChallengeCategoryScreenState extends State<ChallengeCategoryScreen> {
           ),
           SizedBox(height: 8),
           Text(
-            '곧 새로운 챌린지가 추가될 예정입니다',
+            '새로운 챌린지를 기다려주세요',
             style: TextStyle(
               fontSize: 14,
               color: AppTheme.textSecondary,

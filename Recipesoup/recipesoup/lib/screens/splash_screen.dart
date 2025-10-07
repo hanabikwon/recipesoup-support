@@ -311,7 +311,7 @@ class _SplashScreenState extends State<SplashScreen>
             children: [
               // 하얀색 스트로크 (아웃라인)
               Text(
-                '당신의 이야기를 준비중...',
+                '당신의 이야기를 불러오는 중...',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontFamily: 'Orbit', // Orbit 폰트 적용
                   fontSize: 16, // 기존 12에서 16으로 증가
@@ -325,7 +325,7 @@ class _SplashScreenState extends State<SplashScreen>
               ),
               // 검정색 텍스트 (메인)
               Text(
-                '당신의 이야기를 준비중...',
+                '당신의 이야기를 불러오는 중...',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontFamily: 'Orbit', // Orbit 폰트 적용
                   fontSize: 16, // 기존 12에서 16으로 증가
