@@ -1124,6 +1124,89 @@
 - Unicode Surrogate Pair 에러 수정 완료
 - Search Screen → Archive Screen 통합
 
+### 2025-10-01: 치명적 버그 수정 완료 🔥
+- **요구사항**: 앱 안정성 향상 - 백업/복원 크래시 및 챌린지 진행률 데이터 손실 문제 해결
+- **문제 상황**:
+  - **Issue #1**: 백업 복원 후 앱 강제 종료 시 크래시 발생 (사용자가 4개 레시피 확인 후 재시작 시 앱 사망)
+  - **Issue #2**: 챌린지 완료 데이터가 앱 재시작 시 0으로 초기화 (사용자 진행률 영구 손실)
+- **원인 분석** (Ultra Think):
+  ```dart
+  // ❌ Issue #1 원인: Hive Box에 int와 String 키 혼용으로 Box 구조 손상
+  await box.put(1759306514382, data);      // int key
+  await box.put("restored_1759...", data); // String key
+
+  // ❌ Issue #2 원인: 메모리 전용 저장, Hive Box 미사용
+  Map<String, ChallengeProgress>? _cachedProgress;
+  Future<void> saveUserProgress(ChallengeProgress progress) async {
+    final currentProgress = await loadUserProgress();
+    currentProgress[progress.challengeId] = progress;
+    _cachedProgress = currentProgress; // 메모리만! Hive 저장 안됨
+  }
+  ```
+- **구현 완료**:
+  - ✅ **Issue #1 수정** (`lib/screens/settings_screen.dart` Lines 799-822):
+    - ID 충돌 감지 시스템 추가: `Set.contains()` 기반 O(1) 조회
+    - 타임스탬프 기반 신규 ID 생성: `DateTime.now().millisecondsSinceEpoch.toString()`
+    - Hive Box 타입 일관성 유지 (모든 키를 String으로 통일)
+    ```dart
+    for (final recipe in backupData.recipes) {
+      if (option == RestoreOption.merge) {
+        final existingIds = recipeProvider.recipes.map((r) => r.id).toSet();
+
+        if (existingIds.contains(recipe.id)) {
+          // ID 충돌 해결 - 새 타임스탬프 ID 생성
+          final newId = DateTime.now().millisecondsSinceEpoch.toString();
+          final newRecipe = recipe.copyWith(id: newId);
+          await recipeProvider.addRecipe(newRecipe);
+
+          print('🔄 ID 충돌 해결: ${recipe.id} → $newId');
+        } else {
+          await recipeProvider.addRecipe(recipe);
+        }
+      }
+    }
+    ```
+  - ✅ **Issue #2 수정** (`lib/services/challenge_service.dart` Lines 120-166):
+    - 전용 Hive Box 생성: `challenge_progress`
+    - 싱글톤 Box 초기화 패턴 구현: `_initializeBox()`
+    - 명시적 디스크 동기화: `flush()` 호출
+    ```dart
+    Box<dynamic>? _progressBox;
+    final String _progressBoxName = 'challenge_progress';
+
+    Future<void> _initializeBox() async {
+      if (_progressBox != null && _progressBox!.isOpen) return;
+      _progressBox = await Hive.openBox<dynamic>(_progressBoxName);
+    }
+
+    Future<void> saveUserProgress(ChallengeProgress progress) async {
+      await _initializeBox();
+      final currentProgress = await loadUserProgress();
+      currentProgress[progress.challengeId] = progress;
+
+      // 🔥 Critical: Hive Box 저장 + 디스크 동기화
+      await _progressBox!.put(progress.challengeId, progress.toJson());
+      await _progressBox!.flush();
+
+      _cachedProgress = currentProgress;
+      debugPrint('💾 Saved progress for challenge: ${progress.challengeId}');
+    }
+    ```
+- **Side Effect 방지**:
+  - ✅ 기존 레시피 데이터 100% 보존
+  - ✅ 다른 Hive Box 동작에 영향 없음
+  - ✅ 백업/복원 기능 완전 호환성 유지
+- **테스트 완료**:
+  - ✅ **Test 19**: 백업 병합 → 강제 종료 → 재시작 시 4개 레시피 영구 유지 (Release 모드 필수)
+  - ✅ **Challenge Test**: 챌린지 완료 → 강제 종료 → 재시작 시 진행률 정상 유지
+  - ✅ **디바이스**: iPhone SE 2nd gen, iOS 15.8.5
+  - ✅ **빌드 모드**: Release 모드 (Debug 모드는 데이터 persistence 테스트 신뢰 불가)
+- **Critical Discovery**:
+  - **Debug vs Release 모드 차이**: Debug 모드는 Hot Reload, OS 캐시, DevTools 간섭으로 데이터 persistence 테스트 신뢰 불가
+  - **테스트 프로토콜 확립**: `flutter run -d <DEVICE_ID> --release` 필수
+  - **영향도**: 모든 백업/복원/persistence 테스트는 Release 모드 실행 필요
+- **날짜**: 2025-01-10
+
 ---
 *이 문서는 개발 진행에 따라 지속적으로 업데이트됩니다.*
-*마지막 업데이트: 2025-09-25 (전체 Phase 0-6 완료, 문서 통합 및 챌린지 시스템 업데이트)*
+*마지막 업데이트: 2025-01-10 (치명적 버그 2건 수정 완료: 백업 크래시 + 챌린지 데이터 손실)*

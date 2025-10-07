@@ -374,14 +374,14 @@ class AppTheme {
 
   /// 감정별 색상 매핑 (감정 기반 앱 특화)
   static const Map<String, Color> emotionColors = {
-    'happy': accentOrange,      // 기쁨 - 밝은 오렌지
-    'peaceful': accentGreen,    // 평온 - 허브 그린
-    'sad': textSecondary,       // 슬픔 - 차분한 올리브
-    'tired': disabledColor,     // 피로 - 회색빛 올리브
-    'excited': accentOrange,    // 설렘 - 활기찬 오렌지
-    'nostalgic': secondaryColor, // 그리움 - 따뜻한 브라운
-    'comfortable': primaryLight, // 편안함 - 부드러운 올리브
-    'grateful': primaryColor,   // 감사 - 메인 올리브
+    'happy': Color(0xFFE8B4B8),      // 기쁨 - 소프트 핑크
+    'peaceful': accentGreen,         // 평온 - 허브 그린
+    'sad': Color(0xFFB8A9C9),        // 슬픔 - 라벤더 그레이
+    'tired': Color(0xFF9B9B9B),      // 피로 - 쿨 그레이
+    'excited': accentOrange,         // 설렘 - 밝은 오렌지
+    'nostalgic': secondaryColor,     // 그리움 - 따뜻한 브라운
+    'comfortable': Color(0xFFABC4D6), // 편안함 - 소프트 블루
+    'grateful': Color(0xFFEAD896),   // 감사 - 소프트 옐로우
   };
 
   /// 감정별 이모지 매핑
