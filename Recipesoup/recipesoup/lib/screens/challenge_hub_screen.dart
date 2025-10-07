@@ -356,7 +356,7 @@ class _ChallengeHubScreenState extends State<ChallengeHubScreen> {
           builder: (context, provider, child) {
             if (provider.isLoading) {
               return const VintageLoadingWidget(
-                message: '깡총 챌린지 준비 중...',
+                message: '깡총 챌린지를 불러오고 있어요...',
               );
             }
 

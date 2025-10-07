@@ -305,8 +305,8 @@ class _FridgeIngredientsScreenState extends State<FridgeIngredientsScreen> {
       };
     } else if (errorDetails.toLowerCase().contains('500') ||
                errorDetails.toLowerCase().contains('server')) {
-      title = '서버 점검 중';
-      message = '서버가 일시적으로 점검 중입니다.\n\n잠시 후 다시 시도해주세요.';
+      title = '서버 연결 실패';
+      message = '서버와 연결할 수 없습니다.\n\n잠시 후 다시 시도해주세요.';
       actionText = '재시도';
       retryAction = () {
         Navigator.of(context).pop();

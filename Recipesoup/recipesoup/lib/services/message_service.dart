@@ -105,7 +105,7 @@ class MessageService {
       type: type,
       title: title ?? '샘플 메시지',
       preview: content?.substring(0, 50) ?? '샘플 메시지 미리보기입니다.',
-      content: content ?? '이것은 테스트용 샘플 메시지입니다.\n\n개발 및 테스트 목적으로 생성되었습니다.',
+      content: content ?? '샘플 메시지 내용입니다.\n\n실제 메시지는 여기에 표시됩니다.',
       date: '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}',
     );
   }
