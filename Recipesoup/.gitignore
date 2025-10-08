@@ -101,3 +101,7 @@ draft/
 *.tmp
 *.temp
 ~*
+# OpenAI API Key (보안)
+recipesoup-openai-apikey.txt
+*-apikey.txt
+*-api-key.txt
